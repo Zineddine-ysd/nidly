@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rangement Cuisine — Nidly</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; align-items: center; }
+  .product-gallery { background: linear-gradient(135deg, #EAF0E8 0%, #D2DFC8 100%); border-radius: 1.2rem; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; }
+  .product-gallery svg { width: 70%; opacity: 0.9; }
+  .product-meta .badge { display: inline-block; background: var(--sage); color: white; font-size: 0.65rem; letter-spacing: 0.1em; padding: 0.3rem 0.7rem; border-radius: 2rem; margin-bottom: 1rem; }
+  .product-meta h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--charcoal); margin-bottom: 1rem; }
+  .product-meta .price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--terracotta); margin: 1.5rem 0; }
+  .product-meta .desc { font-size: 0.95rem; color: var(--bark); line-height: 1.8; margin-bottom: 1.5rem; }
+  .product-meta .add-form { display: flex; gap: 1rem; align-items: center; margin-top: 2rem; }
+  .qty-input { width: 60px; padding: 0.8rem; border: 1.5px solid var(--dusty-rose); border-radius: 0.5rem; text-align: center; font-size: 1rem; }
+  .btn-add-cart { background: var(--terracotta); color: white; padding: 1rem 2.5rem; border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; cursor: pointer; letter-spacing: 0.05em; transition: all 0.25s; }
+  .btn-add-cart:hover { background: var(--bark); transform: translateY(-2px); }
+  .back-link { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--bark); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .back-link:hover { color: var(--terracotta); }
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">Ni<span>dly</span></a>
+  <div class="nav-links">
+    <a href="../index.html#products">Rangement</a>
+    <a href="../index.html#products">Salle de bain</a>
+    <a href="../index.html#products">Cuisine</a>
+    <a href="../index.html#products">À propos</a>
+  </div>
+  <a href="../cart.html" class="nav-cart" style="text-decoration:none;display:inline-block;">🛍 Panier (0)</a>
+</nav>
+
+<main class="product-detail" style="padding-top: 8rem;">
+  <a href="../index.html#products" class="back-link">← Retour aux produits</a>
+  <div class="product-gallery">
+    <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="25" y="15" width="150" height="110" rx="12" fill="rgba(255,255,255,0.85)"/>
+      <rect x="35" y="28" width="38" height="85" rx="6" fill="rgba(168,181,160,0.45)"/>
+      <rect x="80" y="28" width="38" height="85" rx="6" fill="rgba(212,165,160,0.45)"/>
+      <rect x="125" y="28" width="38" height="85" rx="6" fill="rgba(240,224,214,0.7)"/>
+      <rect x="35" y="58" width="128" height="2" rx="1" fill="rgba(196,123,107,0.2)"/>
+    </svg>
+  </div>
+  <div class="product-meta">
+    <span class="badge">Best-seller</span>
+    <h1>Rangement Cuisine</h1>
+    <p class="desc">Tiroirs modulables pour couverts, épices et ustensiles de cuisine. S'adapte à toutes les configurations de tiroirs. Plastique alimentaire, facile à nettoyer.</p>
+    <div class="price">2900 DA</div>
+    <form class="add-form" data-product-id="2" data-product-name="Rangement Cuisine" data-product-price="2900">
+      <input type="number" class="qty-input" name="qty" value="1" min="1" max="10">
+      <button type="submit" class="btn-add-cart">Ajouter au panier</button>
+    </form>
+  </div>
+</main>
+
+<script src="../js/cart.js"></script>
+</body>
+</html>

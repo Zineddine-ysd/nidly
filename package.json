@@ -1,0 +1,20 @@
+{
+  "name": "nidly-api",
+  "version": "1.0.0",
+  "description": "Backend Nidly - Produits & Commandes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "create-admins": "node scripts/create-admins.js",
+    "generate-admin-sql": "node scripts/create-admins-sql.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.22.1",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

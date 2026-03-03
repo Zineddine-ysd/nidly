@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commandes — Admin Nidly</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --terracotta: #C47B6B;
+    --bark: #7A5C52;
+    --charcoal: #2C2420;
+    --sage: #A8B5A0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+  .admin-nav {
+    background: var(--charcoal);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .admin-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .admin-nav a:hover { opacity: 0.8; }
+  .admin-nav .logout { color: #D4A5A0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+  }
+  .order-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(212,165,160,0.2);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .order-id { font-weight: 500; color: var(--charcoal); }
+  .order-date { font-size: 0.85rem; color: var(--bark); }
+  .order-status {
+    padding: 0.35rem 0.8rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .status-pending { background: #FFF3E0; color: #E65100; }
+  .status-confirmed { background: #E8F5E9; color: #2E7D32; }
+  .status-shipped { background: #E3F2FD; color: #1565C0; }
+  .status-delivered { background: #D6E0D2; color: #33691E; }
+  .order-items {
+    font-size: 0.9rem;
+    color: var(--bark);
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+  }
+  .order-total { font-weight: 500; color: var(--terracotta); margin-bottom: 0.8rem; }
+  .order-contact { font-size: 0.85rem; color: var(--bark); margin-bottom: 1rem; }
+  .order-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-confirm { background: var(--sage); color: white; }
+  .btn-confirm:hover { filter: brightness(1.1); }
+  .btn-ship { background: #5C6BC0; color: white; }
+  .btn-ship:hover { filter: brightness(1.1); }
+  .btn-deliver { background: #43A047; color: white; }
+  .btn-deliver:hover { filter: brightness(1.1); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--bark);
+  }
+  .loading { text-align: center; padding: 3rem; color: var(--bark); }
+</style>
+</head>
+<body>
+<nav class="admin-nav">
+  <a href="orders.html">📦 Commandes</a>
+  <a href="login.html" class="logout">Déconnexion</a>
+</nav>
+
+<div class="container">
+  <h1>Gestion des commandes</h1>
+  <div id="ordersList">
+    <div class="loading">Chargement...</div>
+  </div>
+</div>
+
+<script src="../js/config.js"></script>
+<script>
+  const token = localStorage.getItem('nidly_admin_token');
+
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+
+  function getStatusClass(status) {
+    const map = { pending: 'status-pending', confirmed: 'status-confirmed', shipped: 'status-shipped', delivered: 'status-delivered' };
+    return map[status] || 'status-pending';
+  }
+
+  function getStatusLabel(status) {
+    const map = { pending: 'En attente', confirmed: 'Confirmée', shipped: 'Expédiée', delivered: 'Livrée' };
+    return map[status] || status;
+  }
+
+  function renderOrder(order) {
+    const items = order.items.map(i => `${i.name} x${i.qty}`).join(', ');
+    const total = order.items.reduce((s, i) => s + i.price * i.qty, 0);
+    const contact = order.customer ? `${order.customer.name} — ${order.customer.phone} — ${order.customer.address}` : 'Non renseigné';
+    let actions = '';
+    if (order.status === 'pending') actions = `<button class="btn btn-confirm" onclick="updateStatus('${order.id}','confirmed')">Confirmer</button>`;
+    if (order.status === 'confirmed') actions = `<button class="btn btn-ship" onclick="updateStatus('${order.id}','shipped')">Marquer expédiée</button>`;
+    if (order.status === 'shipped') actions = `<button class="btn btn-deliver" onclick="updateStatus('${order.id}','delivered')">Marquer livrée</button>`;
+    if (order.status === 'delivered') actions = '—';
+
+    return `
+      <div class="order-card" data-id="${order.id}">
+        <div class="order-header">
+          <div>
+            <span class="order-id">Commande #${order.id.slice(0, 8)}</span>
+            <span class="order-date"> — ${new Date(order.createdAt).toLocaleDateString('fr-FR')}</span>
+          </div>
+          <span class="order-status ${getStatusClass(order.status)}">${getStatusLabel(order.status)}</span>
+        </div>
+        <div class="order-items">${items}</div>
+        <div class="order-total">Total : ${total} DA</div>
+        <div class="order-contact">${contact}</div>
+        <div class="order-actions">${actions}</div>
+      </div>
+    `;
+  }
+
+  async function loadOrders() {
+    const el = document.getElementById('ordersList');
+    try {
+      const res = await fetch(`${API_URL}/api/orders`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) {
+        localStorage.removeItem('nidly_admin_token');
+        window.location.href = 'login.html';
+        return;
+      }
+      const orders = await res.json();
+      if (orders.length === 0) {
+        el.innerHTML = '<div class="empty-state">Aucune commande pour le moment.</div>';
+      } else {
+        el.innerHTML = orders.map(renderOrder).join('');
+      }
+    } catch (err) {
+      el.innerHTML = '<div class="empty-state">Impossible de charger les commandes. Vérifiez que le backend est démarré (voir GUIDE-BACKEND.md).</div>';
+    }
+  }
+
+  async function updateStatus(orderId, status) {
+    try {
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) loadOrders();
+    } catch (err) {
+      alert('Erreur lors de la mise à jour');
+    }
+  }
+
+  loadOrders();
+</script>
+</body>
+</html>

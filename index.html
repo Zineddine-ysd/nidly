@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nidly — Rangement & Douceur du quotidien</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --blush: #F0E0D6;
+    --dusty-rose: #D4A5A0;
+    --terracotta: #C47B6B;
+    --bark: #7A5C52;
+    --charcoal: #2C2420;
+    --sage: #A8B5A0;
+    --sage-light: #D6E0D2;
+    --gold: #C9A96E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.5;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: rgba(250,247,242,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(196,123,107,0.12);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem; font-weight: 300; letter-spacing: 0.08em;
+    color: var(--charcoal); text-decoration: none;
+  }
+  .nav-logo span { color: var(--terracotta); font-style: italic; }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--bark);
+    font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-cart {
+    background: var(--terracotta); color: white;
+    border: none; cursor: pointer;
+    padding: 0.6rem 1.4rem; border-radius: 2rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem; letter-spacing: 0.08em;
+    transition: background 0.2s;
+  }
+  .nav-cart:hover { background: var(--bark); }
+
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding-top: 5rem; overflow: hidden;
+  }
+  .hero-left {
+    padding: 6rem 4rem 4rem 5rem;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--terracotta); margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 300; line-height: 1.05;
+    color: var(--charcoal); margin-bottom: 1.8rem;
+  }
+  .hero-title em { color: var(--terracotta); font-style: italic; }
+  .hero-sub {
+    font-size: 1rem; color: var(--bark); line-height: 1.7;
+    max-width: 420px; margin-bottom: 2.8rem;
+  }
+  .hero-btns { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--terracotta); color: white;
+    padding: 0.9rem 2.2rem; border-radius: 3rem; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; cursor: pointer;
+    letter-spacing: 0.05em; transition: all 0.25s;
+  }
+  .btn-primary:hover { background: var(--bark); transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent; color: var(--bark);
+    padding: 0.9rem 2.2rem; border-radius: 3rem;
+    border: 1.5px solid var(--dusty-rose);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; cursor: pointer;
+    letter-spacing: 0.05em; transition: all 0.25s;
+  }
+  .btn-ghost:hover { border-color: var(--terracotta); color: var(--terracotta); }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--sage-light); color: var(--bark);
+    padding: 0.45rem 1rem; border-radius: 2rem;
+    font-size: 0.78rem; margin-top: 2rem; width: fit-content;
+    letter-spacing: 0.06em;
+  }
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--blush) 0%, var(--dusty-rose) 60%, var(--terracotta) 100%);
+  }
+  .hero-visual {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .shelf-scene {
+    width: 85%; max-width: 480px;
+    filter: drop-shadow(0 20px 60px rgba(122,92,82,0.3));
+  }
+  .hero-deco-circle {
+    position: absolute; width: 320px; height: 320px;
+    border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+  }
+  .hero-deco-circle:nth-child(2) { width: 500px; height: 500px; }
+
+  .band {
+    background: var(--charcoal); color: white;
+    padding: 1rem 0; overflow: hidden;
+    display: flex; align-items: center;
+  }
+  .band-track {
+    display: flex; gap: 3rem; white-space: nowrap;
+    animation: marquee 18s linear infinite;
+  }
+  .band-track span {
+    font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .band-track .dot { color: var(--terracotta); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .section-heading { text-align: center; padding: 5rem 2rem 3rem; }
+  .section-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--terracotta); margin-bottom: 1rem; display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 300;
+    color: var(--charcoal);
+  }
+  .section-title em { color: var(--terracotta); font-style: italic; }
+
+  .products {
+    padding: 1rem 4rem 6rem;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    max-width: 1400px; margin: 0 auto;
+  }
+  .product-card {
+    background: white; border-radius: 1.2rem; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer; border: 1px solid rgba(212,165,160,0.15);
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(122,92,82,0.15);
+  }
+  .product-img {
+    aspect-ratio: 4/3; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .product-card:hover .product-img img { transform: scale(1.05); }
+  .product-badge {
+    position: absolute; top: 1rem; left: 1rem;
+    background: var(--sage); color: white;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.3rem 0.7rem; border-radius: 2rem; z-index: 1;
+  }
+  .product-badge.new { background: var(--terracotta); }
+  .product-info { padding: 1.3rem; }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 400; color: var(--charcoal);
+    margin-bottom: 0.3rem;
+  }
+  .product-desc {
+    font-size: 0.8rem; color: var(--bark); line-height: 1.5;
+    margin-bottom: 1rem; opacity: 0.8;
+  }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600; color: var(--terracotta);
+  }
+  .product-add {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--cream); border: 1.5px solid var(--dusty-rose);
+    color: var(--terracotta); font-size: 1.3rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .product-add:hover { background: var(--terracotta); color: white; border-color: var(--terracotta); }
+
+  .why {
+    background: var(--charcoal);
+    padding: 6rem 5rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center;
+  }
+  .why-left .section-eyebrow { color: var(--dusty-rose); text-align: left; }
+  .why-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 3vw, 3.2rem); font-weight: 300;
+    color: white; line-height: 1.15; margin-bottom: 2rem;
+  }
+  .why-title em { color: var(--dusty-rose); font-style: italic; }
+  .why-desc { color: rgba(255,255,255,0.55); line-height: 1.8; font-size: 0.95rem; }
+  .why-right { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .why-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1rem; padding: 1.8rem; transition: background 0.3s;
+  }
+  .why-card:hover { background: rgba(196,123,107,0.1); }
+  .why-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .why-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: white; margin-bottom: 0.4rem;
+  }
+  .why-card p { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+  .testimonials {
+    padding: 6rem 4rem;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .testi-card {
+    background: white; border-radius: 1.2rem;
+    padding: 2rem; border: 1px solid rgba(212,165,160,0.15);
+    position: relative;
+  }
+  .testi-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; color: var(--blush);
+    position: absolute; top: 0.8rem; left: 1.5rem; line-height: 1;
+  }
+  .testi-text {
+    font-size: 0.88rem; color: var(--bark); line-height: 1.7;
+    margin-top: 1.5rem; font-style: italic;
+  }
+  .testi-author { margin-top: 1.2rem; display: flex; align-items: center; gap: 0.7rem; }
+  .testi-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  }
+  .testi-name { font-size: 0.82rem; font-weight: 500; color: var(--charcoal); }
+  .testi-stars { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.1em; }
+
+  footer {
+    background: var(--blush); padding: 3rem 5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(196,123,107,0.15);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; color: var(--charcoal); letter-spacing: 0.08em;
+  }
+  .footer-logo span { color: var(--terracotta); font-style: italic; }
+  .footer-copy { font-size: 0.75rem; color: var(--bark); opacity: 0.7; letter-spacing: 0.08em; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bark); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--terracotta); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-left > * { animation: fadeUp 0.7s ease both; }
+  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.35s; }
+  .hero-left > *:nth-child(4) { animation-delay: 0.45s; }
+  .hero-left > *:nth-child(5) { animation-delay: 0.55s; }
+  .product-card { animation: fadeUp 0.5s ease both; }
+  .product-card:nth-child(1) { animation-delay: 0.1s; }
+  .product-card:nth-child(2) { animation-delay: 0.2s; }
+  .product-card:nth-child(3) { animation-delay: 0.3s; }
+  .product-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .name-ideas {
+    background: white; border: 1.5px solid var(--blush); border-radius: 1.2rem;
+    padding: 2.5rem; max-width: 900px; margin: 0 auto 4rem;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem;
+  }
+  .name-chip {
+    background: var(--cream); border: 1.5px solid var(--dusty-rose);
+    border-radius: 0.8rem; padding: 1.2rem; cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  .name-chip.selected, .name-chip:hover { border-color: var(--terracotta); background: var(--blush); }
+  .name-chip.selected::after { content: '✓'; position: absolute; top: 0.6rem; right: 0.8rem; color: var(--terracotta); font-size: 0.85rem; font-weight: 500; }
+  .name-chip-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--charcoal); margin-bottom: 0.3rem; }
+  .name-chip-tag { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.5rem; display: block; }
+  .name-chip-desc { font-size: 0.78rem; color: var(--bark); line-height: 1.5; }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+
+  /* Nav */
+  nav { padding: 1rem 1.2rem; }
+  .nav-links { display: none; }
+  .nav-logo { font-size: 1.5rem; }
+
+  /* Hero : empilé verticalement */
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 4rem;
+  }
+  .hero-left { padding: 2.5rem 1.4rem 2rem; order: 2; }
+  .hero-title { font-size: clamp(2.4rem, 10vw, 3.2rem); margin-bottom: 1.2rem; }
+  .hero-sub { font-size: 0.9rem; margin-bottom: 2rem; max-width: 100%; }
+  .hero-btns { flex-direction: column; gap: .7rem; }
+  .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+  .hero-right { order: 1; height: 260px; min-height: 260px; }
+  .shelf-scene { width: 70%; }
+
+  /* Products : 2 colonnes sur mobile */
+  .products {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 0.5rem 1rem 4rem;
+  }
+  .product-name { font-size: 1rem; }
+  .product-desc { display: none; }
+  .product-price { font-size: 1.1rem; }
+
+  /* Section heading */
+  .section-heading { padding: 3rem 1.2rem 2rem; }
+
+  /* Why */
+  .why {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 3.5rem 1.4rem;
+  }
+  .why-right { grid-template-columns: 1fr 1fr; gap: .8rem; }
+  .why-card { padding: 1.3rem; }
+
+  /* Testimonials : 1 colonne */
+  .testimonials {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 2rem 1.2rem 4rem;
+  }
+
+  /* Footer */
+  footer {
+    flex-direction: column;
+    gap: 1.2rem;
+    text-align: center;
+    padding: 2rem 1.4rem;
+  }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem; }
+}
+
+/* Très petit écran : 1 seule colonne produits */
+@media (max-width: 400px) {
+  .products { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Ni<span>dly</span></a>
+  <div class="nav-links">
+    <a href="#">Rangement</a>
+    <a href="#">Salle de bain</a>
+    <a href="#">Cuisine</a>
+    <a href="#">À propos</a>
+  </div>
+  <a href="./cart.html" class="nav-cart" style="text-decoration:none;display:inline-block;">🛍 Panier (0)</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">✦ Organisation & douceur du quotidien</p>
+    <h1 class="hero-title">Un espace<br>rangé,<br><em>une vie</em><br>apaisée.</h1>
+    <p class="hero-sub">Des accessoires pensés pour les femmes qui aiment que chaque chose soit à sa place — avec style et sans effort.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Découvrir la collection →</button>
+      <button class="btn-ghost">Voir les produits</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual">
+      <div class="hero-deco-circle"></div>
+      <div class="hero-deco-circle"></div>
+      <svg class="shelf-scene" viewBox="0 0 380 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="160" width="320" height="10" rx="5" fill="rgba(255,255,255,0.4)"/>
+        <rect x="30" y="290" width="320" height="10" rx="5" fill="rgba(255,255,255,0.4)"/>
+        <rect x="50" y="110" width="80" height="50" rx="8" fill="rgba(255,255,255,0.85)"/>
+        <rect x="55" y="115" width="70" height="40" rx="5" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="90" cy="135" r="5" fill="rgba(196,123,107,0.8)"/>
+        <rect x="145" y="100" width="90" height="60" rx="8" fill="rgba(255,255,255,0.75)"/>
+        <rect x="150" y="105" width="80" height="50" rx="5" fill="rgba(255,255,255,0.3)"/>
+        <circle cx="190" cy="130" r="5" fill="rgba(196,123,107,0.8)"/>
+        <ellipse cx="305" cy="145" rx="25" ry="18" fill="rgba(168,181,160,0.7)"/>
+        <ellipse cx="295" cy="133" rx="15" ry="10" fill="rgba(168,181,160,0.9)"/>
+        <rect x="302" y="148" width="6" height="14" rx="3" fill="rgba(122,92,82,0.5)"/>
+        <rect x="60" y="220" width="60" height="40" rx="10" fill="rgba(255,255,255,0.8)"/>
+        <rect x="65" y="225" width="50" height="8" rx="4" fill="rgba(212,165,160,0.6)"/>
+        <rect x="70" y="235" width="15" height="20" rx="4" fill="rgba(240,224,214,0.9)"/>
+        <rect x="160" y="210" width="110" height="55" rx="10" fill="rgba(255,255,255,0.75)"/>
+        <rect x="167" y="218" width="30" height="40" rx="5" fill="rgba(212,165,160,0.5)"/>
+        <rect x="202" y="218" width="30" height="40" rx="5" fill="rgba(168,181,160,0.5)"/>
+        <rect x="237" y="218" width="26" height="40" rx="5" fill="rgba(240,224,214,0.7)"/>
+        <rect x="305" y="224" width="30" height="40" rx="10" fill="rgba(255,255,255,0.7)"/>
+        <ellipse cx="320" cy="224" rx="18" ry="5" fill="rgba(255,255,255,0.9)"/>
+        <line x1="310" y1="210" x2="320" y2="225" stroke="rgba(168,181,160,0.9)" stroke-width="2"/>
+        <ellipse cx="308" cy="207" rx="6" ry="9" fill="rgba(168,181,160,0.8)"/>
+        <circle cx="340" cy="60" r="40" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="60" cy="350" r="30" fill="rgba(255,255,255,0.06)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="band">
+  <div class="band-track">
+    <span>Rangement Malin</span><span class="dot">✦</span>
+    <span>Tiroirs Organisés</span><span class="dot">✦</span>
+    <span>Salle de Bain Zen</span><span class="dot">✦</span>
+    <span>Cuisine en Ordre</span><span class="dot">✦</span>
+    <span>Fait pour les Femmes</span><span class="dot">✦</span>
+    <span>Livraison Offerte</span><span class="dot">✦</span>
+    <span>Rangement Malin</span><span class="dot">✦</span>
+    <span>Tiroirs Organisés</span><span class="dot">✦</span>
+    <span>Salle de Bain Zen</span><span class="dot">✦</span>
+    <span>Cuisine en Ordre</span><span class="dot">✦</span>
+    <span>Fait pour les Femmes</span><span class="dot">✦</span>
+    <span>Livraison Offerte</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<div class="section-heading" id="products">
+  <span class="section-eyebrow">La collection</span>
+  <h2 class="section-title">Nos <em>4 essentiels</em></h2>
+</div>
+
+<div class="products" id="productsGrid"></div>
+
+<section class="why">
+  <div class="why-left">
+    <span class="section-eyebrow">Pourquoi Nidly ?</span>
+    <h2 class="why-title">Plus qu'un rangement,<br>un <em>rituel</em>.</h2>
+    <p class="why-desc">Nos produits sont pensés pour les femmes qui veulent un intérieur qui leur ressemble — fonctionnel, beau, et agréable à utiliser chaque jour.</p>
+  </div>
+  <div class="why-right">
+    <div class="why-card"><div class="why-icon">🌿</div><h4>Matériaux doux</h4><p>Finitions soignées, sans arêtes, agréables au toucher.</p></div>
+    <div class="why-card"><div class="why-icon">📦</div><h4>Modulable</h4><p>Chaque produit s'adapte à ta configuration.</p></div>
+    <div class="why-card"><div class="why-icon">♻️</div><h4>Éco-responsable</h4><p>Plastique Alimentaire Rerutilisable, fabrication raisonnée.</p></div>
+  </div>
+</section>
+
+<div class="section-heading">
+  <span class="section-eyebrow">Elles adorent</span>
+  <h2 class="section-title">Ce qu'elles en <em>disent</em></h2>
+</div>
+<div class="testimonials">
+  <div class="testi-card">
+    <div class="testi-quote">"</div>
+    <p class="testi-text">Mon tiroir de maquillage est enfin organisé et tellement joli ! Je rouvre ma commode juste pour le plaisir.</p>
+    <div class="testi-author">
+      <div class="testi-avatar" style="background:var(--blush);">🌸</div>
+      <div><div class="testi-name">Sophie M. — Alger </div><div class="testi-stars">★★★★★</div></div>
+    </div>
+  </div>
+  <div class="testi-card">
+    <div class="testi-quote">"</div>
+    <p class="testi-text">Le kit douche est parfait. Les porte-savonnettes tiennent bien et l'esthétique est vraiment élégante.</p>
+    <div class="testi-author">
+      <div class="testi-avatar" style="background:var(--sage-light);">🌿</div>
+      <div><div class="testi-name">Léa K. — Bejaia</div><div class="testi-stars">★★★★★</div></div>
+    </div>
+  </div>
+  <div class="testi-card">
+    <div class="testi-quote">"</div>
+    <p class="testi-text">J'ai commandé pour la cuisine et j'ai reçu en 2 jours. Qualité au rendez-vous, je recommande sans hésiter !</p>
+    <div class="testi-author">
+      <div class="testi-avatar" style="background:#FFF0E8;">☀️</div>
+      <div><div class="testi-name">Amira B. — Oran</div><div class="testi-stars">★★★★★</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Ni<span>dly</span></div>
+  <div class="footer-links">
+    <a href="admin/login.html">Admin</a>
+    <a href="#">CGV</a>
+    <a href="#">Contact</a>
+    <a href="#">Instagram</a>
+  </div>
+  <p class="footer-copy">© 2026 Nidly — Fait avec ♥ pour les intérieurs organisés</p>
+</footer>
+<script src="js/cart.js"></script>
+<script>
+const A = 'assets/';
+
+const CARD_META = {
+  'Kit Douche Zen':    { href: 'products/kit-douche-zen.html',    img: A + 'sav.jpg',             badge: null,          badgeClass: ''    },
+  'Vanity Organisé':   { href: 'products/nidlylots.html',         img: A + 'boiteslot11.jpg',     badge: 'Coup ❤️',    badgeClass: 'new' },
+};
+
+async function loadProducts() {
+  const grid = document.getElementById('productsGrid');
+  const metaValues = Object.values(CARD_META);
+
+  try {
+    const res = await fetch('http://localhost:3000/api/products');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const products = await res.json();
+
+    grid.innerHTML = products.map((p, i) => {
+      const meta = CARD_META[p.name] || metaValues[i];
+      const badge = meta.badge ? `<span class="product-badge ${meta.badgeClass}">${meta.badge}</span>` : '';
+      return `
+        <a href="${meta.href}" class="product-card" style="text-decoration:none;color:inherit;">
+          <div class="product-img">
+            ${badge}
+            <img src="${meta.img}" alt="${p.name}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <p class="product-desc">${p.desc || ''}</p>
+            <div class="product-footer">
+              <span class="product-price">${(p.price || 0).toLocaleString('fr-DZ')} DA</span>
+              <button class="product-add" type="button">+</button>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+
+  } catch (err) {
+    console.warn('API indisponible, fallback statique.', err.message);
+
+    const fallback = [
+    ];
+
+    grid.innerHTML = fallback.map((p, i) => {
+      const meta = CARD_META[p.name] || metaValues[i];
+      const badge = meta.badge ? `<span class="product-badge ${meta.badgeClass}">${meta.badge}</span>` : '';
+      return `
+        <a href="${meta.href}" class="product-card" style="text-decoration:none;color:inherit;">
+          <div class="product-img">
+            ${badge}
+            <img src="${meta.img}" alt="${p.name}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <p class="product-desc">${p.desc}</p>
+            <div class="product-footer">
+              <span class="product-price">${p.price.toLocaleString('fr-DZ')} DA</span>
+              <button class="product-add" type="button">+</button>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+  }
+}
+
+loadProducts();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit Douche Zen — Nidly</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/common.css">
+<style>
+  .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: 6rem 4rem; max-width: 1200px; margin: 0 auto; align-items: center; }
+  .product-gallery { background: linear-gradient(135deg, #F0ECE8 0%, #E2D8D0 100%); border-radius: 1.2rem; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; }
+  .product-gallery svg { width: 70%; opacity: 0.9; }
+  .product-meta .badge { display: none; }
+  .product-meta h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--charcoal); margin-bottom: 1rem; }
+  .product-meta .price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--terracotta); margin: 1.5rem 0; }
+  .product-meta .desc { font-size: 0.95rem; color: var(--bark); line-height: 1.8; margin-bottom: 1.5rem; }
+  .product-meta .add-form { display: flex; gap: 1rem; align-items: center; margin-top: 2rem; }
+  .qty-input { width: 60px; padding: 0.8rem; border: 1.5px solid var(--dusty-rose); border-radius: 0.5rem; text-align: center; font-size: 1rem; }
+  .btn-add-cart { background: var(--terracotta); color: white; padding: 1rem 2.5rem; border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; cursor: pointer; letter-spacing: 0.05em; transition: all 0.25s; }
+  .btn-add-cart:hover { background: var(--bark); transform: translateY(-2px); }
+  .back-link { grid-column: 1 / -1; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--bark); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .back-link:hover { color: var(--terracotta); }
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">Ni<span>dly</span></a>
+  <div class="nav-links">
+    <a href="../index.html#products">Rangement</a>
+    <a href="../index.html#products">Salle de bain</a>
+    <a href="../index.html#products">Cuisine</a>
+    <a href="../index.html#products">À propos</a>
+  </div>
+  <a href="../cart.html" class="nav-cart" style="text-decoration:none;display:inline-block;">🛍 Panier (0)</a>
+</nav>
+
+<main class="product-detail" style="padding-top: 8rem;">
+  <a href="../index.html#products" class="back-link">← Retour aux produits</a>
+  <div class="product-gallery">
+    <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="55" y="35" width="90" height="55" rx="15" fill="rgba(255,255,255,0.85)"/>
+      <rect x="65" y="45" width="70" height="12" rx="6" fill="rgba(212,165,160,0.4)"/>
+      <rect x="70" y="62" width="60" height="22" rx="10" fill="rgba(240,224,214,0.9)"/>
+      <ellipse cx="100" cy="73" rx="18" ry="7" fill="rgba(255,255,255,0.6)"/>
+      <rect x="40" y="100" width="50" height="28" rx="8" fill="rgba(255,255,255,0.75)"/>
+      <rect x="110" y="100" width="50" height="28" rx="8" fill="rgba(255,255,255,0.75)"/>
+    </svg>
+  </div>
+  <div class="product-meta">
+    <h1>Kit Douche Zen</h1>
+    <p class="desc">2 Porte-savonnettes + rangements muraux pour la salle de bain. Design épuré, résistant à l'humidité. Parfait pour garder ta salle de bain organisée et zen.</p>
+    <div class="price">1500 DA</div>
+    <form class="add-form" data-product-id="3" data-product-name="Kit Douche Zen" data-product-price="1200">
+      <input type="number" class="qty-input" name="qty" value="1" min="1" max="10">
+      <button type="submit" class="btn-add-cart">Ajouter au panier</button>
+    </form>
+  </div>
+</main>
+
+<script src="../js/cart.js"></script>
+</body>
+</html>
