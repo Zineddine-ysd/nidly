@@ -5,5 +5,5 @@ const API_URL = (() => {
     return 'http://localhost:3000';
   }
   
-  return 'https://api.votredomaine.dz'; 
+  return 'https://nidly.onrender.com'; 
 })();
