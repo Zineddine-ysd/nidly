@@ -364,7 +364,7 @@ app.post('/api/orders', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Nidly API démarrée sur http://localhost:${PORT}`);
+  console.log(`Nidly API démarrée sur https://nidly.onrender.com`);
 
   if (supabase) {
     console.log('✅ Supabase connecté');
