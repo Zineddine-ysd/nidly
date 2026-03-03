@@ -7,13 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/common.css">
 <style>
+  *, *::before, *::after { box-sizing: border-box; }
+
   .cart-page { max-width: 900px; margin: 0 auto; padding: 6rem 2rem 4rem; }
   .cart-page h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--charcoal); margin-bottom: 2rem; }
   .cart-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: flex-start; }
   .cart-item { gap: 1rem; display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(212,165,160,0.2); }
+  .cart-item img { width: 100px; height: 100px; object-fit: cover; border-radius: .6rem; flex-shrink: 0; }
   .cart-item-name { font-weight: 500; }
   .cart-item-qty { color: var(--bark); font-size: 0.9rem; }
-  .cart-item-price { color: var(--terracotta); font-weight: 500; }
+  .cart-item-price { color: var(--terracotta); font-weight: 500; white-space: nowrap; }
   .cart-summary { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(212,165,160,0.3); }
   .summary-line { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 0.35rem; }
   .summary-line.total { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-top: 0.5rem; }
@@ -21,106 +24,130 @@
   .checkout-form h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 1.5rem; }
   .form-row { margin-bottom: 1rem; }
   .form-row label { display: block; font-size: 0.8rem; color: var(--bark); margin-bottom: 0.4rem; }
-  .form-row input, .form-row select { width: 100%; padding: 0.7rem 0.8rem; border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem; font-size: 0.9rem; }
+  .form-row input, .form-row select {
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    border: 1.5px solid rgba(212,165,160,0.4);
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+  }
   .form-row small { display: block; margin-top: 0.3rem; font-size: 0.75rem; color: var(--bark); opacity: 0.8; }
-  .shipping-options { display: flex; gap: 1rem; font-size: 0.85rem; }
+  .shipping-options { display: flex; gap: 1rem; font-size: 0.85rem; flex-wrap: wrap; }
   .shipping-options label { display: flex; align-items: center; gap: 0.35rem; cursor: pointer; }
-  .btn-order { background: var(--terracotta); color: white; padding: 1rem 2rem; border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 1.2rem; width: 100%; }
+  .btn-order {
+    background: var(--terracotta);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 3rem;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    margin-top: 1.2rem;
+    width: 100%;
+    font-size: 1rem;
+    transition: background .3s;
+  }
   .btn-order:hover { background: var(--bark); }
   .empty-cart { text-align: center; padding: 4rem; color: var(--bark); }
   .empty-cart a { color: var(--terracotta); }
   .nav-cart { cursor: default; }
+
+  /* ── Responsive ── */
   @media (max-width: 800px) {
     .cart-layout { grid-template-columns: 1fr; }
   }
-  /* SUCCESS MODAL */
-.success-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s ease;
-  z-index: 9999;
-}
 
-.success-modal.active {
-  opacity: 1;
-  pointer-events: all;
-}
+  @media (max-width: 600px) {
+    .cart-page { padding: 4.5rem 1rem 3rem; }
+    .cart-page h1 { font-size: 1.6rem; }
+    .cart-item img { width: 75px; height: 75px; }
+    .checkout-form { padding: 1.2rem; }
+    .summary-line.total { font-size: 1.2rem; }
+    .btn-order { padding: 0.9rem 1.2rem; font-size: 0.95rem; }
+  }
 
-.success-box {
-  background: white;
-  padding: 3rem 2.5rem;
-  border-radius: 1.5rem;
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-  animation: popIn .4s ease;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-}
+  /* ── SUCCESS MODAL ── */
+  .success-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+    z-index: 9999;
+  }
+  .success-modal.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .success-box {
+    background: white;
+    padding: 3rem 2.5rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: popIn .4s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  }
+  .success-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--terracotta);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1.2rem;
+  }
+  .success-box h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .success-box p {
+    font-size: 0.95rem;
+    color: var(--bark);
+    margin-bottom: 1.8rem;
+  }
+  .success-box button {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 3rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background .3s;
+  }
+  .success-box button:hover { background: var(--bark); }
 
-.success-icon {
-  width: 70px;
-  height: 70px;
-  background: var(--terracotta);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  margin: 0 auto 1.2rem;
-}
-
-.success-box h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-}
-
-.success-box p {
-  font-size: 0.95rem;
-  color: var(--bark);
-  margin-bottom: 1.8rem;
-}
-
-.success-box button {
-  background: var(--terracotta);
-  color: white;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 3rem;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: background .3s;
-}
-
-.success-box button:hover {
-  background: var(--bark);
-}
-
-@keyframes popIn {
-  from { transform: scale(.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+  @keyframes popIn {
+    from { transform: scale(.8); opacity: 0; }
+    to   { transform: scale(1);  opacity: 1; }
+  }
 </style>
 </head>
-<!-- Popup Confirmation -->
+
+<body>
+
+<!-- ✅ Modal DANS le body -->
 <div id="orderSuccessModal" class="success-modal">
   <div class="success-box">
     <div class="success-icon">✓</div>
     <h2>Merci pour votre commande</h2>
-    <p>Votre commande a été envoyée avec succès.<br>
-    Nous vous contacterons très bientôt.</p>
+    <p>Votre commande a été envoyée avec succès.<br>Nous vous contacterons très bientôt.</p>
     <button id="closeSuccessBtn">Continuer</button>
   </div>
 </div>
-<body>
+
 <nav>
   <a href="index.html" class="nav-logo">Ni<span>dly</span></a>
   <div class="nav-links">
@@ -201,7 +228,6 @@
     const summaryEl = document.getElementById('cartSummary');
     const shippingText = shippingPrice > 0 ? shippingPrice + ' DA' : '—';
     const total = subtotal + shippingPrice;
-
     summaryEl.innerHTML = `
       <div class="summary-line"><span>Sous-total produits</span><span>${subtotal} DA</span></div>
       <div class="summary-line"><span>Livraison</span><span id="shippingAmount">${shippingText}</span></div>
@@ -215,7 +241,7 @@
       const data = await res.json();
       WILAYAS = data || [];
       const select = document.getElementById('wilayaSelect');
-      select.innerHTML = '<option value="">Sélectionner une wilaya</option>' + 
+      select.innerHTML = '<option value="">Sélectionner une wilaya</option>' +
         WILAYAS.map(w => `<option value="${w.id}">${w.nom}</option>`).join('');
     } catch (e) {
       console.error('Erreur chargement wilayas', e);
@@ -233,7 +259,7 @@
       if (!data || data.length === 0) {
         communeSelect.innerHTML = '<option value="">Aucune commune trouvée</option>';
       } else {
-        communeSelect.innerHTML = '<option value="">Sélectionner une commune</option>' + 
+        communeSelect.innerHTML = '<option value="">Sélectionner une commune</option>' +
           data.map(c => `<option value="${c.id}">${c.nom}</option>`).join('');
       }
     } catch (e) {
@@ -247,20 +273,11 @@
     const wilayaSelect = document.getElementById('wilayaSelect');
     const shippingTypeInput = document.querySelector('input[name="shipping_type"]:checked');
     if (!wilayaSelect || !shippingTypeInput) return;
-
     const wilayaId = parseInt(wilayaSelect.value, 10);
-    const type = shippingTypeInput.value; // 'desk' ou 'maison'
-
+    const type = shippingTypeInput.value;
     const w = WILAYAS.find(x => x.id === wilayaId);
-    if (!w || !wilayaId) {
-      shippingPrice = 0;
-      updateSummary();
-      return;
-    }
-
-    const prixDesk = Number(w.prix_desk || 0);
-    const prixMaison = Number(w.prix_maison || 0);
-    shippingPrice = type === 'maison' ? prixMaison : prixDesk;
+    if (!w || !wilayaId) { shippingPrice = 0; updateSummary(); return; }
+    shippingPrice = type === 'maison' ? Number(w.prix_maison || 0) : Number(w.prix_desk || 0);
     updateSummary();
   }
 
@@ -269,7 +286,6 @@
     const container = document.getElementById('cartContent');
     const checkoutSection = document.getElementById('checkoutSection');
     const cartBtn = document.querySelector('.nav-cart');
-
     cartBtn.innerHTML = `🛍 Panier (${cart.reduce((s, i) => s + i.qty, 0)})`;
 
     if (cart.length === 0) {
@@ -279,25 +295,34 @@
     }
 
     subtotal = 0;
- container.innerHTML = cart.map(item => {
-  const lineTotal = item.price * item.qty;
-  subtotal += lineTotal;
-  return `
-    <div class="cart-item">
-      ${item.img ? `<img src="${item.img}" style="width:130px;height:130px;object-fit:cover;border-radius:.6rem;flex-shrink:0;">` : ''}
-      <div style="flex:1;min-width:0;">
-        <span class="cart-item-name">${item.name}</span>
-        <span class="cart-item-qty"> x ${item.qty}</span>
-      </div>
-      <span class="cart-item-price">${lineTotal} DA</span>
-      <button onclick="removeFromCart('${item.id}')" style="background:none;border:none;cursor:pointer;color:var(--bark);opacity:.5;font-size:1.1rem;padding:.2rem .5rem;transition:opacity .2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.5" title="Supprimer">✕</button>
-    </div>
-  `;
-}).join('');
+    container.innerHTML = cart.map(item => {
+      const lineTotal = item.price * item.qty;
+      subtotal += lineTotal;
+      return `
+        <div class="cart-item">
+          ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ''}
+          <div style="flex:1;min-width:0;">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-qty">x ${item.qty}</div>
+          </div>
+          <span class="cart-item-price">${lineTotal} DA</span>
+          <button onclick="removeFromCart('${item.id}')"
+            style="background:none;border:none;cursor:pointer;color:var(--bark);opacity:.5;font-size:1.1rem;padding:.2rem .5rem;transition:opacity .2s;"
+            onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.5"
+            title="Supprimer">✕</button>
+        </div>
+      `;
+    }).join('');
 
     checkoutSection.style.display = 'block';
     shippingPrice = 0;
     updateSummary();
+  }
+
+  function removeFromCart(productId) {
+    const cart = getCart().filter(p => String(p.id) !== String(productId));
+    localStorage.setItem('nidly_cart', JSON.stringify(cart));
+    renderCart();
   }
 
   document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
@@ -305,53 +330,42 @@
     const cart = getCart();
     if (cart.length === 0) return;
     const form = e.target;
-
     const wilayaId = form.wilaya.value;
     const communeId = form.commune.value;
     if (!wilayaId || !communeId) {
       alert('Merci de sélectionner une wilaya et une commune.');
       return;
     }
-
-    const customer = {
-      name: form.name.value,
-      phone: form.phone.value,
-      address: form.address.value
-    };
+    const customer = { name: form.name.value, phone: form.phone.value, address: form.address.value };
     const items = cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
     const shipping_type = form.shipping_type.value;
     const notes = form.notes.value || null;
-
     try {
       const res = await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          items,
-          customer,
+          items, customer,
           wilaya_id: parseInt(wilayaId, 10),
           commune_id: parseInt(communeId, 10),
           shipping_price: shippingPrice,
-          shipping_type,
-          notes
+          shipping_type, notes
         })
       });
       if (res.ok) {
-       localStorage.removeItem('nidly_cart');
-
-const modal = document.getElementById('orderSuccessModal');
-modal.classList.add('active');
-
-document.getElementById('closeSuccessBtn').onclick = () => {
-  modal.classList.remove('active');
-  window.location.href = 'index.html';
-};
+        localStorage.removeItem('nidly_cart');
+        const modal = document.getElementById('orderSuccessModal');
+        modal.classList.add('active');
+        document.getElementById('closeSuccessBtn').onclick = () => {
+          modal.classList.remove('active');
+          window.location.href = 'index.html';
+        };
       } else {
         const err = await res.json();
         alert(err.message || 'Erreur lors de la commande');
       }
     } catch (err) {
-      alert('Impossible de contacter le serveur. Démarrez le backend (npm start) puis réessayez.');
+      alert('Impossible de contacter le serveur.');
     }
   });
 
@@ -366,8 +380,9 @@ document.getElementById('closeSuccessBtn').onclick = () => {
           loadCommunes(id);
           recomputeShipping();
         } else {
-          document.getElementById('communeSelect').innerHTML = "<option value=\"\">Choisissez d'abord la wilaya</option>";
-          document.getElementById('communeSelect').disabled = true;
+          const cs = document.getElementById('communeSelect');
+          cs.innerHTML = "<option value=\"\">Choisissez d'abord la wilaya</option>";
+          cs.disabled = true;
           shippingPrice = 0;
           updateSummary();
         }
@@ -375,11 +390,6 @@ document.getElementById('closeSuccessBtn').onclick = () => {
       shippingRadios.forEach(r => r.addEventListener('change', recomputeShipping));
     });
   });
-  function removeFromCart(productId) {
-  const cart = getCart().filter(p => String(p.id) !== String(productId));
-  localStorage.setItem('nidly_cart', JSON.stringify(cart));
-  renderCart();
-}
 </script>
 </body>
 </html>
