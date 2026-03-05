@@ -529,6 +529,15 @@ const CARD_META = {
   'Kit Douche Zen':    { href: 'products/kit-douche-zen.html',    img: A + 'sav.jpg',             badge: null,          badgeClass: ''    },
   'Vanity Organisé':   { href: 'products/nidlylots.html',         img: A + 'boiteslot11.jpg',     badge: 'Coup ❤️',    badgeClass: 'new' },
 };
+  const API_URL = (() => {
+  // Si on est en développement local
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    return 'http://localhost:3000';
+  }
+  
+  return 'https://api.votredomaine.dz'; 
+})();
+
 
 async function loadProducts() {
   const grid = document.getElementById('productsGrid');
