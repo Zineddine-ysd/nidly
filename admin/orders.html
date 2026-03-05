@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,87 +15,89 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--cream); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
   .admin-nav {
-    background: var(--charcoal);
-    color: white;
+    background: var(--charcoal); color: white;
     padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
   }
-  .admin-nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
+  .admin-nav a { color: white; text-decoration: none; font-size: 0.9rem; }
   .admin-nav a:hover { opacity: 0.8; }
   .admin-nav .logout { color: #D4A5A0; }
+
   .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    color: var(--charcoal);
-    margin-bottom: 1.5rem;
-  }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--charcoal); margin-bottom: 1.5rem; }
+
   .order-card {
-    background: white;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid rgba(212,165,160,0.2);
+    background: white; border-radius: 1rem; padding: 1.5rem;
+    margin-bottom: 1rem; border: 1px solid rgba(212,165,160,0.2);
     box-shadow: 0 4px 20px rgba(0,0,0,0.04);
   }
+
   .order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
+    padding-bottom: 1rem; border-bottom: 1px solid rgba(212,165,160,0.15);
+  }
+  .order-id { font-weight: 500; color: var(--charcoal); font-size: 1rem; }
+  .order-date { font-size: 0.85rem; color: var(--bark); margin-top: 0.2rem; }
+
+  .order-status {
+    padding: 0.35rem 0.8rem; border-radius: 2rem;
+    font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
+  }
+  .status-pending  { background: #FFF3E0; color: #E65100; }
+  .status-confirmed { background: #E8F5E9; color: #2E7D32; }
+  .status-shipped  { background: #E3F2FD; color: #1565C0; }
+  .status-delivered { background: #D6E0D2; color: #33691E; }
+
+  /* ── Grid infos ── */
+  .order-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
     margin-bottom: 1rem;
   }
-  .order-id { font-weight: 500; color: var(--charcoal); }
-  .order-date { font-size: 0.85rem; color: var(--bark); }
-  .order-status {
-    padding: 0.35rem 0.8rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    text-transform: uppercase;
+  @media (max-width: 600px) { .order-grid { grid-template-columns: 1fr; } }
+
+  .info-block { font-size: 0.88rem; }
+  .info-block .label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--terracotta); font-weight: 500; margin-bottom: 0.3rem;
   }
-  .status-pending { background: #FFF3E0; color: #E65100; }
-  .status-confirmed { background: #E8F5E9; color: #2E7D32; }
-  .status-shipped { background: #E3F2FD; color: #1565C0; }
-  .status-delivered { background: #D6E0D2; color: #33691E; }
-  .order-items {
-    font-size: 0.9rem;
-    color: var(--bark);
-    margin-bottom: 0.8rem;
-    line-height: 1.6;
+  .info-block .value { color: var(--charcoal); line-height: 1.5; }
+  .info-block .value span { display: block; }
+
+  .order-items-list { font-size: 0.9rem; color: var(--bark); line-height: 1.7; }
+  .order-items-list .item-line { display: flex; justify-content: space-between; }
+
+  .order-total-line {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 0.8rem; margin-top: 0.5rem;
+    border-top: 1px solid rgba(212,165,160,0.2);
   }
-  .order-total { font-weight: 500; color: var(--terracotta); margin-bottom: 0.8rem; }
-  .order-contact { font-size: 0.85rem; color: var(--bark); margin-bottom: 1rem; }
-  .order-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s;
+  .order-total { font-weight: 600; color: var(--terracotta); font-size: 1.05rem; }
+  .shipping-badge {
+    font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 1rem;
+    background: rgba(196,123,107,0.1); color: var(--terracotta);
   }
+
+  .notes-block {
+    margin-top: 0.8rem; padding: 0.6rem 0.8rem;
+    background: #FFF8F5; border-radius: 0.5rem;
+    font-size: 0.85rem; color: var(--bark);
+    border-left: 3px solid var(--terracotta);
+  }
+
+  .order-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(212,165,160,0.15); }
+  .btn { padding: 0.5rem 1.1rem; border: none; border-radius: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
   .btn-confirm { background: var(--sage); color: white; }
-  .btn-confirm:hover { filter: brightness(1.1); }
-  .btn-ship { background: #5C6BC0; color: white; }
-  .btn-ship:hover { filter: brightness(1.1); }
+  .btn-ship    { background: #5C6BC0; color: white; }
   .btn-deliver { background: #43A047; color: white; }
-  .btn-deliver:hover { filter: brightness(1.1); }
+  .btn:hover   { filter: brightness(1.1); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--bark);
-  }
+
+  .empty-state { text-align: center; padding: 4rem 2rem; color: var(--bark); }
   .loading { text-align: center; padding: 3rem; color: var(--bark); }
 </style>
 </head>
@@ -108,51 +109,98 @@
 
 <div class="container">
   <h1>Gestion des commandes</h1>
-  <div id="ordersList">
-    <div class="loading">Chargement...</div>
-  </div>
+  <div id="ordersList"><div class="loading">Chargement...</div></div>
 </div>
 
 <script src="../js/config.js"></script>
 <script>
   const token = localStorage.getItem('nidly_admin_token');
+  if (!token) window.location.href = 'login.html';
 
-  if (!token) {
-    window.location.href = 'login.html';
+  function getStatusClass(s) {
+    return { pending: 'status-pending', confirmed: 'status-confirmed', shipped: 'status-shipped', delivered: 'status-delivered' }[s] || 'status-pending';
   }
-
-  function getStatusClass(status) {
-    const map = { pending: 'status-pending', confirmed: 'status-confirmed', shipped: 'status-shipped', delivered: 'status-delivered' };
-    return map[status] || 'status-pending';
-  }
-
-  function getStatusLabel(status) {
-    const map = { pending: 'En attente', confirmed: 'Confirmée', shipped: 'Expédiée', delivered: 'Livrée' };
-    return map[status] || status;
+  function getStatusLabel(s) {
+    return { pending: 'En attente', confirmed: 'Confirmée', shipped: 'Expédiée', delivered: 'Livrée' }[s] || s;
   }
 
   function renderOrder(order) {
-    const items = order.items.map(i => `${i.name} x${i.qty}`).join(', ');
-    const total = order.items.reduce((s, i) => s + i.price * i.qty, 0);
-    const contact = order.customer ? `${order.customer.name} — ${order.customer.phone} — ${order.customer.address}` : 'Non renseigné';
+    const c = order.customer || {};
+
+    // Adresse complète
+    const wilaya   = order.wilaya_name  || `Wilaya #${order.wilaya_id}`  || '—';
+    const commune  = order.commune_name || `Commune #${order.commune_id}` || '—';
+    const adresse  = [c.address, commune, wilaya].filter(Boolean).join(', ');
+
+    // Livraison
+    const shippingLabel = order.shipping_type === 'maison' ? '🏠 À domicile' : '📦 Point relais';
+    const shippingCost  = order.shipping_price ? `${order.shipping_price} DA` : '—';
+
+    // Articles
+    const subtotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
+    const itemsHtml = order.items.map(i =>
+      `<div class="item-line"><span>${i.name} <small>x${i.qty}</small></span><span>${i.price * i.qty} DA</span></div>`
+    ).join('');
+
+    const total = order.total_amount || (subtotal + (order.shipping_price || 0));
+
+    // Notes
+    const notesHtml = order.notes
+      ? `<div class="notes-block">📝 ${order.notes}</div>`
+      : '';
+
+    // Actions
     let actions = '';
-    if (order.status === 'pending') actions = `<button class="btn btn-confirm" onclick="updateStatus('${order.id}','confirmed')">Confirmer</button>`;
-    if (order.status === 'confirmed') actions = `<button class="btn btn-ship" onclick="updateStatus('${order.id}','shipped')">Marquer expédiée</button>`;
-    if (order.status === 'shipped') actions = `<button class="btn btn-deliver" onclick="updateStatus('${order.id}','delivered')">Marquer livrée</button>`;
-    if (order.status === 'delivered') actions = '—';
+    if (order.status === 'pending')   actions = `<button class="btn btn-confirm" onclick="updateStatus('${order.id}','confirmed')">✓ Confirmer</button>`;
+    if (order.status === 'confirmed') actions = `<button class="btn btn-ship"    onclick="updateStatus('${order.id}','shipped')">🚚 Marquer expédiée</button>`;
+    if (order.status === 'shipped')   actions = `<button class="btn btn-deliver" onclick="updateStatus('${order.id}','delivered')">✅ Marquer livrée</button>`;
+    if (order.status === 'delivered') actions = '<span style="color:var(--sage);font-size:.85rem;">✔ Commande terminée</span>';
 
     return `
       <div class="order-card" data-id="${order.id}">
         <div class="order-header">
           <div>
-            <span class="order-id">Commande #${order.id.slice(0, 8)}</span>
-            <span class="order-date"> — ${new Date(order.createdAt).toLocaleDateString('fr-FR')}</span>
+            <div class="order-id">Commande #${order.id.slice(0,8).toUpperCase()}</div>
+            <div class="order-date">${new Date(order.createdAt).toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
           </div>
           <span class="order-status ${getStatusClass(order.status)}">${getStatusLabel(order.status)}</span>
         </div>
-        <div class="order-items">${items}</div>
-        <div class="order-total">Total : ${total} DA</div>
-        <div class="order-contact">${contact}</div>
+
+        <div class="order-grid">
+          <!-- Client -->
+          <div class="info-block">
+            <div class="label">👤 Client</div>
+            <div class="value">
+              <span><strong>${c.name || '—'}</strong></span>
+              <span>📞 ${c.phone || '—'}</span>
+              <span>📍 ${adresse}</span>
+            </div>
+          </div>
+
+          <!-- Livraison -->
+          <div class="info-block">
+            <div class="label">🚚 Livraison</div>
+            <div class="value">
+              <span>${shippingLabel}</span>
+              <span>Frais : <strong>${shippingCost}</strong></span>
+              <span>Wilaya : ${wilaya}</span>
+              <span>Commune : ${commune}</span>
+            </div>
+          </div>
+
+          <!-- Articles -->
+          <div class="info-block" style="grid-column: 1 / -1;">
+            <div class="label">🛍 Articles</div>
+            <div class="value order-items-list">${itemsHtml}</div>
+            <div class="order-total-line">
+              <span class="order-total">Total : ${total} DA</span>
+              <span class="shipping-badge">${shippingLabel} · ${shippingCost}</span>
+            </div>
+          </div>
+        </div>
+
+        ${notesHtml}
+
         <div class="order-actions">${actions}</div>
       </div>
     `;
@@ -170,13 +218,13 @@
         return;
       }
       const orders = await res.json();
-      if (orders.length === 0) {
+      if (!orders.length) {
         el.innerHTML = '<div class="empty-state">Aucune commande pour le moment.</div>';
       } else {
         el.innerHTML = orders.map(renderOrder).join('');
       }
     } catch (err) {
-      el.innerHTML = '<div class="empty-state">Impossible de charger les commandes. Vérifiez que le backend est démarré (voir GUIDE-BACKEND.md).</div>';
+      el.innerHTML = '<div class="empty-state">Impossible de charger les commandes. Vérifiez que le backend est démarré.</div>';
     }
   }
 
@@ -184,10 +232,7 @@
     try {
       const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ status })
       });
       if (res.ok) loadOrders();
