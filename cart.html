@@ -23,117 +23,45 @@
   .form-row label { display: block; font-size: 0.8rem; color: var(--bark); margin-bottom: 0.4rem; }
   .form-row input, .form-row select { width: 100%; padding: 0.7rem 0.8rem; border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem; font-size: 0.9rem; box-sizing: border-box; }
   .form-row small { display: block; margin-top: 0.3rem; font-size: 0.75rem; color: var(--bark); opacity: 0.8; }
-
-  /* ── Shipping options fix mobile ── */
-  .shipping-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    margin-top: 0.3rem;
-  }
-  .shipping-option-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    line-height: 1.2;
-  }
-  .shipping-option-item input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    min-width: 18px;
-    accent-color: var(--terracotta);
-    cursor: pointer;
-    margin: 0;
-  }
-
-  /* ── Select option bilingual ── */
-  .form-row select option {
-    font-size: 0.85rem;
-  }
-  .wilaya-code {
-    color: var(--bark);
-    font-size: 0.8rem;
-    opacity: 0.7;
-  }
-
+  .shipping-options { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.3rem; }
+  .shipping-option-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.9rem; line-height: 1.2; }
+  .shipping-option-item input[type="radio"] { width: 18px; height: 18px; min-width: 18px; accent-color: var(--terracotta); cursor: pointer; margin: 0; }
+  .form-row select option { font-size: 0.85rem; }
   .btn-order { background: var(--terracotta); color: white; padding: 1rem 2rem; border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 1.2rem; width: 100%; font-size: 1rem; }
   .btn-order:hover { background: var(--bark); }
   .empty-cart { text-align: center; padding: 4rem; color: var(--bark); }
   .empty-cart a { color: var(--terracotta); }
   .nav-cart { cursor: default; }
-
-  @media (max-width: 800px) {
-    .cart-layout { grid-template-columns: 1fr; }
-  }
-
-  /* ── Success Modal ── */
-  .success-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .3s ease;
-    z-index: 9999;
-  }
+  @media (max-width: 800px) { .cart-layout { grid-template-columns: 1fr; } }
+  .success-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 9999; }
   .success-modal.active { opacity: 1; pointer-events: all; }
-  .success-box {
-    background: white;
-    padding: 3rem 2.5rem;
-    border-radius: 1.5rem;
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-    animation: popIn .4s ease;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-  }
-  .success-icon {
-    width: 70px; height: 70px;
-    background: var(--terracotta); color: white;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; margin: 0 auto 1.2rem;
-  }
+  .success-box { background: white; padding: 3rem 2.5rem; border-radius: 1.5rem; text-align: center; max-width: 400px; width: 90%; animation: popIn .4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+  .success-icon { width: 70px; height: 70px; background: var(--terracotta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.2rem; }
   .success-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 1rem; }
   .success-box p { font-size: 0.95rem; color: var(--bark); margin-bottom: 1.8rem; }
-  .success-box button {
-    background: var(--terracotta); color: white; border: none;
-    padding: 0.8rem 2rem; border-radius: 3rem; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; transition: background .3s;
-  }
+  .success-box button { background: var(--terracotta); color: white; border: none; padding: 0.8rem 2rem; border-radius: 3rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .3s; }
   .success-box button:hover { background: var(--bark); }
-  @keyframes popIn {
-    from { transform: scale(.8); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-  }
+  @keyframes popIn { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 </style>
-      <!-- Meta Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '994276880442450');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- End Meta Pixel Code -->
-
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '994276880442450');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 
-<!-- Popup Confirmation -->
 <div id="orderSuccessModal" class="success-modal">
   <div class="success-box">
     <div class="success-icon">✓</div>
@@ -162,36 +90,30 @@
       </div>
       <form id="checkoutForm" class="checkout-form">
         <h2>Informations de livraison</h2>
-
         <div class="form-row">
           <label>Nom complet</label>
           <input type="text" name="name" required placeholder="Sophie Martin">
         </div>
-
         <div class="form-row">
           <label>Téléphone</label>
           <input type="tel" name="phone" required placeholder="0555123456">
         </div>
-
         <div class="form-row">
           <label>Adresse (rue, bâtiment...)</label>
           <input type="text" name="address" required placeholder="N° rue, immeuble, étage...">
         </div>
-
         <div class="form-row">
           <label>Wilaya</label>
           <select name="wilaya" id="wilayaSelect" required>
             <option value="">Sélectionner une wilaya</option>
           </select>
         </div>
-
         <div class="form-row">
           <label>Commune</label>
           <select name="commune" id="communeSelect" required disabled>
             <option value="">Choisissez d'abord la wilaya</option>
           </select>
         </div>
-
         <div class="form-row">
           <label>Type de livraison</label>
           <div class="shipping-options">
@@ -206,12 +128,10 @@
           </div>
           <small>Les frais de livraison s'adaptent à la wilaya et au type choisi.</small>
         </div>
-
         <div class="form-row">
           <label>Notes (optionnel)</label>
           <input type="text" name="notes" placeholder="Ex: code porte, heure préférée...">
         </div>
-
         <button type="submit" class="btn-order">Valider la commande</button>
       </form>
     </div>
@@ -245,7 +165,6 @@
       const data = await res.json();
       WILAYAS = data || [];
       const select = document.getElementById('wilayaSelect');
-      // Format: "06 — Béjaïa / بجاية"
       select.innerHTML = '<option value="">Sélectionner une wilaya</option>' +
         WILAYAS.map(w => {
           const code = String(w.id).padStart(2, '0');
@@ -268,7 +187,6 @@
       if (!data || data.length === 0) {
         communeSelect.innerHTML = '<option value="">Aucune commune trouvée</option>';
       } else {
-        // Format: "Béjaïa / بجاية"
         communeSelect.innerHTML = '<option value="">Sélectionner une commune</option>' +
           data.map(c => {
             const ar = c.commune_name ? ` / ${c.commune_name}` : '';
@@ -277,7 +195,6 @@
           }).join('');
       }
     } catch (e) {
-      console.error('Erreur chargement communes', e);
       communeSelect.disabled = false;
       communeSelect.innerHTML = '<option value="">Erreur de chargement</option>';
     }
@@ -287,17 +204,10 @@
     const wilayaSelect = document.getElementById('wilayaSelect');
     const shippingTypeInput = document.querySelector('input[name="shipping_type"]:checked');
     if (!wilayaSelect || !shippingTypeInput) return;
-
     const wilayaId = parseInt(wilayaSelect.value, 10);
     const type = shippingTypeInput.value;
     const w = WILAYAS.find(x => x.id === wilayaId);
-
-    if (!w || !wilayaId) {
-      shippingPrice = 0;
-      updateSummary();
-      return;
-    }
-
+    if (!w || !wilayaId) { shippingPrice = 0; updateSummary(); return; }
     shippingPrice = type === 'maison' ? Number(w.prix_maison || 0) : Number(w.prix_desk || 0);
     updateSummary();
   }
@@ -315,6 +225,9 @@
       checkoutSection.style.display = 'none';
       return;
     }
+
+    // ✅ PIXEL — InitiateCheckout
+    fbq('track', 'InitiateCheckout');
 
     subtotal = 0;
     container.innerHTML = cart.map(item => {
@@ -373,6 +286,12 @@
         })
       });
       if (res.ok) {
+        // ✅ PIXEL — Purchase
+        fbq('track', 'Purchase', {
+          value: subtotal + shippingPrice,
+          currency: 'DZD'
+        });
+
         localStorage.removeItem('nidly_cart');
         const modal = document.getElementById('orderSuccessModal');
         modal.classList.add('active');
