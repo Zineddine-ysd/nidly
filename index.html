@@ -515,10 +515,9 @@
 <footer>
   <div class="footer-logo">Ni<span>dly</span></div>
   <div class="footer-links">
-    <a href="admin/login.html">Admin</a>
-    <a href="#">CGV</a>
-    <a href="#">Contact</a>
-    <a href="#">Instagram</a>
+   
+    <a href="https://www.instagram.com/evergl1nt">Contact</a>
+    <a href="https://www.instagram.com/evergl1nt">Instagram</a>
   </div>
   <p class="footer-copy">© 2026 Nidly — Fait avec ♥ pour les intérieurs organisés</p>
 </footer>
@@ -536,7 +535,7 @@ async function loadProducts() {
   const metaValues = Object.values(CARD_META);
 
   try {
-    const res = await fetch('https://nidly.onrender.com/api/products');
+    const res = await fetch('http://localhost:3000/api/products');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const products = await res.json();
 
