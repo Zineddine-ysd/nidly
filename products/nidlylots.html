@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boîtes de Rangement — Nidly</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --cream: #FAF7F2;
@@ -25,6 +25,9 @@ body {
   font-family:'DM Sans', sans-serif;
   font-weight:300;
   overflow-x:hidden;
+}
+[lang="ar"] body, body.ar {
+  font-family: 'Cairo', sans-serif;
 }
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:.45;
@@ -60,6 +63,33 @@ nav {
 }
 .nav-cart-btn:hover { background:var(--bark); }
 
+/* ── Lang Toggle ── */
+.lang-toggle {
+  background: white;
+  border: 1.5px solid rgba(196,123,107,.3);
+  border-radius: 2rem;
+  padding: .3rem .2rem;
+  display: flex;
+  gap: .1rem;
+  cursor: pointer;
+}
+.lang-btn {
+  padding: .25rem .6rem;
+  border-radius: 2rem;
+  border: none;
+  background: transparent;
+  font-size: .68rem;
+  font-weight: 500;
+  color: var(--bark);
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: .05em;
+}
+.lang-btn.active {
+  background: var(--terra);
+  color: white;
+}
+
 /* INTRO */
 .intro {
   padding:6rem 1.4rem 2.5rem;
@@ -88,7 +118,6 @@ nav {
   font-size:.68rem; color:var(--bark);
 }
 
-/* PHOTO GRID */
 .photo-grid {
   padding:0 1.2rem 2.5rem;
   display:grid; grid-template-columns:1fr 1fr; gap:.5rem;
@@ -98,29 +127,17 @@ nav {
   border-radius:1.3rem; overflow:hidden; background:var(--blush);
   aspect-ratio:3/2; position:relative;
 }
-.photo-grid .p-main img {
-  width:100%; height:100%; object-fit:cover; display:block;
-  transition:transform 6s ease;
-}
+.photo-grid .p-main img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 6s ease; }
 .photo-grid .p-main:hover img { transform:scale(1.04); }
-.p-main .p-label {
-  position:absolute; bottom:.8rem; left:.8rem;
-  display:flex; gap:.4rem;
-}
+.p-main .p-label { position:absolute; bottom:.8rem; left:.8rem; display:flex; gap:.4rem; }
 .p-main .p-label span {
   background:rgba(250,247,242,.88); backdrop-filter:blur(8px);
   border-radius:2rem; padding:.28rem .75rem;
   font-size:.63rem; color:var(--bark);
   border:1px solid rgba(255,255,255,.6);
 }
-.photo-grid .p-sm {
-  border-radius:1.1rem; overflow:hidden; background:var(--blush);
-  aspect-ratio:1/1; position:relative;
-}
-.photo-grid .p-sm img {
-  width:100%; height:100%; object-fit:cover; display:block;
-  transition:transform .4s ease;
-}
+.photo-grid .p-sm { border-radius:1.1rem; overflow:hidden; background:var(--blush); aspect-ratio:1/1; position:relative; }
+.photo-grid .p-sm img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
 .photo-grid .p-sm:hover img { transform:scale(1.05); }
 .p-sm .p-lbl {
   position:absolute; bottom:.5rem; left:.5rem;
@@ -130,50 +147,19 @@ nav {
   color:rgba(255,255,255,.85);
 }
 
-/* DIVIDER */
-.divider {
-  display:flex; align-items:center; gap:1rem;
-  padding:0 1.4rem; margin:2rem 0 1.8rem;
-}
-.divider::before,.divider::after {
-  content:''; flex:1; height:1px; background:rgba(212,165,160,.3);
-}
-.divider span {
-  font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--dusty); white-space:nowrap;
-}
+.divider { display:flex; align-items:center; gap:1rem; padding:0 1.4rem; margin:2rem 0 1.8rem; }
+.divider::before,.divider::after { content:''; flex:1; height:1px; background:rgba(212,165,160,.3); }
+.divider span { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dusty); white-space:nowrap; }
 
-/* SECTION HEADER */
-.sec-label {
-  font-size:.67rem; letter-spacing:.2em; text-transform:uppercase;
-  color:var(--terra); margin-bottom:.7rem; display:block;
-}
-.sec-title {
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.8rem,6vw,2.8rem);
-  font-weight:300; line-height:1.1; color:var(--char); margin-bottom:1.5rem;
-}
+.sec-label { font-size:.67rem; letter-spacing:.2em; text-transform:uppercase; color:var(--terra); margin-bottom:.7rem; display:block; }
+.sec-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,6vw,2.8rem); font-weight:300; line-height:1.1; color:var(--char); margin-bottom:1.5rem; }
 .sec-title em { color:var(--terra); font-style:italic; }
 
-/* SIZES */
 .sizes-section { padding:0 1.2rem 2.5rem; }
 .sizes-stack { display:flex; flex-direction:column; gap:.8rem; }
-.size-row {
-  display:flex; align-items:center; gap:1.1rem;
-  background:white; border-radius:1rem;
-  padding:1.1rem 1.2rem;
-  border:1.5px solid rgba(212,165,160,.18);
-  transition:border-color .2s, box-shadow .2s;
-}
-.size-row:hover {
-  border-color:var(--dusty);
-  box-shadow:0 6px 20px rgba(122,92,82,.07);
-}
-.sz-box {
-  flex-shrink:0; border-radius:6px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:.62rem; font-weight:500; color:white; letter-spacing:.04em;
-}
+.size-row { display:flex; align-items:center; gap:1.1rem; background:white; border-radius:1rem; padding:1.1rem 1.2rem; border:1.5px solid rgba(212,165,160,.18); transition:border-color .2s, box-shadow .2s; }
+.size-row:hover { border-color:var(--dusty); box-shadow:0 6px 20px rgba(122,92,82,.07); }
+.sz-box { flex-shrink:0; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:500; color:white; letter-spacing:.04em; }
 .sz-box.xl { width:50px; height:36px; background:var(--terra); }
 .sz-box.l  { width:38px; height:28px; background:var(--bark); }
 .sz-box.s  { width:26px; height:26px; background:var(--sage); }
@@ -183,215 +169,103 @@ nav {
 .sz-uses { display:flex; flex-wrap:wrap; gap:.25rem; }
 .sz-u { background:var(--cream); border-radius:1rem; padding:.16rem .5rem; font-size:.62rem; color:var(--bark); }
 
-/* LOTS */
 .lots-section { padding:0 1.2rem 3rem; }
-.lot-card {
-  background:white; border-radius:1.4rem;
-  border:1.5px solid rgba(212,165,160,.2);
-  overflow:hidden; margin-bottom:1.1rem;
-  transition:box-shadow .3s; position:relative;
-}
+.lot-card { background:white; border-radius:1.4rem; border:1.5px solid rgba(212,165,160,.2); overflow:hidden; margin-bottom:1.1rem; transition:box-shadow .3s; position:relative; }
 .lot-card:last-child { margin-bottom:0; }
 .lot-card.featured { border-color:var(--terra); }
 .lot-card:hover { box-shadow:0 14px 44px rgba(122,92,82,.11); }
-.pop-ribbon {
-  position:absolute; top:0; left:50%; transform:translateX(-50%);
-  background:var(--terra); color:white;
-  font-size:.6rem; letter-spacing:.12em; text-transform:uppercase;
-  padding:.26rem 1rem; border-radius:0 0 .7rem .7rem;
-  white-space:nowrap; z-index:5;
-}
-
-/* Photo gallery inside card */
-.lot-photo {
-  position:relative; aspect-ratio:16/9;
-  overflow:hidden; background:var(--blush);
-}
-.lot-photo img {
-  width:100%; height:100%; object-fit:cover;
-  display:block; position:absolute; inset:0;
-  opacity:0; transition:opacity .5s ease;
-}
+.pop-ribbon { position:absolute; top:0; left:50%; transform:translateX(-50%); background:var(--terra); color:white; font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; padding:.26rem 1rem; border-radius:0 0 .7rem .7rem; white-space:nowrap; z-index:5; }
+.lot-photo { position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--blush); }
+.lot-photo img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; opacity:0; transition:opacity .5s ease; }
 .lot-photo img.active { opacity:1; }
-.gal-dots {
-  position:absolute; bottom:.6rem; right:.7rem;
-  display:flex; gap:4px; z-index:2;
-}
-.gal-dot {
-  width:5px; height:5px; border-radius:50%;
-  background:rgba(255,255,255,.45);
-  border:none; cursor:pointer; padding:0; transition:all .2s;
-}
+.gal-dots { position:absolute; bottom:.6rem; right:.7rem; display:flex; gap:4px; z-index:2; }
+.gal-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.45); border:none; cursor:pointer; padding:0; transition:all .2s; }
 .gal-dot.active { background:white; width:13px; border-radius:3px; }
-.lot-tag-bar {
-  position:absolute; top:.7rem; left:.7rem; z-index:2;
-}
-.lot-tag-label {
-  background:rgba(250,247,242,.88); backdrop-filter:blur(6px);
-  border-radius:2rem; padding:.25rem .7rem;
-  font-size:.6rem; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--terra); border:1px solid rgba(196,123,107,.22);
-}
-
-/* Card body */
+.lot-tag-bar { position:absolute; top:.7rem; left:.7rem; z-index:2; }
+.lot-tag-label { background:rgba(250,247,242,.88); backdrop-filter:blur(6px); border-radius:2rem; padding:.25rem .7rem; font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:var(--terra); border:1px solid rgba(196,123,107,.22); }
 .lot-body { padding:1.2rem; }
-.lot-name {
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.55rem; font-weight:400; color:var(--char); margin-bottom:.15rem;
-}
+.lot-name { font-family:'Cormorant Garamond',serif; font-size:1.55rem; font-weight:400; color:var(--char); margin-bottom:.15rem; }
 .lot-tagline { font-size:.78rem; color:var(--bark); opacity:.75; font-style:italic; margin-bottom:.9rem; }
 .lot-compo { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.9rem; }
-.c-chip {
-  display:flex; align-items:center; gap:.28rem;
-  background:var(--cream); border:1px solid rgba(212,165,160,.22);
-  border-radius:.45rem; padding:.28rem .6rem; font-size:.73rem;
-}
+.c-chip { display:flex; align-items:center; gap:.28rem; background:var(--cream); border:1px solid rgba(212,165,160,.22); border-radius:.45rem; padding:.28rem .6rem; font-size:.73rem; }
 .c-chip .cn { font-weight:500; }
 .c-chip .cs { color:var(--bark); opacity:.7; }
-.c-total {
-  background:var(--blush); border-radius:.45rem; padding:.28rem .6rem; font-size:.7rem; color:var(--bark);
-}
+.c-total { background:var(--blush); border-radius:.45rem; padding:.28rem .6rem; font-size:.7rem; color:var(--bark); }
 .uses-row { display:flex; flex-wrap:wrap; gap:.28rem; margin-bottom:1.1rem; }
-.u-tag {
-  background:var(--sage-l); border-radius:2rem;
-  padding:.18rem .55rem; font-size:.67rem; color:var(--bark);
-}
-.lot-foot {
-  display:flex; align-items:center; justify-content:space-between;
-  padding-top:.9rem; border-top:1px solid rgba(212,165,160,.14);
-}
-.lot-price {
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.9rem; font-weight:400; color:var(--terra); line-height:1;
-}
-.lot-save {
-  display:inline-block; background:var(--sage-l); color:var(--bark);
-  font-size:.6rem; padding:.16rem .48rem; border-radius:2rem; margin-top:.22rem;
-}
-.btn-add {
-  background:var(--terra); color:white;
-  padding:.75rem 1.3rem; border-radius:3rem;
-  border:none; cursor:pointer;
-  font-family:'DM Sans',sans-serif; font-size:.8rem; font-weight:500;
-  letter-spacing:.04em; transition:all .22s;
-}
+.u-tag { background:var(--sage-l); border-radius:2rem; padding:.18rem .55rem; font-size:.67rem; color:var(--bark); }
+.lot-foot { display:flex; align-items:center; justify-content:space-between; padding-top:.9rem; border-top:1px solid rgba(212,165,160,.14); }
+.lot-price { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:400; color:var(--terra); line-height:1; }
+.lot-save { display:inline-block; background:var(--sage-l); color:var(--bark); font-size:.6rem; padding:.16rem .48rem; border-radius:2rem; margin-top:.22rem; }
+.btn-add { background:var(--terra); color:white; padding:.75rem 1.3rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.8rem; font-weight:500; letter-spacing:.04em; transition:all .22s; }
 .btn-add:active { transform:scale(0.97); }
 .lot-card.featured .btn-add { background:var(--char); }
 
-/* WHY */
 .why-section { background:var(--char); padding:3.5rem 1.4rem; }
 .why-section .sec-label { color:var(--dusty); }
 .why-section .sec-title { color:white; }
 .why-section .sec-title em { color:var(--dusty); }
 .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
-.why-card {
-  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.07);
-  border-radius:1rem; padding:1.2rem; transition:background .25s;
-}
+.why-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.07); border-radius:1rem; padding:1.2rem; transition:background .25s; }
 .why-card:active { background:rgba(196,123,107,.12); }
 .why-icon { font-size:1.4rem; margin-bottom:.55rem; display:block; }
 .why-card h4 { font-family:'Cormorant Garamond',serif; font-size:1rem; color:white; margin-bottom:.28rem; }
-.why-card p  { font-size:.7rem; color:rgba(255,255,255,.38); line-height:1.6; }
+.why-card p { font-size:.7rem; color:rgba(255,255,255,.38); line-height:1.6; }
 
-/* COMPARE */
 .compare-section { padding:3.5rem 1.2rem 4rem; overflow-x:auto; }
 .compare-section table { width:100%; border-collapse:collapse; min-width:300px; }
-.compare-section thead th {
-  font-family:'Cormorant Garamond',serif; font-size:.9rem; font-weight:400;
-  padding:.7rem .5rem; border-bottom:2px solid var(--blush);
-  color:var(--char); text-align:center;
-}
+.compare-section thead th { font-family:'Cormorant Garamond',serif; font-size:.9rem; font-weight:400; padding:.7rem .5rem; border-bottom:2px solid var(--blush); color:var(--char); text-align:center; }
 .compare-section thead th:first-child { text-align:left; font-size:.75rem; }
-.compare-section tbody td {
-  padding:.6rem .5rem; text-align:center;
-  border-bottom:1px solid rgba(212,165,160,.12);
-  font-size:.75rem; color:var(--bark);
-}
+.compare-section tbody td { padding:.6rem .5rem; text-align:center; border-bottom:1px solid rgba(212,165,160,.12); font-size:.75rem; color:var(--bark); }
 .compare-section tbody td:first-child { text-align:left; color:var(--char); font-size:.78rem; }
 .compare-section tbody tr:hover td { background:rgba(240,224,214,.2); }
 .price-cell { font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--terra); }
 .hl { background:rgba(196,123,107,.04); }
 
-/* REVIEWS */
 .reviews { padding:3.5rem 1.2rem; background:var(--blush); }
 .reviews .sec-title { margin-bottom:1.6rem; }
-.reviews-scroll {
-  display:flex; gap:.9rem; overflow-x:auto; padding-bottom:.4rem;
-  -webkit-overflow-scrolling:touch; scrollbar-width:none;
-}
+.reviews-scroll { display:flex; gap:.9rem; overflow-x:auto; padding-bottom:.4rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
 .reviews-scroll::-webkit-scrollbar { display:none; }
-.review-card {
-  background:white; border-radius:1.1rem;
-  padding:1.2rem; min-width:230px; flex-shrink:0;
-}
+.review-card { background:white; border-radius:1.1rem; padding:1.2rem; min-width:230px; flex-shrink:0; }
 .r-stars { color:var(--gold); font-size:.76rem; margin-bottom:.65rem; }
-.r-text  { font-size:.8rem; color:var(--bark); line-height:1.7; font-style:italic; margin-bottom:.85rem; }
+.r-text { font-size:.8rem; color:var(--bark); line-height:1.7; font-style:italic; margin-bottom:.85rem; }
 .r-author { display:flex; align-items:center; gap:.5rem; }
 .r-avatar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.8rem; }
 .r-name { font-size:.76rem; font-weight:500; color:var(--char); }
-.r-loc  { font-size:.63rem; color:var(--bark); opacity:.6; }
+.r-loc { font-size:.63rem; color:var(--bark); opacity:.6; }
 
-/* CTA */
-.cta-section {
-  padding:4rem 1.4rem; text-align:center;
-  background:var(--terra); position:relative; overflow:hidden;
-}
-.cta-section::before {
-  content:''; position:absolute;
-  width:260px; height:260px; border-radius:50%;
-  border:1px solid rgba(255,255,255,.12);
-  top:50%; left:50%; transform:translate(-50%,-50%);
-}
-.cta-section::after {
-  content:''; position:absolute;
-  width:400px; height:400px; border-radius:50%;
-  border:1px solid rgba(255,255,255,.07);
-  top:50%; left:50%; transform:translate(-50%,-50%);
-}
-.cta-section h2 {
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2rem,8vw,3rem); font-weight:300;
-  color:white; line-height:1.1; margin-bottom:.75rem;
-  position:relative; z-index:1;
-}
+.cta-section { padding:4rem 1.4rem; text-align:center; background:var(--terra); position:relative; overflow:hidden; }
+.cta-section::before { content:''; position:absolute; width:260px; height:260px; border-radius:50%; border:1px solid rgba(255,255,255,.12); top:50%; left:50%; transform:translate(-50%,-50%); }
+.cta-section::after { content:''; position:absolute; width:400px; height:400px; border-radius:50%; border:1px solid rgba(255,255,255,.07); top:50%; left:50%; transform:translate(-50%,-50%); }
+.cta-section h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3rem); font-weight:300; color:white; line-height:1.1; margin-bottom:.75rem; position:relative; z-index:1; }
 .cta-section h2 em { font-style:italic; opacity:.85; }
-.cta-section p {
-  color:rgba(255,255,255,.7); font-size:.85rem; line-height:1.7;
-  max-width:300px; margin:0 auto 1.7rem;
-  position:relative; z-index:1;
-}
-.btn-white {
-  background:white; color:var(--terra);
-  padding:.82rem 1.9rem; border-radius:3rem;
-  font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:500;
-  border:none; cursor:pointer; letter-spacing:.04em;
-  text-decoration:none; display:inline-block;
-  position:relative; z-index:1; transition:all .25s;
-}
+.cta-section p { color:rgba(255,255,255,.7); font-size:.85rem; line-height:1.7; max-width:300px; margin:0 auto 1.7rem; position:relative; z-index:1; }
+.btn-white { background:white; color:var(--terra); padding:.82rem 1.9rem; border-radius:3rem; font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:500; border:none; cursor:pointer; letter-spacing:.04em; text-decoration:none; display:inline-block; position:relative; z-index:1; transition:all .25s; }
 .btn-white:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.15); }
 
-footer {
-  background:var(--char); padding:1.8rem 1.4rem;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.footer-logo {
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.35rem; color:white; letter-spacing:.08em; text-decoration:none;
-}
+footer { background:var(--char); padding:1.8rem 1.4rem; display:flex; align-items:center; justify-content:space-between; }
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:white; letter-spacing:.08em; text-decoration:none; }
 .footer-logo span { color:var(--terra); font-style:italic; }
 .footer-copy { font-size:.63rem; color:rgba(255,255,255,.28); }
 
-.toast {
-  position:fixed; bottom:1.5rem; left:50%;
-  transform:translateX(-50%) translateY(120px);
-  background:var(--char); color:white;
-  padding:.75rem 1.5rem; border-radius:3rem;
-  font-size:.8rem; z-index:1000;
-  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
-  pointer-events:none; white-space:nowrap;
-  border:1px solid rgba(255,255,255,.08);
-}
+.toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(120px); background:var(--char); color:white; padding:.75rem 1.5rem; border-radius:3rem; font-size:.8rem; z-index:1000; transition:transform .4s cubic-bezier(.34,1.56,.64,1); pointer-events:none; white-space:nowrap; border:1px solid rgba(255,255,255,.08); }
 .toast.show { transform:translateX(-50%) translateY(0); }
+
+/* RTL */
+html[dir="rtl"] .nav-right { flex-direction: row-reverse; }
+html[dir="rtl"] .intro-eyebrow::before,
+html[dir="rtl"] .intro-eyebrow::after { display:none; }
+html[dir="rtl"] .lot-tag-bar { left:auto; right:.7rem; }
+html[dir="rtl"] .p-main .p-label { left:auto; right:.8rem; }
+html[dir="rtl"] .p-sm .p-lbl { left:auto; right:.5rem; }
+html[dir="rtl"] .gal-dots { right:auto; left:.7rem; }
+html[dir="rtl"] .pop-ribbon { font-family: 'Cairo', sans-serif; }
+html[dir="rtl"] .sec-title,
+html[dir="rtl"] .sec-label,
+html[dir="rtl"] .lot-name,
+html[dir="rtl"] .lot-tagline,
+html[dir="rtl"] .sz-name { font-family: 'Cairo', sans-serif; }
+html[dir="rtl"] .compare-section thead th:first-child { text-align:right; }
+html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
 @keyframes spin   { to{transform:rotate(360deg)} }
@@ -404,100 +278,84 @@ footer {
 @media (min-width:768px) {
   nav { padding:1.1rem 3rem; }
   .nav-logo { font-size:1.8rem; }
-
-  .intro, .photo-grid, .divider,
-  .sizes-section, .lots-section,
-  .compare-section, .reviews {
-    max-width:1100px;
-    margin-left:auto;
-    margin-right:auto;
-  }
+  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .compare-section, .reviews { max-width:1100px; margin-left:auto; margin-right:auto; }
   .why-section { padding:5rem 4rem; }
   .cta-section { padding:6rem 3rem; }
   footer { padding:2.2rem 4rem; }
-
   .intro { padding:8rem 3rem 4rem; text-align:center; }
   .intro h1 { font-size:4.5rem; }
   .intro p { font-size:1rem; max-width:480px; margin:0 auto 1.8rem; }
-
   .photo-grid { padding:0 3rem 3.5rem; display:block; }
   .photo-grid .p-main { aspect-ratio:21/8; border-radius:1.6rem; }
   .photo-grid .p-sm { display:none; }
-
   .divider { padding:0 3rem; margin:2.5rem auto; }
-
   .sizes-section { padding:0 3rem 3.5rem; }
   .sizes-stack { flex-direction:row; gap:1rem; }
   .size-row { flex-direction:column; align-items:flex-start; flex:1; padding:1.5rem; }
   .sz-name { font-size:1.15rem; }
-
   .lots-section { padding:0 3rem 4.5rem; }
   #lotsContainer { display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
   .lot-card { margin-bottom:0; }
   .lot-photo { aspect-ratio:4/3; }
   .lot-name { font-size:1.4rem; }
   .lot-price { font-size:1.7rem; }
-
   .why-grid { grid-template-columns:repeat(4,1fr); gap:1.2rem; }
-
   .compare-section { padding:4.5rem 3rem 5rem; overflow-x:visible; }
   .compare-section thead th { font-size:1rem; padding:.9rem .8rem; }
   .compare-section tbody td { font-size:.85rem; padding:.75rem .8rem; }
-
   .reviews { padding:4.5rem 3rem 5rem; }
   .reviews-scroll { overflow-x:visible; flex-wrap:wrap; }
   .review-card { min-width:0; flex:1; min-width:200px; }
-
   .cta-section h2 { font-size:3rem; }
 }
-
 @media (min-width:1200px) {
-  .intro, .photo-grid, .divider,
-  .sizes-section, .lots-section,
-  .compare-section, .reviews { max-width:1200px; }
+  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .compare-section, .reviews { max-width:1200px; }
   .intro h1 { font-size:5.2rem; }
   .photo-grid .p-main { aspect-ratio:21/7; }
 }
 </style>
-      <!-- Meta Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '994276880442450');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- End Meta Pixel Code -->
-
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '994276880442450');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 
 <nav>
   <a href="../index.html" class="nav-logo">Ni<span>dly</span></a>
   <div class="nav-right">
-    <a href="../index.html" class="nav-back">← Accueil</a>
-    <a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 Panier (0)</a>
+    <div class="lang-toggle" title="Changer la langue">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('ar')">ع</button>
+    </div>
+    <a href="../index.html" class="nav-back" data-fr="← Accueil" data-ar="الرئيسية →">← Accueil</a>
+    <a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>
   </div>
 </nav>
 
 <!-- INTRO -->
 <div class="intro">
-  <div class="intro-eyebrow">Collection boîtes de rangement</div>
-  <h1>Chaque chose<br><em>à sa place</em></h1>
-  <p>Des boîtes empilables, modulables et résistantes — pour la cuisine, le maquillage, le dressing, le bureau.</p>
+  <div class="intro-eyebrow" data-fr="Collection boîtes de rangement" data-ar="مجموعة صناديق التنظيم">Collection boîtes de rangement</div>
+  <h1 data-fr="Chaque chose<br><em>à sa place</em>" data-ar="كل شيء<br><em>في مكانه</em>">Chaque chose<br><em>à sa place</em></h1>
+  <p data-fr="Des boîtes empilables, modulables et résistantes — pour la cuisine, le maquillage, le dressing, le bureau." data-ar="صناديق قابلة للتكديس والتعديل ومتينة — للمطبخ، المكياج، الدولاب، والمكتب.">Des boîtes empilables, modulables et résistantes — pour la cuisine, le maquillage, le dressing, le bureau.</p>
   <div class="intro-badges">
-    <span class="badge">♻️ Plastique alimentaire</span>
-    <span class="badge">📦 Empilables</span>
-    <span class="badge">🚀 48h en Algérie</span>
-    <span class="badge">3 tailles</span>
+    <span class="badge">♻️ <span data-fr="Plastique alimentaire" data-ar="بلاستيك غذائي">Plastique alimentaire</span></span>
+    <span class="badge">📦 <span data-fr="Empilables" data-ar="قابلة للتكديس">Empilables</span></span>
+    <span class="badge">🚀 <span data-fr="48h en Algérie" data-ar="48 ساعة في الجزائر">48h en Algérie</span></span>
+    <span class="badge">3 <span data-fr="tailles" data-ar="مقاسات">tailles</span></span>
   </div>
 </div>
 
@@ -506,126 +364,125 @@ footer {
   <div class="p-main">
     <img src="../assets/boiteslot1.png" alt="Boîtes Nidly" loading="eager">
     <div class="p-label">
-      <span>📦 Empilables</span>
-      <span>3 tailles</span>
+      <span data-fr="📦 Empilables" data-ar="📦 قابلة للتكديس">📦 Empilables</span>
+      <span data-fr="3 tailles" data-ar="3 مقاسات">3 tailles</span>
     </div>
   </div>
   <div class="p-sm">
     <img src="../assets/boiteslotllp1.jpg" alt="Dans le tiroir" loading="lazy">
-    <span class="p-lbl">Dans le tiroir</span>
+    <span class="p-lbl" data-fr="Dans le tiroir" data-ar="داخل الدرج">Dans le tiroir</span>
   </div>
   <div class="p-sm">
     <img src="../assets/lots.png" alt="Taille XL" loading="lazy">
-    <span class="p-lbl">Taille XL</span>
+    <span class="p-lbl" data-fr="Taille XL" data-ar="مقاس XL">Taille XL</span>
   </div>
 </div>
 
-<div class="divider"><span>Les 3 tailles</span></div>
+<div class="divider"><span data-fr="Les 3 tailles" data-ar="المقاسات الـ 3">Les 3 tailles</span></div>
 
 <!-- SIZES -->
 <section class="sizes-section">
-  <span class="sec-label">Formats disponibles</span>
-  <h2 class="sec-title">Conçues pour<br><em>tout ranger</em></h2>
+  <span class="sec-label" data-fr="Formats disponibles" data-ar="المقاسات المتوفرة">Formats disponibles</span>
+  <h2 class="sec-title" data-fr="Conçues pour<br><em>tout ranger</em>" data-ar="مصممة<br><em>لتنظيم كل شيء</em>">Conçues pour<br><em>tout ranger</em></h2>
   <div class="sizes-stack">
     <div class="size-row">
       <div class="sz-box xl">XL</div>
       <div class="sz-info">
-        <div class="sz-name">Extra Large</div>
+        <div class="sz-name" data-fr="Extra Large" data-ar="إكسترا لارج">Extra Large</div>
         <div class="sz-dims">19 × 13.5 × 8 cm</div>
         <div class="sz-uses">
-          <span class="sz-u">💄 Maquillage</span>
-          <span class="sz-u">👗 Dressing</span>
+          <span class="sz-u" data-fr="💄 Maquillage" data-ar="💄 مكياج">💄 Maquillage</span>
+          <span class="sz-u" data-fr="👗 Dressing" data-ar="👗 دولاب">👗 Dressing</span>
         </div>
       </div>
     </div>
     <div class="size-row">
       <div class="sz-box l">L</div>
       <div class="sz-info">
-        <div class="sz-name">Large</div>
+        <div class="sz-name" data-fr="Large" data-ar="لارج">Large</div>
         <div class="sz-dims">19 × 8 × 7 cm</div>
         <div class="sz-uses">
-          <span class="sz-u">📚 Bureau</span>
-          <span class="sz-u">💄 Maquillage</span>
+          <span class="sz-u" data-fr="📚 Bureau" data-ar="📚 مكتب">📚 Bureau</span>
+          <span class="sz-u" data-fr="💄 Maquillage" data-ar="💄 مكياج">💄 Maquillage</span>
         </div>
       </div>
     </div>
     <div class="size-row">
       <div class="sz-box s">S</div>
       <div class="sz-info">
-        <div class="sz-name">Small</div>
+        <div class="sz-name" data-fr="Small" data-ar="سمول">Small</div>
         <div class="sz-dims">5 × 5 × 5 cm</div>
         <div class="sz-uses">
-          <span class="sz-u">💍 Bijoux</span>
+          <span class="sz-u" data-fr="💍 Bijoux" data-ar="💍 مجوهرات">💍 Bijoux</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="divider"><span>Les lots</span></div>
+<div class="divider"><span data-fr="Les lots" data-ar="الطرود">Les lots</span></div>
 
 <!-- LOTS -->
 <section class="lots-section" id="lots">
-  <span class="sec-label">Formules & prix</span>
-  <h2 class="sec-title">Choisis ton<br><em>lot idéal</em></h2>
+  <span class="sec-label" data-fr="Formules & prix" data-ar="الباقات والأسعار">Formules & prix</span>
+  <h2 class="sec-title" data-fr="Choisis ton<br><em>lot idéal</em>" data-ar="اختاري<br><em>طردك المثالي</em>">Choisis ton<br><em>lot idéal</em></h2>
   <div id="lotsContainer">
     <div style="text-align:center;padding:3rem;color:var(--bark)">
       <div style="width:28px;height:28px;border:2px solid var(--blush);border-top-color:var(--terra);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem"></div>
-      Chargement…
+      <span data-fr="Chargement…" data-ar="جارٍ التحميل…">Chargement…</span>
     </div>
   </div>
 </section>
 
 <!-- WHY -->
 <section class="why-section">
-  <span class="sec-label">Pourquoi Nidly</span>
-  <h2 class="sec-title">Fait pour<br><em>durer</em></h2>
+  <span class="sec-label" data-fr="Pourquoi Nidly" data-ar="لماذا نيدلي">Pourquoi Nidly</span>
+  <h2 class="sec-title" data-fr="Fait pour<br><em>durer</em>" data-ar="مصنوع<br><em>ليدوم</em>">Fait pour<br><em>durer</em></h2>
   <div class="why-grid">
-    <div class="why-card"><span class="why-icon">🌿</span><h4>Matériaux doux</h4><p>Sans arêtes, agréables au toucher.</p></div>
-    <div class="why-card"><span class="why-icon">📦</span><h4>Modulable</h4><p>S'adapte à toutes les configurations.</p></div>
-    <div class="why-card"><span class="why-icon">♻️</span><h4>Éco-pensé</h4><p>Plastique alimentaire réutilisable.</p></div>
-    <div class="why-card"><span class="why-icon">🚀</span><h4>Express</h4><p>Livraison 48h partout en Algérie.</p></div>
+    <div class="why-card"><span class="why-icon">🌿</span><h4 data-fr="Matériaux doux" data-ar="مواد ناعمة">Matériaux doux</h4><p data-fr="Sans arêtes, agréables au toucher." data-ar="بدون حواف حادة، لطيفة على اللمس.">Sans arêtes, agréables au toucher.</p></div>
+    <div class="why-card"><span class="why-icon">📦</span><h4 data-fr="Modulable" data-ar="قابل للتعديل">Modulable</h4><p data-fr="S'adapte à toutes les configurations." data-ar="يتكيف مع جميع التكوينات.">S'adapte à toutes les configurations.</p></div>
+    <div class="why-card"><span class="why-icon">♻️</span><h4 data-fr="Éco-pensé" data-ar="صديق للبيئة">Éco-pensé</h4><p data-fr="Plastique alimentaire réutilisable." data-ar="بلاستيك غذائي قابل لإعادة الاستخدام.">Plastique alimentaire réutilisable.</p></div>
+    <div class="why-card"><span class="why-icon">🚀</span><h4 data-fr="Express" data-ar="توصيل سريع">Express</h4><p data-fr="Livraison 48h partout en Algérie." data-ar="توصيل خلال 48 ساعة في كل الجزائر.">Livraison 48h partout en Algérie.</p></div>
   </div>
 </section>
 
 <!-- COMPARE -->
 <section class="compare-section">
-  <span class="sec-label">Comparatif</span>
-  <h2 class="sec-title">Quel lot pour <em>toi ?</em></h2>
+  <span class="sec-label" data-fr="Comparatif" data-ar="المقارنة">Comparatif</span>
+  <h2 class="sec-title" data-fr="Quel lot pour <em>toi ?</em>" data-ar="أي طرد <em>يناسبك؟</em>">Quel lot pour <em>toi ?</em></h2>
   <table>
     <thead>
       <tr>
         <th></th>
-        <th>Mini</th>
-        <th class="hl" style="color:var(--terra)">Standard ⭐</th>
-        <th>Méga</th>
+        <th data-fr="Mini" data-ar="ميني">Mini</th>
+        <th class="hl" style="color:var(--terra)" data-fr="Standard ⭐" data-ar="ستاندار ⭐">Standard ⭐</th>
+        <th data-fr="Méga" data-ar="ميغا">Méga</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>Total boîtes</td><td>8</td><td class="hl">12</td><td>24</td></tr>
-      <tr><td>Boîtes XL</td><td>1</td><td class="hl">2</td><td>4</td></tr>
-      <tr><td>Boîtes L</td><td>2</td><td class="hl">4</td><td>8</td></tr>
-      <tr><td>Boîtes S</td><td>5</td><td class="hl">6</td><td>12</td></tr>
-      <tr><td>Idéal pour</td><td>1 tiroir</td><td class="hl">1–2 tiroirs</td><td>3-4 tiroirs</td></tr>
+      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>8</td><td class="hl">12</td><td>24</td></tr>
+      <tr><td data-fr="Boîtes XL" data-ar="صناديق XL">Boîtes XL</td><td>1</td><td class="hl">2</td><td>4</td></tr>
+      <tr><td data-fr="Boîtes L" data-ar="صناديق L">Boîtes L</td><td>2</td><td class="hl">4</td><td>8</td></tr>
+      <tr><td data-fr="Boîtes S" data-ar="صناديق S">Boîtes S</td><td>5</td><td class="hl">6</td><td>12</td></tr>
+      <tr><td data-fr="Idéal pour" data-ar="مثالي لـ">Idéal pour</td><td data-fr="1 tiroir" data-ar="درج واحد">1 tiroir</td><td class="hl" data-fr="1–2 tiroirs" data-ar="1-2 أدراج">1–2 tiroirs</td><td data-fr="3-4 tiroirs" data-ar="3-4 أدراج">3-4 tiroirs</td></tr>
       <tr>
-        <td>Prix</td>
+        <td data-fr="Prix" data-ar="السعر">Prix</td>
         <td class="price-cell">2 000 DA</td>
         <td class="price-cell hl" style="color:var(--terra)">3 100 DA</td>
         <td class="price-cell">5 000 DA</td>
       </tr>
-
     </tbody>
   </table>
 </section>
 
 <!-- REVIEWS -->
 <section class="reviews">
-  <span class="sec-label">Elles adorent</span>
-  <h2 class="sec-title">Ce qu'elles <em>disent</em></h2>
+  <span class="sec-label" data-fr="Elles adorent" data-ar="آراء العملاء">Elles adorent</span>
+  <h2 class="sec-title" data-fr="Ce qu'elles <em>disent</em>" data-ar="ماذا <em>يقولون</em>">Ce qu'elles <em>disent</em></h2>
   <div class="reviews-scroll">
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
-      <p class="r-text">Mon tiroir de maquillage est enfin organisé et tellement joli !</p>
+      <p class="r-text" data-fr="Mon tiroir de maquillage est enfin organisé et tellement joli !" data-ar="درج المكياج الخاص بي منظم أخيراً ورائع جداً!">Mon tiroir de maquillage est enfin organisé et tellement joli !</p>
       <div class="r-author">
         <div class="r-avatar" style="background:var(--blush)">🌸</div>
         <div><div class="r-name">Sophie M.</div><div class="r-loc">Alger</div></div>
@@ -633,7 +490,7 @@ footer {
     </div>
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
-      <p class="r-text">Tout mon placard cuisine est rangé. Les boîtes XL sont parfaites pour les pâtes.</p>
+      <p class="r-text" data-fr="Tout mon placard cuisine est rangé. Les boîtes XL sont parfaites pour les pâtes." data-ar="كل خزانة مطبخي منظمة الآن. الصناديق XL مثالية للمعكرونة.">Tout mon placard cuisine est rangé. Les boîtes XL sont parfaites pour les pâtes.</p>
       <div class="r-author">
         <div class="r-avatar" style="background:var(--sage-l)">🌿</div>
         <div><div class="r-name">Amira B.</div><div class="r-loc">Oran</div></div>
@@ -641,7 +498,7 @@ footer {
     </div>
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
-      <p class="r-text">Reçu en 2 jours. Les boîtes S pour le maquillage sont exactement ce qu'il fallait.</p>
+      <p class="r-text" data-fr="Reçu en 2 jours. Les boîtes S pour le maquillage sont exactement ce qu'il fallait." data-ar="وصلت خلال يومين. صناديق S للمكياج هي بالضبط ما كنت أحتاجه.">Reçu en 2 jours. Les boîtes S pour le maquillage sont exactement ce qu'il fallait.</p>
       <div class="r-author">
         <div class="r-avatar" style="background:#FFF0E8">☀️</div>
         <div><div class="r-name">Léa K.</div><div class="r-loc">Béjaïa</div></div>
@@ -649,7 +506,7 @@ footer {
     </div>
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
-      <p class="r-text">Rapport qualité-prix imbattable. Je vais en commander un deuxième !</p>
+      <p class="r-text" data-fr="Rapport qualité-prix imbattable. Je vais en commander un deuxième !" data-ar="جودة/سعر لا يُضاهى. سأطلب مجموعة ثانية!">Rapport qualité-prix imbattable. Je vais en commander un deuxième !</p>
       <div class="r-author">
         <div class="r-avatar" style="background:var(--blush)">💐</div>
         <div><div class="r-name">Yasmine R.</div><div class="r-loc">Constantine</div></div>
@@ -660,9 +517,9 @@ footer {
 
 <!-- CTA -->
 <section class="cta-section">
-  <h2>Ton intérieur mérite<br><em>mieux.</em></h2>
-  <p>Commande maintenant et reçois ton lot sous 48h.</p>
-  <a href="#lots" class="btn-white">Choisir mon lot →</a>
+  <h2 data-fr="Ton intérieur mérite<br><em>mieux.</em>" data-ar="منزلك يستحق<br><em>الأفضل.</em>">Ton intérieur mérite<br><em>mieux.</em></h2>
+  <p data-fr="Commande maintenant et reçois ton lot sous 48h." data-ar="اطلبي الآن واستلمي طردك خلال 48 ساعة.">Commande maintenant et reçois ton lot sous 48h.</p>
+  <a href="#lots" class="btn-white" data-fr="Choisir mon lot →" data-ar="← اختاري طردك">Choisir mon lot →</a>
 </section>
 
 <footer>
@@ -672,32 +529,71 @@ footer {
 
 <div class="toast" id="toast"></div>
 
+<script src="../js/config.js"></script>
 <script>
-const B   = '../assets/';
+// ── Traduction FR/AR ──
+const API = API_URL;
+let currentLang = localStorage.getItem('nidly_lang') || 'fr';
 
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('nidly_lang', lang);
+  const html = document.documentElement;
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+  // Boutons actifs
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === (lang === 'fr' ? 'FR' : 'ع'));
+  });
+
+  // Traduire tous les éléments avec data-fr / data-ar
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    const txt = el.getAttribute(`data-${lang}`);
+    if (txt) el.innerHTML = txt;
+  });
+
+  // Mettre à jour toast et panier
+  updateCartCount();
+}
+
+function updateCartCount() {
+  try {
+    const cart = JSON.parse(localStorage.getItem('nidly_cart') || '[]');
+    const tot = cart.reduce((s, i) => s + i.qty, 0);
+    const btn = document.getElementById('cartBtn');
+    if (btn) btn.innerHTML = `🛍 <span data-fr="Panier" data-ar="السلة">${currentLang === 'ar' ? 'السلة' : 'Panier'}</span> (${tot})`;
+  } catch(e) {}
+}
+
+// ── Lots ──
+const B = '../assets/';
 const META = {
   'lot-mini': {
-    tag:'🌱 Pour commencer', featured:false,
-    tagline:'L\'essentiel pour s\'organiser.',
+    tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
+    tagline_fr:'L\'essentiel pour s\'organiser.', tagline_ar:'الأساسيات للتنظيم.',
     compo:[{n:'1×',s:'XL',c:'var(--terra)'},{n:'2×',s:'L',c:'var(--bark)'},{n:'5×',s:'S',c:'var(--sage)'}],
     total:8, savings:null,
-    uses:['💄 Maquillage','💍 Bijoux','🧦 Chaussettes','✏️ Bureau'],
+    uses_fr:['💄 Maquillage','💍 Bijoux','🧦 Chaussettes','✏️ Bureau'],
+    uses_ar:['💄 مكياج','💍 مجوهرات','🧦 جوارب','✏️ مكتب'],
     imgs:[B+'boiteslot1.png', B+'boiteslotllp6.jpg']
   },
   'lot-standard': {
-    tag:'🔥 Le plus populaire', featured:true, pop:'⭐ Recommandé',
-    tagline:'L\'équilibre parfait entre quantité et prix.',
+    tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true, pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
+    tagline_fr:'L\'équilibre parfait entre quantité et prix.', tagline_ar:'التوازن المثالي بين الكمية والسعر.',
     compo:[{n:'2×',s:'XL',c:'var(--terra)'},{n:'3×',s:'L',c:'var(--bark)'},{n:'6×',s:'S',c:'var(--sage)'}],
-    total:11, savings:'🌿 Meilleur rapport',
-    uses:['💄 Maquillage','👙 Sous-vêtements','📚 Bureau','🍝 Cuisine'],
+    total:11, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
+    uses_fr:['💄 Maquillage','👙 Sous-vêtements','📚 Bureau','🍝 Cuisine'],
+    uses_ar:['💄 مكياج','👙 ملابس داخلية','📚 مكتب','🍝 مطبخ'],
     imgs:[B+'boiteslotllp1.jpg', B+'boiteslotllp4.jpg', B+'boiteslot1.png']
   },
   'lot-mega': {
-    tag:'👑 Organisation totale', featured:false,
-    tagline:'Pour transformer toute la maison.',
+    tag_fr:'👑 Organisation totale', tag_ar:'👑 تنظيم شامل', featured:false,
+    tagline_fr:'Pour transformer toute la maison.', tagline_ar:'لتحويل المنزل بأكمله.',
     compo:[{n:'4×',s:'XL',c:'var(--terra)'},{n:'6×',s:'L',c:'var(--bark)'},{n:'12×',s:'S',c:'var(--sage)'}],
-    total:22, savings:'✨ Économise le plus',
-    uses:['🏠 Maison entière','🍝 Cuisine','👗 Dressing','💄 Vanity'],
+    total:22, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
+    uses_fr:['🏠 Maison entière','🍝 Cuisine','👗 Dressing','💄 Vanity'],
+    uses_ar:['🏠 المنزل كله','🍝 مطبخ','👗 دولاب','💄 طاولة المكياج'],
     imgs:[B+'BAA.png', B+'boiteslotllp1.jpg', B+'boiteslotllp4.jpg']
   }
 };
@@ -711,7 +607,15 @@ const FALLBACK = [
 function cardHTML(lot) {
   const slug = lot.slug||'lot-mini';
   const m = META[slug]||META['lot-mini'];
+  const lang = currentLang;
   const price = lot.price||0;
+  const tag = m[`tag_${lang}`] || m.tag_fr;
+  const tagline = m[`tagline_${lang}`] || m.tagline_fr;
+  const uses = (m[`uses_${lang}`] || m.uses_fr).map(u=>`<span class="u-tag">${u}</span>`).join('');
+  const savings = m[`savings_${lang}`] || m.savings_fr || null;
+  const pop = m[`pop_${lang}`] || m.pop_fr || '';
+  const addLabel = lang === 'ar' ? 'أضيفي ←' : 'Ajouter →';
+
   const photos = (m.imgs||[]).map((url,i)=>
     `<img src="${url}" alt="" class="${i===0?'active':''}" loading="${i===0?'eager':'lazy'}">`
   ).join('');
@@ -720,27 +624,26 @@ function cardHTML(lot) {
     : '';
   const compo = m.compo.map(c=>
     `<div class="c-chip"><span class="cn" style="color:${c.c}">${c.n}</span><span class="cs">${c.s}</span></div>`
-  ).join('') + `<div class="c-total">= ${m.total} boîtes</div>`;
-  const uses = m.uses.map(u=>`<span class="u-tag">${u}</span>`).join('');
+  ).join('') + `<div class="c-total">= ${m.total} ${lang==='ar'?'صناديق':'boîtes'}</div>`;
 
   return `
   <div class="lot-card${m.featured?' featured':''}" data-slug="${slug}">
-    ${m.featured?`<div class="pop-ribbon">${m.pop}</div>`:''}
+    ${m.featured?`<div class="pop-ribbon">${pop}</div>`:''}
     <div class="lot-photo" id="gallery-${slug}">
       ${photos}${dots}
-      <div class="lot-tag-bar"><span class="lot-tag-label">${m.tag}</span></div>
+      <div class="lot-tag-bar"><span class="lot-tag-label">${tag}</span></div>
     </div>
     <div class="lot-body">
       <div class="lot-name">${lot.name}</div>
-      <div class="lot-tagline">${lot.tagline||m.tagline}</div>
+      <div class="lot-tagline">${tagline}</div>
       <div class="lot-compo">${compo}</div>
       <div class="uses-row">${uses}</div>
       <div class="lot-foot">
         <div>
           <div class="lot-price">${price.toLocaleString('fr-DZ')} DA</div>
-          ${m.savings?`<span class="lot-save">${m.savings}</span>`:''}
+          ${savings?`<span class="lot-save">${savings}</span>`:''}
         </div>
-        <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">Ajouter →</button>
+        <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
       </div>
     </div>
   </div>`;
@@ -788,22 +691,17 @@ function addToCart(id,name,price,img='') {
     const ex=cart.find(i=>i.id===id);
     if(ex) ex.qty++; else cart.push({id,name,price,qty:1,img});
     localStorage.setItem('nidly_cart',JSON.stringify(cart));
-    const tot=cart.reduce((s,i)=>s+i.qty,0);
-    const btn=document.getElementById('cartBtn');
-    if(btn) btn.textContent=`🛍 Panier (${tot})`;
+    updateCartCount();
   } catch(e){}
   const t=document.getElementById('toast');
-  t.textContent=`✓ ${name} ajouté !`;
+  const msg = currentLang === 'ar' ? `✓ تمت الإضافة!` : `✓ ${name} ajouté !`;
+  t.textContent = msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-try {
-  const c=JSON.parse(localStorage.getItem('nidly_cart')||'[]');
-  const tot=c.reduce((s,i)=>s+i.qty,0);
-  if(tot) document.getElementById('cartBtn').textContent=`🛍 Panier (${tot})`;
-} catch(e){}
-
+// Init
+setLang(currentLang);
 render();
 </script>
 </body>
