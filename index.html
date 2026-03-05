@@ -392,10 +392,10 @@
 <nav>
   <a href="#" class="nav-logo">Ni<span>dly</span></a>
   <div class="nav-links">
-    <a href="#">Rangement</a>
-    <a href="#">Salle de bain</a>
-    <a href="#">Cuisine</a>
-    <a href="#">À propos</a>
+    <a href="#products">Rangement</a>
+    <a href="#products">Salle de bain</a>
+    <a href="#products">Cuisine</a>
+    <a href="#products">À propos</a>
   </div>
   <a href="./cart.html" class="nav-cart" style="text-decoration:none;display:inline-block;">🛍 Panier (0)</a>
 </nav>
@@ -535,7 +535,7 @@ async function loadProducts() {
   const metaValues = Object.values(CARD_META);
 
   try {
-    const res = await fetch('http://localhost:3000/api/products');
+const res = await fetch(`${API_URL}/api/products`);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const products = await res.json();
 
