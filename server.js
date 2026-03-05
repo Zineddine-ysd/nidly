@@ -189,15 +189,23 @@ async function updateOrderStatus(orderId, status) {
   }
   return null;
 }
-
 // ─── API Wilayas & Communes ───
 app.get('/api/wilayas', async (req, res) => {
   if (supabase) {
     try {
-      const { data, error } = await supabase.from('wilayas').select('*').order('nom');
-      if (!error) return res.json(data || []);
+      const { data, error } = await supabase
+        .from('wilayas')
+        .select('id, nom, nom_arabe, prix_desk, prix_maison')
+        .order('id');  // order par id (numéro wilaya) plutôt que nom
+
+      if (error) {
+        console.error('Supabase wilayas error:', error);
+        return res.status(500).json({ message: error.message });
+      }
+      return res.json(data || []);
     } catch (err) {
       console.error('Erreur wilayas:', err);
+      return res.status(500).json({ message: 'Erreur serveur' });
     }
   }
   res.json([]);
@@ -206,18 +214,35 @@ app.get('/api/wilayas', async (req, res) => {
 app.get('/api/wilayas/:id/communes', async (req, res) => {
   if (supabase) {
     try {
+      const wilayaId = req.params.id; // ex: "6"
+      const wilayaCode = String(wilayaId).padStart(2, '0'); // ex: "06"
+
+      // Ta table communes utilise wilaya_code (ex: '06') pas wilaya_id
       const { data, error } = await supabase
         .from('communes')
-        .select('*')
-        .eq('wilaya_id', req.params.id)
-        .order('nom');
-      if (!error) return res.json(data || []);
+        .select('id, commune_name, commune_name_ascii, wilaya_code')
+        .or(`wilaya_code.eq.${wilayaCode},wilaya_code.eq.${wilayaId}`)
+        .order('commune_name_ascii');
+
+      if (error) {
+        console.error('Supabase communes error:', error);
+        return res.status(500).json({ message: error.message });
+      }
+      return res.json(data || []);
     } catch (err) {
       console.error('Erreur communes:', err);
+      return res.status(500).json({ message: 'Erreur serveur' });
     }
   }
   res.json([]);
 });
+
+
+
+
+
+
+
 
 // ─── API Produits ───
 app.get('/api/products', async (req, res) => {
@@ -364,7 +389,7 @@ app.post('/api/orders', async (req, res) => {
 
 
 app.listen(PORT, () => {
-  console.log(`Nidly API démarrée sur https://nidly.onrender.com`);
+  console.log(`Nidly API démarrée sur http://localhost:${PORT}`);
 
   if (supabase) {
     console.log('✅ Supabase connecté');
