@@ -580,7 +580,7 @@ const META = {
   'lot-mini': {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
     tagline_fr:'L\'essentiel pour s\'organiser.', tagline_ar:'الأساسيات للتنظيم.',
-    compo:[{n:'1×',s:'XL',c:'var(--terra)'},{n:'2×',s:'L',c:'var(--bark)'},{n:'5×',s:'S',c:'var(--sage)'}],
+    compo:[{n:'1×',s:'XL',c:'var(--terra)'},{n:'2×',s:'L',c:'var(--bark)'},{n:'4×',s:'M',c:'var(--sage)'}],
     total:8, savings:null,
     uses_fr:['💄 Maquillage','💍 Bijoux','🧦 Chaussettes','✏️ Bureau'],
     uses_ar:['💄 مكياج','💍 مجوهرات','🧦 جوارب','✏️ مكتب'],
@@ -589,7 +589,7 @@ const META = {
   'lot-standard': {
     tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true, pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
     tagline_fr:'L\'équilibre parfait entre quantité et prix.', tagline_ar:'التوازن المثالي بين الكمية والسعر.',
-    compo:[{n:'2×',s:'XL',c:'var(--terra)'},{n:'4×',s:'L',c:'var(--bark)'},{n:'6×',s:'S',c:'var(--sage)'}],
+    compo:[{n:'2×',s:'XL',c:'var(--terra)'},{n:'4×',s:'L',c:'var(--bark)'},{n:'6×',s:'M',c:'var(--sage)'}],
     total:12, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
     uses_fr:['💄 Maquillage','👙 Sous-vêtements','📚 Bureau','🍝 Cuisine'],
     uses_ar:['💄 مكياج','👙 ملابس داخلية','📚 مكتب','🍝 مطبخ'],
@@ -598,7 +598,7 @@ const META = {
   'lot-mega': {
     tag_fr:'👑 Organisation totale', tag_ar:'👑 تنظيم شامل', featured:false,
     tagline_fr:'Pour transformer toute la maison.', tagline_ar:'لتحويل المنزل بأكمله.',
-    compo:[{n:'4×',s:'XL',c:'var(--terra)'},{n:'8×',s:'L',c:'var(--bark)'},{n:'12×',s:'S',c:'var(--sage)'}],
+    compo:[{n:'4×',s:'XL',c:'var(--terra)'},{n:'8×',s:'L',c:'var(--bark)'},{n:'12×',s:'M',c:'var(--sage)'}],
     total:24, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
     uses_fr:['🏠 Maison entière','🍝 Cuisine','👗 Dressing','💄 Vanity'],
     uses_ar:['🏠 المنزل كله','🍝 مطبخ','👗 دولاب','💄 طاولة المكياج'],
@@ -607,9 +607,9 @@ const META = {
 };
 const ORDER = ['lot-mini','lot-standard','lot-mega'];
 const FALLBACK = [
-  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:1900},
-  {id:'2',slug:'lot-standard',name:'Lot Standard',price:2900},
-  {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5000},
+  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2050},
+  {id:'2',slug:'lot-standard',name:'Lot Standard',price:3200},
+  {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5400},
 ];
 
 function cardHTML(lot) {
