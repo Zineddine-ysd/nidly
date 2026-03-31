@@ -468,10 +468,10 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
       </tr>
     </thead>
     <tbody>
-      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>8</td><td class="hl">12</td><td>24</td></tr>
+      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>8</td><td class="hl">11</td><td>22</td></tr>
       <tr><td data-fr="Boîtes XL" data-ar="صناديق XL">Boîtes XL</td><td>1</td><td class="hl">2</td><td>4</td></tr>
       <tr><td data-fr="Boîtes L" data-ar="صناديق L">Boîtes L</td><td>2</td><td class="hl">4</td><td>8</td></tr>
-      <tr><td data-fr="Boîtes M" data-ar="صناديق S">Boîtes M</td><td>5</td><td class="hl">6</td><td>12</td></tr>
+      <tr><td data-fr="Boîtes M" data-ar="صناديق S">Boîtes M</td><td>3</td><td class="hl">5</td><td>10</td></tr>
       <tr><td data-fr="Idéal pour" data-ar="مثالي لـ">Idéal pour</td><td data-fr="1 tiroir" data-ar="درج واحد">1 tiroir</td><td class="hl" data-fr="1–2 tiroirs" data-ar="1-2 أدراج">1–2 tiroirs</td><td data-fr="3-4 tiroirs" data-ar="3-4 أدراج">3-4 tiroirs</td></tr>
       <tr>
         <td data-fr="Prix" data-ar="السعر">Prix</td>
@@ -580,7 +580,7 @@ const META = {
   'lot-mini': {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
     tagline_fr:'L\'essentiel pour s\'organiser.', tagline_ar:'الأساسيات للتنظيم.',
-    compo:[{n:'1×',s:'XL',c:'var(--terra)'},{n:'2×',s:'L',c:'var(--bark)'},{n:'4×',s:'M',c:'var(--sage)'}],
+    compo:[{n:'1×',s:'XL',c:'var(--terra)'},{n:'2×',s:'L',c:'var(--bark)'},{n:'3×',s:'M',c:'var(--sage)'}],
     total:8, savings:null,
     uses_fr:['💄 Maquillage','💍 Bijoux','🧦 Chaussettes','✏️ Bureau'],
     uses_ar:['💄 مكياج','💍 مجوهرات','🧦 جوارب','✏️ مكتب'],
@@ -589,7 +589,7 @@ const META = {
   'lot-standard': {
     tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true, pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
     tagline_fr:'L\'équilibre parfait entre quantité et prix.', tagline_ar:'التوازن المثالي بين الكمية والسعر.',
-    compo:[{n:'2×',s:'XL',c:'var(--terra)'},{n:'4×',s:'L',c:'var(--bark)'},{n:'6×',s:'M',c:'var(--sage)'}],
+    compo:[{n:'2×',s:'XL',c:'var(--terra)'},{n:'4×',s:'L',c:'var(--bark)'},{n:'5×',s:'M',c:'var(--sage)'}],
     total:12, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
     uses_fr:['💄 Maquillage','👙 Sous-vêtements','📚 Bureau','🍝 Cuisine'],
     uses_ar:['💄 مكياج','👙 ملابس داخلية','📚 مكتب','🍝 مطبخ'],
@@ -598,7 +598,7 @@ const META = {
   'lot-mega': {
     tag_fr:'👑 Organisation totale', tag_ar:'👑 تنظيم شامل', featured:false,
     tagline_fr:'Pour transformer toute la maison.', tagline_ar:'لتحويل المنزل بأكمله.',
-    compo:[{n:'4×',s:'XL',c:'var(--terra)'},{n:'8×',s:'L',c:'var(--bark)'},{n:'12×',s:'M',c:'var(--sage)'}],
+    compo:[{n:'4×',s:'XL',c:'var(--terra)'},{n:'8×',s:'L',c:'var(--bark)'},{n:'10×',s:'M',c:'var(--sage)'}],
     total:24, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
     uses_fr:['🏠 Maison entière','🍝 Cuisine','👗 Dressing','💄 Vanity'],
     uses_ar:['🏠 المنزل كله','🍝 مطبخ','👗 دولاب','💄 طاولة المكياج'],
@@ -608,8 +608,8 @@ const META = {
 const ORDER = ['lot-mini','lot-standard','lot-mega'];
 const FALLBACK = [
   {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2050},
-  {id:'2',slug:'lot-standard',name:'Lot Standard',price:3200},
-  {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5400},
+  {id:'2',slug:'lot-standard',name:'Lot Standard',price:3150},
+  {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5250},
 ];
 
 function cardHTML(lot) {
