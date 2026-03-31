@@ -13,7 +13,7 @@
     --charcoal: #2C2420;
     --sage: #A8B5A0;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--cream); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
 
   .admin-nav {
@@ -28,12 +28,48 @@
   .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
   h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--charcoal); margin-bottom: 1.5rem; }
 
+  /* ── Filtres ── */
+  .filters-bar {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(212,165,160,0.2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .filters-bar label { font-size: 0.8rem; color: var(--bark); font-weight: 500; white-space: nowrap; }
+  .filters-bar input[type="date"], .filters-bar select {
+    padding: 0.45rem 0.7rem;
+    border: 1.5px solid rgba(212,165,160,0.4);
+    border-radius: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    color: var(--charcoal);
+    background: var(--cream);
+  }
+  .filter-group { display: flex; align-items: center; gap: 0.5rem; }
+  .btn-reset {
+    padding: 0.45rem 0.9rem;
+    background: none;
+    border: 1.5px solid rgba(212,165,160,0.4);
+    border-radius: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    color: var(--bark);
+    cursor: pointer;
+  }
+  .btn-reset:hover { background: rgba(212,165,160,0.1); }
+  .orders-count { margin-left: auto; font-size: 0.82rem; color: var(--bark); }
+
+  /* ── Cards ── */
   .order-card {
     background: white; border-radius: 1rem; padding: 1.5rem;
     margin-bottom: 1rem; border: 1px solid rgba(212,165,160,0.2);
     box-shadow: 0 4px 20px rgba(0,0,0,0.04);
   }
-
   .order-header {
     display: flex; justify-content: space-between; align-items: flex-start;
     flex-wrap: wrap; gap: 1rem; margin-bottom: 1.2rem;
@@ -46,17 +82,13 @@
     padding: 0.35rem 0.8rem; border-radius: 2rem;
     font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
   }
-  .status-pending  { background: #FFF3E0; color: #E65100; }
+  .status-pending   { background: #FFF3E0; color: #E65100; }
   .status-confirmed { background: #E8F5E9; color: #2E7D32; }
-  .status-shipped  { background: #E3F2FD; color: #1565C0; }
+  .status-shipped   { background: #E3F2FD; color: #1565C0; }
   .status-delivered { background: #D6E0D2; color: #33691E; }
 
-  /* ── Grid infos ── */
   .order-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;
   }
   @media (max-width: 600px) { .order-grid { grid-template-columns: 1fr; } }
 
@@ -67,6 +99,28 @@
   }
   .info-block .value { color: var(--charcoal); line-height: 1.5; }
   .info-block .value span { display: block; }
+
+  /* ── Boutons contact ── */
+  .contact-actions { display: flex; gap: 0.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
+  .btn-call {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: #E8F5E9; color: #2E7D32;
+    border: none; border-radius: 0.5rem;
+    padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    text-decoration: none; transition: background .2s;
+  }
+  .btn-call:hover { background: #C8E6C9; }
+  .btn-copy {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(196,123,107,0.1); color: var(--bark);
+    border: none; border-radius: 0.5rem;
+    padding: 0.35rem 0.75rem; font-size: 0.78rem; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background .2s;
+  }
+  .btn-copy:hover { background: rgba(196,123,107,0.2); }
+  .btn-copy.copied { background: #E8F5E9; color: #2E7D32; }
 
   .order-items-list { font-size: 0.9rem; color: var(--bark); line-height: 1.7; }
   .order-items-list .item-line { display: flex; justify-content: space-between; }
@@ -99,9 +153,22 @@
 
   .empty-state { text-align: center; padding: 4rem 2rem; color: var(--bark); }
   .loading { text-align: center; padding: 3rem; color: var(--bark); }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    background: var(--charcoal); color: white;
+    padding: 0.6rem 1.2rem; border-radius: 2rem;
+    font-size: 0.85rem; opacity: 0; pointer-events: none;
+    transition: opacity .3s; z-index: 9999;
+  }
+  .toast.show { opacity: 1; }
 </style>
 </head>
 <body>
+
+<div class="toast" id="toast">Copié ✓</div>
+
 <nav class="admin-nav">
   <a href="orders.html">📦 Commandes</a>
   <a href="login.html" class="logout">Déconnexion</a>
@@ -109,6 +176,31 @@
 
 <div class="container">
   <h1>Gestion des commandes</h1>
+
+  <!-- ── Filtres ── -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label>Du</label>
+      <input type="date" id="filterFrom">
+    </div>
+    <div class="filter-group">
+      <label>Au</label>
+      <input type="date" id="filterTo">
+    </div>
+    <div class="filter-group">
+      <label>Statut</label>
+      <select id="filterStatus">
+        <option value="">Tous</option>
+        <option value="pending">En attente</option>
+        <option value="confirmed">Confirmée</option>
+        <option value="shipped">Expédiée</option>
+        <option value="delivered">Livrée</option>
+      </select>
+    </div>
+    <button class="btn-reset" onclick="resetFilters()">↺ Réinitialiser</button>
+    <span class="orders-count" id="ordersCount"></span>
+  </div>
+
   <div id="ordersList"><div class="loading">Chargement...</div></div>
 </div>
 
@@ -116,6 +208,43 @@
 <script>
   const token = localStorage.getItem('nidly_admin_token');
   if (!token) window.location.href = 'login.html';
+
+  let allOrders = [];
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copié';
+      btn.classList.add('copied');
+      showToast('Copié dans le presse-papier');
+      setTimeout(() => { btn.innerHTML = '📋 Copier'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function copyAllInfo(order) {
+    const c = order.customer || {};
+    const wilaya  = order.wilaya_name  || `Wilaya #${order.wilaya_id}`  || '—';
+    const commune = order.commune_name || `Commune #${order.commune_id}` || '—';
+    const items   = order.items.map(i => `- ${i.name} x${i.qty} = ${i.price * i.qty} DA`).join('\n');
+    const total   = order.total_amount || '—';
+    const shipping = order.shipping_type === 'maison' ? 'À domicile' : 'Point relais';
+    const text = `Commande #${order.id.slice(0,8).toUpperCase()}
+Client : ${c.name || '—'}
+Téléphone : ${c.phone || '—'}
+Adresse : ${c.address || '—'}, ${commune}, ${wilaya}
+Livraison : ${shipping} — ${order.shipping_price || 0} DA
+Articles :
+${items}
+Total : ${total} DA
+${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
+    navigator.clipboard.writeText(text).then(() => showToast('Infos commande copiées ✓'));
+  }
 
   function getStatusClass(s) {
     return { pending: 'status-pending', confirmed: 'status-confirmed', shipped: 'status-shipped', delivered: 'status-delivered' }[s] || 'status-pending';
@@ -126,35 +255,25 @@
 
   function renderOrder(order) {
     const c = order.customer || {};
-
-    // Adresse complète
     const wilaya   = order.wilaya_name  || `Wilaya #${order.wilaya_id}`  || '—';
     const commune  = order.commune_name || `Commune #${order.commune_id}` || '—';
     const adresse  = [c.address, commune, wilaya].filter(Boolean).join(', ');
-
-    // Livraison
     const shippingLabel = order.shipping_type === 'maison' ? '🏠 À domicile' : '📦 Point relais';
     const shippingCost  = order.shipping_price ? `${order.shipping_price} DA` : '—';
-
-    // Articles
     const subtotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
     const itemsHtml = order.items.map(i =>
       `<div class="item-line"><span>${i.name} <small>x${i.qty}</small></span><span>${i.price * i.qty} DA</span></div>`
     ).join('');
-
     const total = order.total_amount || (subtotal + (order.shipping_price || 0));
+    const notesHtml = order.notes ? `<div class="notes-block">📝 ${order.notes}</div>` : '';
 
-    // Notes
-    const notesHtml = order.notes
-      ? `<div class="notes-block">📝 ${order.notes}</div>`
-      : '';
-
-    // Actions
     let actions = '';
     if (order.status === 'pending')   actions = `<button class="btn btn-confirm" onclick="updateStatus('${order.id}','confirmed')">✓ Confirmer</button>`;
     if (order.status === 'confirmed') actions = `<button class="btn btn-ship"    onclick="updateStatus('${order.id}','shipped')">🚚 Marquer expédiée</button>`;
     if (order.status === 'shipped')   actions = `<button class="btn btn-deliver" onclick="updateStatus('${order.id}','delivered')">✅ Marquer livrée</button>`;
     if (order.status === 'delivered') actions = '<span style="color:var(--sage);font-size:.85rem;">✔ Commande terminée</span>';
+
+    const phone = c.phone || '';
 
     return `
       <div class="order-card" data-id="${order.id}">
@@ -163,7 +282,10 @@
             <div class="order-id">Commande #${order.id.slice(0,8).toUpperCase()}</div>
             <div class="order-date">${new Date(order.createdAt).toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
           </div>
-          <span class="order-status ${getStatusClass(order.status)}">${getStatusLabel(order.status)}</span>
+          <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
+            <span class="order-status ${getStatusClass(order.status)}">${getStatusLabel(order.status)}</span>
+            <button class="btn-copy" onclick="copyAllInfo(${JSON.stringify(order).replace(/"/g,'&quot;')})">📋 Tout copier</button>
+          </div>
         </div>
 
         <div class="order-grid">
@@ -172,8 +294,13 @@
             <div class="label">👤 Client</div>
             <div class="value">
               <span><strong>${c.name || '—'}</strong></span>
-              <span>📞 ${c.phone || '—'}</span>
+              <span>📞 ${phone || '—'}</span>
               <span>📍 ${adresse}</span>
+            </div>
+            <div class="contact-actions">
+              ${phone ? `<a class="btn-call" href="tel:${phone}">📞 Appeler</a>` : ''}
+              ${phone ? `<button class="btn-copy" onclick="copyText('${phone}', this)">📋 Copier n°</button>` : ''}
+              <button class="btn-copy" onclick="copyText('${adresse}', this)">📋 Copier adresse</button>
             </div>
           </div>
 
@@ -200,11 +327,47 @@
         </div>
 
         ${notesHtml}
-
         <div class="order-actions">${actions}</div>
       </div>
     `;
   }
+
+  function applyFilters() {
+    const from   = document.getElementById('filterFrom').value;
+    const to     = document.getElementById('filterTo').value;
+    const status = document.getElementById('filterStatus').value;
+    const el     = document.getElementById('ordersList');
+
+    let filtered = allOrders.filter(order => {
+      const date = new Date(order.createdAt);
+      if (from && date < new Date(from)) return false;
+      if (to   && date > new Date(to + 'T23:59:59')) return false;
+      if (status && order.status !== status) return false;
+      return true;
+    });
+
+    document.getElementById('ordersCount').textContent =
+      filtered.length === allOrders.length
+        ? `${allOrders.length} commande(s)`
+        : `${filtered.length} / ${allOrders.length} commande(s)`;
+
+    if (!filtered.length) {
+      el.innerHTML = '<div class="empty-state">Aucune commande pour ces filtres.</div>';
+    } else {
+      el.innerHTML = filtered.map(renderOrder).join('');
+    }
+  }
+
+  function resetFilters() {
+    document.getElementById('filterFrom').value = '';
+    document.getElementById('filterTo').value = '';
+    document.getElementById('filterStatus').value = '';
+    applyFilters();
+  }
+
+  document.getElementById('filterFrom').addEventListener('change', applyFilters);
+  document.getElementById('filterTo').addEventListener('change', applyFilters);
+  document.getElementById('filterStatus').addEventListener('change', applyFilters);
 
   async function loadOrders() {
     const el = document.getElementById('ordersList');
@@ -217,12 +380,8 @@
         window.location.href = 'login.html';
         return;
       }
-      const orders = await res.json();
-      if (!orders.length) {
-        el.innerHTML = '<div class="empty-state">Aucune commande pour le moment.</div>';
-      } else {
-        el.innerHTML = orders.map(renderOrder).join('');
-      }
+      allOrders = await res.json();
+      applyFilters();
     } catch (err) {
       el.innerHTML = '<div class="empty-state">Impossible de charger les commandes. Vérifiez que le backend est démarré.</div>';
     }
