@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-67J6Z9L6D7');
 </script>
 <meta charset="UTF-8">
@@ -51,16 +50,31 @@
   .success-box button:hover { background: var(--bark); }
   @keyframes popIn { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-  /* Lang toggle */
   .lang-toggle { background: white; border: 1.5px solid rgba(196,123,107,.3); border-radius: 2rem; padding: .3rem .2rem; display: flex; gap: .1rem; }
   .lang-btn { padding: .25rem .6rem; border-radius: 2rem; border: none; background: transparent; font-size: .68rem; font-weight: 500; color: var(--bark); cursor: pointer; transition: all .2s; }
   .lang-btn.active { background: var(--terracotta); color: white; }
 
-  /* RTL */
   html[dir="rtl"] .cart-page h1,
   html[dir="rtl"] .checkout-form h2,
   html[dir="rtl"] .form-row label { text-align: right; }
   html[dir="rtl"] .cart-item { flex-direction: row-reverse; }
+
+  /* ── Bandeau avertissement retours ── */
+  .order-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    background: #FFF5F5;
+    border: 1.5px solid #E07070;
+    border-radius: 0.75rem;
+    padding: 1rem 1.2rem;
+    margin-bottom: 2rem;
+    font-size: 0.88rem;
+    color: #6B2020;
+    line-height: 1.6;
+  }
+  .order-warning-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.05rem; }
+  html[dir="rtl"] .order-warning { flex-direction: row-reverse; text-align: right; }
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -106,6 +120,17 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></n
 
 <div class="cart-page">
   <h1 data-fr="Votre panier" data-ar="سلة التسوق">Votre panier</h1>
+
+  <!-- Bandeau avertissement retours -->
+  <div class="order-warning">
+    <span class="order-warning-icon">🚫</span>
+    <span id="orderWarningText">
+      <strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong>
+      Les retours ne sont pas acceptés — chaque commande est traitée et expédiée rapidement.
+      Ne passez pas commande pour annuler ensuite, cela nous fait perdre du temps et du stock précieux.
+    </span>
+  </div>
+
   <div id="cartContent"></div>
   <div id="checkoutSection" style="display:none;">
     <div class="cart-layout">
@@ -185,6 +210,7 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></n
       successMsg: 'Votre commande a été envoyée avec succès.<br>Nous vous contacterons très bientôt.',
       serverErr: 'Impossible de contacter le serveur.',
       cartLabel: 'Panier',
+      orderWarning: '<strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong> Les retours Sont a eviter au maximum — chaque commande est traitée et expédiée rapidement. Ne passez pas commande pour annuler ensuite, cela nous fait perdre du temps et du stock précieux.',
     },
     ar: {
       emptyCart: 'سلة التسوق فارغة.',
@@ -203,6 +229,7 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></n
       successMsg: 'تم إرسال طلبك بنجاح.<br>سنتصل بك قريباً.',
       serverErr: 'تعذر الاتصال بالخادم.',
       cartLabel: 'السلة',
+      orderWarning: '<strong>اطلب فقط إذا كنت متأكداً من رغبتك في المنتج.</strong> لا يتم قبول الإرجاع — كل طلب يُعالج ويُشحن بسرعة. لا تطلب ثم تتراجع، فذلك يُضيّع وقتنا ومخزوننا المحدود.',
     }
   };
 
@@ -223,6 +250,8 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></n
     });
     const lbl = document.getElementById('cartLabel');
     if (lbl) lbl.textContent = t('cartLabel');
+    const warningText = document.getElementById('orderWarningText');
+    if (warningText) warningText.innerHTML = t('orderWarning');
     renderCart();
   }
 
