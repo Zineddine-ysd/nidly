@@ -26,30 +26,95 @@
   .cart-summary { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(212,165,160,0.3); }
   .summary-line { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 0.35rem; }
   .summary-line.total { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-top: 0.5rem; }
+  .summary-line.shipping-loading { color: var(--bark); opacity: 0.6; font-size: 0.85rem; }
+
   .checkout-form { background: white; padding: 2rem; border-radius: 1rem; border: 1px solid rgba(212,165,160,0.2); }
   .checkout-form h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 1.5rem; }
   .form-row { margin-bottom: 1rem; }
   .form-row label { display: block; font-size: 0.8rem; color: var(--bark); margin-bottom: 0.4rem; }
-  .form-row input, .form-row select { width: 100%; padding: 0.7rem 0.8rem; border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem; font-size: 0.9rem; box-sizing: border-box; }
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%; padding: 0.7rem 0.8rem;
+    border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem;
+    font-size: 0.9rem; box-sizing: border-box;
+    transition: border-color .2s;
+  }
+  .form-row input:focus, .form-row select:focus { outline: none; border-color: var(--terracotta); }
   .form-row small { display: block; margin-top: 0.3rem; font-size: 0.75rem; color: var(--bark); opacity: 0.8; }
+  .form-row select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Two-col name row */
+  .form-row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1rem; }
+
+  /* Shipping options */
   .shipping-options { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.3rem; }
-  .shipping-option-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.9rem; line-height: 1.2; }
-  .shipping-option-item input[type="radio"] { width: 18px; height: 18px; min-width: 18px; accent-color: var(--terracotta); cursor: pointer; margin: 0; }
-  .btn-order { background: var(--terracotta); color: white; padding: 1rem 2rem; border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 1.2rem; width: 100%; font-size: 1rem; }
+  .shipping-option-item {
+    display: flex; align-items: flex-start; gap: 0.6rem;
+    cursor: pointer; font-size: 0.88rem; line-height: 1.3;
+    border: 1.5px solid rgba(212,165,160,0.3); border-radius: 0.5rem;
+    padding: 0.7rem 0.8rem; transition: border-color .2s, background .2s;
+  }
+  .shipping-option-item:hover { border-color: var(--terracotta); background: rgba(212,165,160,0.05); }
+  .shipping-option-item.selected { border-color: var(--terracotta); background: rgba(212,165,160,0.08); }
+  .shipping-option-item input[type="radio"] { width: 16px; height: 16px; min-width: 16px; accent-color: var(--terracotta); cursor: pointer; margin-top: 2px; }
+  .shipping-option-label { display: flex; flex-direction: column; gap: 0.15rem; }
+  .shipping-option-name { font-weight: 500; }
+  .shipping-option-fee { color: var(--terracotta); font-size: 0.8rem; }
+  .shipping-option-fee.loading { color: var(--bark); opacity: 0.5; }
+
+  /* Service type (Express/Eco) */
+  .service-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.3rem; }
+  .service-option-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid rgba(212,165,160,0.3); border-radius: 0.5rem;
+    padding: 0.6rem 0.8rem; cursor: pointer; font-size: 0.85rem;
+    transition: border-color .2s, background .2s;
+  }
+  .service-option-item:hover { border-color: var(--terracotta); }
+  .service-option-item.selected { border-color: var(--terracotta); background: rgba(212,165,160,0.08); }
+  .service-option-item input[type="radio"] { accent-color: var(--terracotta); }
+  .service-badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 1rem; margin-left: auto; }
+  .badge-express { background: #FFF3E0; color: #E65100; }
+  .badge-eco { background: #E8F5E9; color: #2E7D32; }
+
+  /* Center select */
+  #centerRow { display: none; }
+  #centerRow.visible { display: block; }
+  #centerSelect { margin-top: 0.4rem; }
+
+  .btn-order {
+    background: var(--terracotta); color: white; padding: 1rem 2rem;
+    border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif;
+    cursor: pointer; margin-top: 1.2rem; width: 100%; font-size: 1rem;
+    transition: background .2s, opacity .2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
   .btn-order:hover { background: var(--bark); }
+  .btn-order:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-spinner {
+    width: 16px; height: 16px; border: 2px solid white; border-top-color: transparent;
+    border-radius: 50%; animation: spin .7s linear infinite; display: none;
+  }
+  .btn-order.loading .btn-spinner { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   .empty-cart { text-align: center; padding: 4rem; color: var(--bark); }
   .empty-cart a { color: var(--terracotta); }
-  @media (max-width: 800px) { .cart-layout { grid-template-columns: 1fr; } }
+  @media (max-width: 800px) { .cart-layout { grid-template-columns: 1fr; } .form-row-split { grid-template-columns: 1fr; } }
+
+  /* Success modal */
   .success-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 9999; }
   .success-modal.active { opacity: 1; pointer-events: all; }
   .success-box { background: white; padding: 3rem 2.5rem; border-radius: 1.5rem; text-align: center; max-width: 400px; width: 90%; animation: popIn .4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
   .success-icon { width: 70px; height: 70px; background: var(--terracotta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.2rem; }
   .success-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 1rem; }
   .success-box p { font-size: 0.95rem; color: var(--bark); margin-bottom: 1.8rem; }
+  .success-tracking { font-size: 0.8rem; background: #f5f5f5; border-radius: 0.5rem; padding: 0.5rem 1rem; margin-bottom: 1.2rem; font-family: monospace; color: #444; display: none; }
+  .success-tracking.visible { display: block; }
   .success-box button { background: var(--terracotta); color: white; border: none; padding: 0.8rem 2rem; border-radius: 3rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .3s; }
   .success-box button:hover { background: var(--bark); }
   @keyframes popIn { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+  /* Lang toggle */
   .lang-toggle { background: white; border: 1.5px solid rgba(196,123,107,.3); border-radius: 2rem; padding: .3rem .2rem; display: flex; gap: .1rem; }
   .lang-btn { padding: .25rem .6rem; border-radius: 2rem; border: none; background: transparent; font-size: .68rem; font-weight: 500; color: var(--bark); cursor: pointer; transition: all .2s; }
   .lang-btn.active { background: var(--terracotta); color: white; }
@@ -59,47 +124,27 @@
   html[dir="rtl"] .form-row label { text-align: right; }
   html[dir="rtl"] .cart-item { flex-direction: row-reverse; }
 
-  /* ── Bandeau avertissement retours ── */
-  .order-warning {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
-    background: #FFF5F5;
-    border: 1.5px solid #E07070;
-    border-radius: 0.75rem;
-    padding: 1rem 1.2rem;
-    margin-bottom: 2rem;
-    font-size: 0.88rem;
-    color: #6B2020;
-    line-height: 1.6;
-  }
+  .order-warning { display: flex; align-items: flex-start; gap: 0.85rem; background: #FFF5F5; border: 1.5px solid #E07070; border-radius: 0.75rem; padding: 1rem 1.2rem; margin-bottom: 2rem; font-size: 0.88rem; color: #6B2020; line-height: 1.6; }
   .order-warning-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.05rem; }
   html[dir="rtl"] .order-warning { flex-direction: row-reverse; text-align: right; }
 </style>
-<!-- Meta Pixel Code -->
+
+<!-- Meta Pixel -->
 <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '994276880442450');
 fbq('track', 'PageView');
 </script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></noscript>
-<!-- End Meta Pixel Code -->
 </head>
 
+<!-- Success Modal -->
 <div id="orderSuccessModal" class="success-modal">
   <div class="success-box">
     <div class="success-icon">✓</div>
     <h2 id="successTitle">Merci pour votre commande</h2>
     <p id="successMsg">Votre commande a été envoyée avec succès.<br>Nous vous contacterons très bientôt.</p>
-    <button id="closeSuccessBtn" data-fr="Continuer" data-ar="متابعة">Continuer</button>
+    <div id="successTracking" class="success-tracking"></div>
+    <button id="closeSuccessBtn">Continuer</button>
   </div>
 </div>
 
@@ -121,65 +166,127 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></n
 <div class="cart-page">
   <h1 data-fr="Votre panier" data-ar="سلة التسوق">Votre panier</h1>
 
-  <!-- Bandeau avertissement retours -->
   <div class="order-warning">
     <span class="order-warning-icon">🚫</span>
     <span id="orderWarningText">
       <strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong>
-      Les retours ne sont pas acceptés — chaque commande est traitée et expédiée rapidement.
-      Ne passez pas commande pour annuler ensuite, cela nous fait perdre du temps et du stock précieux.
+      Les retours sont à éviter au maximum — chaque commande est traitée et expédiée rapidement.
     </span>
   </div>
 
   <div id="cartContent"></div>
+
   <div id="checkoutSection" style="display:none;">
     <div class="cart-layout">
-      <div><div id="cartSummary" class="cart-summary"></div></div>
+
+      <!-- Résumé -->
+      <div>
+        <div id="cartSummary" class="cart-summary"></div>
+      </div>
+
+      <!-- Formulaire -->
       <form id="checkoutForm" class="checkout-form">
         <h2 data-fr="Informations de livraison" data-ar="معلومات التوصيل">Informations de livraison</h2>
-        <div class="form-row">
-          <label data-fr="Nom complet" data-ar="الاسم الكامل">Nom complet</label>
-          <input type="text" name="name" required placeholder="Sophie Martin">
+
+        <!-- Prénom + Nom -->
+        <div class="form-row-split">
+          <div class="form-row" style="margin-bottom:0;">
+            <label data-fr="Prénom *" data-ar="الاسم *">Prénom *</label>
+            <input type="text" name="firstname" required placeholder="Sophie">
+          </div>
+          <div class="form-row" style="margin-bottom:0;">
+            <label data-fr="Nom *" data-ar="اللقب *">Nom *</label>
+            <input type="text" name="familyname" required placeholder="Martin">
+          </div>
         </div>
+
+        <!-- Téléphone -->
         <div class="form-row">
-          <label data-fr="Téléphone" data-ar="الهاتف">Téléphone</label>
-          <input type="tel" name="phone" required placeholder="0555123456">
+          <label data-fr="Téléphone *" data-ar="الهاتف *">Téléphone *</label>
+          <input type="tel" name="phone" required placeholder="0555 123 456">
         </div>
+
+        <!-- Wilaya -->
         <div class="form-row">
-          <label data-fr="Adresse (rue, bâtiment...)" data-ar="العنوان (شارع، عمارة...)">Adresse (rue, bâtiment...)</label>
-          <input type="text" name="address" required placeholder="N° rue, immeuble, étage...">
-        </div>
-        <div class="form-row">
-          <label data-fr="Wilaya" data-ar="الولاية">Wilaya</label>
+          <label data-fr="Wilaya *" data-ar="الولاية *">Wilaya *</label>
           <select name="wilaya" id="wilayaSelect" required>
-            <option value="" data-fr="Sélectionner une wilaya" data-ar="اختر الولاية">Sélectionner une wilaya</option>
+            <option value="">— Sélectionner —</option>
           </select>
         </div>
+
+        <!-- Commune -->
         <div class="form-row">
-          <label data-fr="Commune" data-ar="البلدية">Commune</label>
+          <label data-fr="Commune *" data-ar="البلدية *">Commune *</label>
           <select name="commune" id="communeSelect" required disabled>
-            <option value="" data-fr="Choisissez d'abord la wilaya" data-ar="اختر الولاية أولاً">Choisissez d'abord la wilaya</option>
+            <option value="">Choisissez d'abord la wilaya</option>
           </select>
         </div>
+
+        <!-- Type de livraison -->
         <div class="form-row">
-          <label data-fr="Type de livraison" data-ar="نوع التوصيل">Type de livraison</label>
+          <label data-fr="Type de livraison *" data-ar="نوع التوصيل *">Type de livraison *</label>
           <div class="shipping-options">
-            <label class="shipping-option-item">
+            <label class="shipping-option-item" id="optionDesk">
               <input type="radio" name="shipping_type" value="desk" checked>
-              <span data-fr="Point relais / bureau" data-ar="نقطة استلام / مكتب">Point relais / bureau</span>
+              <div class="shipping-option-label">
+                <span class="shipping-option-name" data-fr="Point relais / Stop Desk" data-ar="نقطة استلام">Point relais / Stop Desk</span>
+                <span class="shipping-option-fee loading" id="feeDesk">—</span>
+              </div>
             </label>
-            <label class="shipping-option-item">
+            <label class="shipping-option-item" id="optionMaison">
               <input type="radio" name="shipping_type" value="maison">
-              <span data-fr="À domicile" data-ar="توصيل للمنزل">À domicile</span>
+              <div class="shipping-option-label">
+                <span class="shipping-option-name" data-fr="Livraison à domicile" data-ar="توصيل للمنزل">Livraison à domicile</span>
+                <span class="shipping-option-fee loading" id="feeMaison">—</span>
+              </div>
             </label>
           </div>
-          <small data-fr="Les frais de livraison s'adaptent à la wilaya et au type choisi." data-ar="تكاليف التوصيل تتغير حسب الولاية والنوع المختار.">Les frais de livraison s'adaptent à la wilaya et au type choisi.</small>
         </div>
+
+        <!-- Service Express / Économique -->
+        <div class="form-row">
+          <label data-fr="Service *" data-ar="نوع الخدمة *">Service *</label>
+          <div class="service-options">
+            <label class="service-option-item" id="optionEco">
+              <input type="radio" name="delivery_service" value="economique" checked>
+              <span data-fr="Économique" data-ar="اقتصادي">Économique</span>
+              <span class="service-badge badge-eco">Standard</span>
+            </label>
+            <label class="service-option-item" id="optionExpress">
+              <input type="radio" name="delivery_service" value="express">
+              <span data-fr="Express" data-ar="سريع">Express</span>
+              <span class="service-badge badge-express">Rapide ⚡</span>
+            </label>
+          </div>
+          <small data-fr="L'express est plus rapide mais peut coûter plus cher." data-ar="الخدمة السريعة أسرع لكن قد تكون أغلى.">L'express est plus rapide mais peut coûter plus cher.</small>
+        </div>
+
+        <!-- Centre Stop Desk (affiché seulement si desk sélectionné) -->
+        <div class="form-row" id="centerRow">
+          <label data-fr="Bureau Stop Desk *" data-ar="مكتب الاستلام *">Bureau Stop Desk *</label>
+          <select id="centerSelect" name="center">
+            <option value="">Choisissez d'abord la wilaya</option>
+          </select>
+          <small data-fr="Sélectionnez le bureau Yalidine où vous récupèrerez le colis." data-ar="اختر مكتب ياليدين للاستلام.">Sélectionnez le bureau Yalidine où vous récupèrerez le colis.</small>
+        </div>
+
+        <!-- Adresse (domicile uniquement) -->
+        <div class="form-row" id="addressRow">
+          <label data-fr="Adresse complète *" data-ar="العنوان الكامل *">Adresse complète *</label>
+          <input type="text" name="address" placeholder="Rue, immeuble, étage...">
+          <small data-fr="Numéro de rue, bâtiment, quartier..." data-ar="رقم الشارع، العمارة، الحي...">Numéro de rue, bâtiment, quartier...</small>
+        </div>
+
+        <!-- Notes -->
         <div class="form-row">
           <label data-fr="Notes (optionnel)" data-ar="ملاحظات (اختياري)">Notes (optionnel)</label>
           <input type="text" name="notes" placeholder="Ex: code porte, heure préférée...">
         </div>
-        <button type="submit" class="btn-order" data-fr="Valider la commande" data-ar="تأكيد الطلب">Valider la commande</button>
+
+        <button type="submit" class="btn-order" id="submitBtn">
+          <div class="btn-spinner"></div>
+          <span id="submitBtnText" data-fr="Valider la commande" data-ar="تأكيد الطلب">Valider la commande</span>
+        </button>
       </form>
     </div>
   </div>
@@ -187,233 +294,436 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></n
 
 <script src="js/config.js"></script>
 <script>
-  let WILAYAS = [];
-  let subtotal = 0;
-  let shippingPrice = 0;
-  let currentLang = localStorage.getItem('nidly_lang') || 'fr';
+// ─── État global ───
+let WILAYAS        = [];
+let currentFees    = null;  // { desk_fee, home_fee, express_desk_fee, express_home_fee }
+let subtotal       = 0;
+let shippingPrice  = 0;
+let currentLang    = localStorage.getItem('nidly_lang') || 'fr';
 
-  const T = {
-    fr: {
-      emptyCart: 'Votre panier est vide.',
-      seeProducts: 'Voir les produits',
-      subtotal: 'Sous-total produits',
-      shipping: 'Livraison',
-      total: 'Total',
-      selectWilaya: 'Sélectionner une wilaya',
-      selectCommune: 'Sélectionner une commune',
-      firstWilaya: "Choisissez d'abord la wilaya",
-      loading: 'Chargement...',
-      noCommune: 'Aucune commune trouvée',
-      errCommune: 'Erreur de chargement',
-      alertWilaya: 'Merci de sélectionner une wilaya et une commune.',
-      successTitle: 'Merci pour votre commande',
-      successMsg: 'Votre commande a été envoyée avec succès.<br>Nous vous contacterons très bientôt.',
-      serverErr: 'Impossible de contacter le serveur.',
-      cartLabel: 'Panier',
-      orderWarning: '<strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong> Les retours Sont a eviter au maximum — chaque commande est traitée et expédiée rapidement. Ne passez pas commande pour annuler ensuite, cela nous fait perdre du temps et du stock précieux.',
-    },
-    ar: {
-      emptyCart: 'سلة التسوق فارغة.',
-      seeProducts: 'عرض المنتجات',
-      subtotal: 'إجمالي المنتجات',
-      shipping: 'التوصيل',
-      total: 'المجموع',
-      selectWilaya: 'اختر الولاية',
-      selectCommune: 'اختر البلدية',
-      firstWilaya: 'اختر الولاية أولاً',
-      loading: 'جارٍ التحميل...',
-      noCommune: 'لا توجد بلديات',
-      errCommune: 'خطأ في التحميل',
-      alertWilaya: 'يرجى اختيار الولاية والبلدية.',
-      successTitle: 'شكراً على طلبك',
-      successMsg: 'تم إرسال طلبك بنجاح.<br>سنتصل بك قريباً.',
-      serverErr: 'تعذر الاتصال بالخادم.',
-      cartLabel: 'السلة',
-      orderWarning: '<strong>اطلب فقط إذا كنت متأكداً من رغبتك في المنتج.</strong> لا يتم قبول الإرجاع — كل طلب يُعالج ويُشحن بسرعة. لا تطلب ثم تتراجع، فذلك يُضيّع وقتنا ومخزوننا المحدود.',
-    }
-  };
-
-  function t(key) { return T[currentLang]?.[key] || T.fr[key]; }
-
-  function setLang(lang) {
-    currentLang = lang;
-    localStorage.setItem('nidly_lang', lang);
-    const html = document.documentElement;
-    html.setAttribute('lang', lang);
-    html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-    document.querySelectorAll('.lang-btn').forEach(b => {
-      b.classList.toggle('active', b.textContent.trim() === (lang === 'fr' ? 'FR' : 'ع'));
-    });
-    document.querySelectorAll('[data-fr]').forEach(el => {
-      const txt = el.getAttribute(`data-${lang}`);
-      if (txt) el.innerHTML = txt;
-    });
-    const lbl = document.getElementById('cartLabel');
-    if (lbl) lbl.textContent = t('cartLabel');
-    const warningText = document.getElementById('orderWarningText');
-    if (warningText) warningText.innerHTML = t('orderWarning');
-    renderCart();
+// ─── Traductions ───
+const T = {
+  fr: {
+    emptyCart: 'Votre panier est vide.',
+    seeProducts: 'Voir les produits',
+    subtotal: 'Sous-total produits',
+    shipping: 'Livraison',
+    total: 'Total',
+    selectWilaya: '— Sélectionner —',
+    selectCommune: 'Sélectionner une commune',
+    firstWilaya: "Choisissez d'abord la wilaya",
+    loadingCommune: 'Chargement communes...',
+    loadingCenter: 'Chargement bureaux...',
+    noCommune: 'Aucune commune trouvée',
+    noCenter: 'Aucun bureau dans cette wilaya',
+    selectCenter: 'Sélectionner un bureau Stop Desk',
+    errCommune: 'Erreur de chargement',
+    alertWilaya: 'Merci de sélectionner une wilaya et une commune.',
+    alertCenter: 'Merci de sélectionner un bureau Stop Desk.',
+    alertAddress: 'Merci de renseigner votre adresse.',
+    successTitle: 'Merci pour votre commande !',
+    successMsg: 'Votre commande a été envoyée avec succès.<br>Nous vous contacterons très bientôt.',
+    successTracking: '📦 Numéro de suivi Yalidine :',
+    serverErr: 'Impossible de contacter le serveur.',
+    cartLabel: 'Panier',
+    freeshipping: 'Gratuit',
+    calculating: 'Calcul en cours...',
+    orderWarning: '<strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong> Les retours sont à éviter au maximum — chaque commande est traitée et expédiée rapidement.',
+  },
+  ar: {
+    emptyCart: 'سلة التسوق فارغة.',
+    seeProducts: 'عرض المنتجات',
+    subtotal: 'إجمالي المنتجات',
+    shipping: 'التوصيل',
+    total: 'المجموع',
+    selectWilaya: '— اختر الولاية —',
+    selectCommune: 'اختر البلدية',
+    firstWilaya: 'اختر الولاية أولاً',
+    loadingCommune: 'جارٍ تحميل البلديات...',
+    loadingCenter: 'جارٍ تحميل المكاتب...',
+    noCommune: 'لا توجد بلديات',
+    noCenter: 'لا يوجد مكتب في هذه الولاية',
+    selectCenter: 'اختر مكتب Stop Desk',
+    errCommune: 'خطأ في التحميل',
+    alertWilaya: 'يرجى اختيار الولاية والبلدية.',
+    alertCenter: 'يرجى اختيار مكتب الاستلام.',
+    alertAddress: 'يرجى إدخال عنوانك.',
+    successTitle: 'شكراً على طلبك!',
+    successMsg: 'تم إرسال طلبك بنجاح.<br>سنتصل بك قريباً.',
+    successTracking: '📦 رقم التتبع:',
+    serverErr: 'تعذر الاتصال بالخادم.',
+    cartLabel: 'السلة',
+    freeshipping: 'مجاناً',
+    calculating: 'جارٍ الحساب...',
+    orderWarning: '<strong>اطلب فقط إذا كنت متأكداً من رغبتك في المنتج.</strong> لا يتم قبول الإرجاع — كل طلب يُعالج ويُشحن بسرعة.',
   }
+};
+function t(k) { return T[currentLang]?.[k] || T.fr[k]; }
 
-  function getCart() { return JSON.parse(localStorage.getItem('nidly_cart') || '[]'); }
+// ─── Langue ───
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('nidly_lang', lang);
+  const html = document.documentElement;
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.textContent.trim() === (lang === 'fr' ? 'FR' : 'ع'))
+  );
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    const txt = el.getAttribute(`data-${lang}`);
+    if (txt) el.innerHTML = txt;
+  });
+  document.getElementById('cartLabel').textContent = t('cartLabel');
+  document.getElementById('orderWarningText').innerHTML = t('orderWarning');
+  updateFeeDisplay();
+  renderCart();
+}
 
-  function updateSummary() {
-    const summaryEl = document.getElementById('cartSummary');
-    const shippingText = shippingPrice > 0 ? shippingPrice + ' DA' : '—';
-    const total = subtotal + shippingPrice;
-    summaryEl.innerHTML = `
-      <div class="summary-line"><span>${t('subtotal')}</span><span>${subtotal} DA</span></div>
-      <div class="summary-line"><span>${t('shipping')}</span><span>${shippingText}</span></div>
-      <div class="summary-line total"><span>${t('total')}</span><span>${total} DA</span></div>
-    `;
+// ─── Panier ───
+function getCart() { return JSON.parse(localStorage.getItem('nidly_cart') || '[]'); }
+
+// ─── Résumé commande ───
+function updateSummary() {
+  const summaryEl = document.getElementById('cartSummary');
+  const feeText = shippingPrice > 0
+    ? shippingPrice + ' DA'
+    : (currentFees ? t('freeshipping') : '—');
+  const total = subtotal + shippingPrice;
+  summaryEl.innerHTML = `
+    <div class="summary-line"><span>${t('subtotal')}</span><span>${subtotal} DA</span></div>
+    <div class="summary-line"><span>${t('shipping')}</span><span>${feeText}</span></div>
+    <div class="summary-line total"><span>${t('total')}</span><span>${total} DA</span></div>
+  `;
+}
+
+// ─── Calcul frais selon sélection ───
+function computeShipping() {
+  if (!currentFees) { shippingPrice = 0; updateSummary(); return; }
+  const type    = document.querySelector('input[name="shipping_type"]:checked')?.value || 'desk';
+  const service = document.querySelector('input[name="delivery_service"]:checked')?.value || 'economique';
+  if (service === 'express') {
+    shippingPrice = type === 'maison' ? Number(currentFees.express_home_fee || 0) : Number(currentFees.express_desk_fee || 0);
+  } else {
+    shippingPrice = type === 'maison' ? Number(currentFees.home_fee || 0) : Number(currentFees.desk_fee || 0);
   }
+  updateSummary();
+}
 
-  async function loadWilayas() {
-    try {
-      const res = await fetch(`${API_URL}/api/wilayas`);
-      const data = await res.json();
-      WILAYAS = data || [];
-      const select = document.getElementById('wilayaSelect');
-      select.innerHTML = `<option value="">${t('selectWilaya')}</option>` +
-        WILAYAS.map(w => {
-          const code = String(w.id).padStart(2, '0');
-          const ar = w.nom_arabe ? ` / ${w.nom_arabe}` : '';
-          return `<option value="${w.id}">${code} — ${w.nom}${ar}</option>`;
+// ─── Affichage des frais dans les options ───
+function updateFeeDisplay() {
+  const feeDesk   = document.getElementById('feeDesk');
+  const feeMaison = document.getElementById('feeMaison');
+  if (!currentFees) {
+    feeDesk.className   = 'shipping-option-fee loading';
+    feeMaison.className = 'shipping-option-fee loading';
+    feeDesk.textContent   = '—';
+    feeMaison.textContent = '—';
+    return;
+  }
+  const service = document.querySelector('input[name="delivery_service"]:checked')?.value || 'economique';
+  const deskFee   = service === 'express' ? currentFees.express_desk_fee  : currentFees.desk_fee;
+  const maisonFee = service === 'express' ? currentFees.express_home_fee  : currentFees.home_fee;
+  feeDesk.className   = 'shipping-option-fee';
+  feeMaison.className = 'shipping-option-fee';
+  feeDesk.textContent   = deskFee   > 0 ? deskFee   + ' DA'     : t('freeshipping');
+  feeMaison.textContent = maisonFee > 0 ? maisonFee + ' DA'      : t('freeshipping');
+}
+
+// ─── Charger les frais Guepex ───
+async function loadFees(wilayaId) {
+  currentFees = null;
+  document.getElementById('feeDesk').className   = 'shipping-option-fee loading';
+  document.getElementById('feeMaison').className = 'shipping-option-fee loading';
+  document.getElementById('feeDesk').textContent   = t('calculating');
+  document.getElementById('feeMaison').textContent = t('calculating');
+  shippingPrice = 0; updateSummary();
+
+  try {
+    const res = await fetch(`${API_URL}/api/guepex/fees?to_wilaya_id=${wilayaId}`);
+    if (!res.ok) throw new Error();
+    currentFees = await res.json();
+    updateFeeDisplay();
+    computeShipping();
+  } catch {
+    document.getElementById('feeDesk').textContent   = '—';
+    document.getElementById('feeMaison').textContent = '—';
+    document.getElementById('feeDesk').className     = 'shipping-option-fee loading';
+    document.getElementById('feeMaison').className   = 'shipping-option-fee loading';
+  }
+}
+
+// ─── Charger les communes ───
+async function loadCommunes(wilayaId) {
+  const cs = document.getElementById('communeSelect');
+  cs.disabled = true;
+  cs.innerHTML = `<option value="">${t('loadingCommune')}</option>`;
+  try {
+    const res = await fetch(`${API_URL}/api/wilayas/${wilayaId}/communes`);
+    const data = await res.json();
+    cs.disabled = false;
+    if (!data?.length) {
+      cs.innerHTML = `<option value="">${t('noCommune')}</option>`;
+    } else {
+      cs.innerHTML = `<option value="">${t('selectCommune')}</option>` +
+        data.map(c => {
+          const fr = c.commune_name_ascii || c.commune_name || '';
+          const ar = c.commune_name && c.commune_name !== fr ? ` / ${c.commune_name}` : '';
+          return `<option value="${c.id}">${fr}${ar}</option>`;
         }).join('');
-    } catch (e) { console.error('Erreur wilayas', e); }
-  }
-
-  async function loadCommunes(wilayaId) {
-    const communeSelect = document.getElementById('communeSelect');
-    communeSelect.disabled = true;
-    communeSelect.innerHTML = `<option value="">${t('loading')}</option>`;
-    try {
-      const res = await fetch(`${API_URL}/api/wilayas/${wilayaId}/communes`);
-      const data = await res.json();
-      communeSelect.disabled = false;
-      if (!data || data.length === 0) {
-        communeSelect.innerHTML = `<option value="">${t('noCommune')}</option>`;
-      } else {
-        communeSelect.innerHTML = `<option value="">${t('selectCommune')}</option>` +
-          data.map(c => {
-            const ar = c.commune_name ? ` / ${c.commune_name}` : '';
-            const fr = c.commune_name_ascii || c.nom || '';
-            return `<option value="${c.id}">${fr}${ar}</option>`;
-          }).join('');
-      }
-    } catch (e) {
-      communeSelect.disabled = false;
-      communeSelect.innerHTML = `<option value="">${t('errCommune')}</option>`;
     }
+  } catch {
+    cs.disabled = false;
+    cs.innerHTML = `<option value="">${t('errCommune')}</option>`;
   }
+}
 
-  function recomputeShipping() {
-    const wilayaSelect = document.getElementById('wilayaSelect');
-    const shippingTypeInput = document.querySelector('input[name="shipping_type"]:checked');
-    if (!wilayaSelect || !shippingTypeInput) return;
-    const wilayaId = parseInt(wilayaSelect.value, 10);
-    const type = shippingTypeInput.value;
-    const w = WILAYAS.find(x => x.id === wilayaId);
-    if (!w || !wilayaId) { shippingPrice = 0; updateSummary(); return; }
-    shippingPrice = type === 'maison' ? Number(w.prix_maison || 0) : Number(w.prix_desk || 0);
-    updateSummary();
-  }
-
-  function renderCart() {
-    const cart = getCart();
-    const container = document.getElementById('cartContent');
-    const checkoutSection = document.getElementById('checkoutSection');
-    const cartBtn = document.querySelector('.nav-cart');
-    const count = cart.reduce((s, i) => s + i.qty, 0);
-    if (cartBtn) cartBtn.innerHTML = `🛍 <span id="cartLabel">${t('cartLabel')}</span> (${count})`;
-
-    if (cart.length === 0) {
-      container.innerHTML = `<div class="empty-cart">${t('emptyCart')} <a href="index.html#products">${t('seeProducts')}</a></div>`;
-      checkoutSection.style.display = 'none';
-      return;
+// ─── Charger les centres Stop Desk ───
+async function loadCenters(wilayaId) {
+  const cs = document.getElementById('centerSelect');
+  cs.innerHTML = `<option value="">${t('loadingCenter')}</option>`;
+  try {
+    const res = await fetch(`${API_URL}/api/guepex/centers?wilaya_id=${wilayaId}`);
+    const data = await res.json();
+    if (!data?.length) {
+      cs.innerHTML = `<option value="">${t('noCenter')}</option>`;
+    } else {
+      cs.innerHTML = `<option value="">${t('selectCenter')}</option>` +
+        data.map(c => `<option value="${c.center_id}" data-name="${c.name}">${c.name} — ${c.commune_name || ''}</option>`).join('');
     }
+  } catch {
+    cs.innerHTML = `<option value="">${t('noCenter')}</option>`;
+  }
+}
 
-    fbq('track', 'InitiateCheckout');
+// ─── Afficher/masquer les champs selon type livraison ───
+function updateDeliveryUI() {
+  const type = document.querySelector('input[name="shipping_type"]:checked')?.value;
+  const centerRow  = document.getElementById('centerRow');
+  const addressRow = document.getElementById('addressRow');
+  const addrInput  = document.querySelector('input[name="address"]');
 
-    subtotal = 0;
-    container.innerHTML = cart.map(item => {
-      const lineTotal = item.price * item.qty;
-      subtotal += lineTotal;
-      return `
-        <div class="cart-item">
-          ${item.img ? `<img src="${item.img}" style="width:130px;height:130px;object-fit:cover;border-radius:.6rem;flex-shrink:0;">` : ''}
-          <div style="flex:1;min-width:0;">
-            <span class="cart-item-name">${item.name}</span>
-            <span class="cart-item-qty"> x ${item.qty}</span>
-          </div>
-          <span class="cart-item-price">${lineTotal} DA</span>
-          <button onclick="removeFromCart('${item.id}')" style="background:none;border:none;cursor:pointer;color:var(--bark);opacity:.5;font-size:1.1rem;padding:.2rem .5rem;" title="Supprimer">✕</button>
-        </div>`;
-    }).join('');
-
-    checkoutSection.style.display = 'block';
-    shippingPrice = 0;
-    updateSummary();
+  if (type === 'desk') {
+    centerRow.classList.add('visible');
+    addressRow.style.display = 'none';
+    if (addrInput) addrInput.required = false;
+  } else {
+    centerRow.classList.remove('visible');
+    addressRow.style.display = 'block';
+    if (addrInput) addrInput.required = true;
   }
 
-  document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const cart = getCart();
-    if (cart.length === 0) return;
-    const form = e.target;
-    const wilayaId = form.wilaya.value;
-    const communeId = form.commune.value;
-    if (!wilayaId || !communeId) { alert(t('alertWilaya')); return; }
-    const customer = { name: form.name.value, phone: form.phone.value, address: form.address.value };
-    const items = cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
-    const shipping_type = form.shipping_type.value;
-    const notes = form.notes.value || null;
-    try {
-      const res = await fetch(`${API_URL}/api/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, customer, wilaya_id: parseInt(wilayaId,10), commune_id: parseInt(communeId,10), shipping_price: shippingPrice, shipping_type, notes })
-      });
-      if (res.ok) {
-        fbq('track', 'Purchase', { value: subtotal + shippingPrice, currency: 'DZD' });
-        localStorage.removeItem('nidly_cart');
-        document.getElementById('successTitle').textContent = t('successTitle');
-        document.getElementById('successMsg').innerHTML = t('successMsg');
-        document.getElementById('closeSuccessBtn').textContent = currentLang === 'ar' ? 'متابعة' : 'Continuer';
-        const modal = document.getElementById('orderSuccessModal');
-        modal.classList.add('active');
-        document.getElementById('closeSuccessBtn').onclick = () => { modal.classList.remove('active'); window.location.href = 'index.html'; };
-      } else {
-        const err = await res.json();
-        alert(err.message || 'Erreur lors de la commande');
-      }
-    } catch (err) { alert(t('serverErr')); }
-  });
+  // Mettre à jour les classes selected
+  document.getElementById('optionDesk').classList.toggle('selected', type === 'desk');
+  document.getElementById('optionMaison').classList.toggle('selected', type === 'maison');
 
-  document.addEventListener('DOMContentLoaded', () => {
-    setLang(currentLang);
-    loadWilayas().then(() => {
-      const wilayaSelect = document.getElementById('wilayaSelect');
-      wilayaSelect?.addEventListener('change', (e) => {
-        const id = e.target.value;
-        if (id) { loadCommunes(id); recomputeShipping(); }
-        else {
-          const cs = document.getElementById('communeSelect');
-          cs.innerHTML = `<option value="">${t('firstWilaya')}</option>`;
-          cs.disabled = true;
-          shippingPrice = 0; updateSummary();
-        }
-      });
-      document.querySelectorAll('input[name="shipping_type"]').forEach(r => r.addEventListener('change', recomputeShipping));
+  computeShipping();
+}
+
+// ─── Charger les wilayas (Supabase) ───
+async function loadWilayas() {
+  try {
+    const res = await fetch(`${API_URL}/api/wilayas`);
+    WILAYAS = await res.json();
+    const select = document.getElementById('wilayaSelect');
+    select.innerHTML = `<option value="">${t('selectWilaya')}</option>` +
+      WILAYAS.map(w => {
+        const code = String(w.id).padStart(2, '0');
+        const ar = w.nom_arabe ? ` / ${w.nom_arabe}` : '';
+        return `<option value="${w.id}">${code} — ${w.nom}${ar}</option>`;
+      }).join('');
+  } catch (e) { console.error('Erreur wilayas', e); }
+}
+
+// ─── Rendu panier ───
+function renderCart() {
+  const cart = getCart();
+  const container = document.getElementById('cartContent');
+  const checkoutSection = document.getElementById('checkoutSection');
+  const cartBtn = document.querySelector('.nav-cart');
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  if (cartBtn) cartBtn.innerHTML = `🛍 <span id="cartLabel">${t('cartLabel')}</span> (${count})`;
+
+  if (cart.length === 0) {
+    container.innerHTML = `<div class="empty-cart">${t('emptyCart')} <a href="index.html#products">${t('seeProducts')}</a></div>`;
+    checkoutSection.style.display = 'none';
+    return;
+  }
+
+  fbq('track', 'InitiateCheckout');
+  subtotal = 0;
+  container.innerHTML = cart.map(item => {
+    const lineTotal = item.price * item.qty;
+    subtotal += lineTotal;
+    return `
+      <div class="cart-item">
+        ${item.img ? `<img src="${item.img}" style="width:130px;height:130px;object-fit:cover;border-radius:.6rem;flex-shrink:0;">` : ''}
+        <div style="flex:1;min-width:0;">
+          <span class="cart-item-name">${item.name}</span>
+          <span class="cart-item-qty"> x ${item.qty}</span>
+        </div>
+        <span class="cart-item-price">${lineTotal} DA</span>
+        <button onclick="removeFromCart('${item.id}')" style="background:none;border:none;cursor:pointer;color:var(--bark);opacity:.5;font-size:1.1rem;padding:.2rem .5rem;" title="Supprimer">✕</button>
+      </div>`;
+  }).join('');
+
+  checkoutSection.style.display = 'block';
+  shippingPrice = 0;
+  updateSummary();
+}
+
+function removeFromCart(productId) {
+  const cart = getCart().filter(p => String(p.id) !== String(productId));
+  localStorage.setItem('nidly_cart', JSON.stringify(cart));
+  renderCart();
+}
+
+// ─── Soumission formulaire ───
+document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const cart = getCart();
+  if (cart.length === 0) return;
+
+  const form = e.target;
+  const wilayaId  = form.wilaya.value;
+  const communeId = form.commune.value;
+  if (!wilayaId || !communeId) { alert(t('alertWilaya')); return; }
+
+  const shippingType = form.shipping_type.value;
+
+  // Validation Stop Desk
+  let centerId = null, centerName = null;
+  if (shippingType === 'desk') {
+    const centerSelect = document.getElementById('centerSelect');
+    centerId = centerSelect.value;
+    if (!centerId) { alert(t('alertCenter')); return; }
+    const selectedOpt = centerSelect.options[centerSelect.selectedIndex];
+    centerName = selectedOpt.getAttribute('data-name') || selectedOpt.textContent;
+  }
+
+  // Validation adresse domicile
+  if (shippingType === 'maison' && !form.address.value.trim()) {
+    alert(t('alertAddress')); return;
+  }
+
+  const customer = {
+    firstname:  form.firstname.value.trim(),
+    familyname: form.familyname.value.trim(),
+    phone:      form.phone.value.trim(),
+    address:    form.address.value?.trim() || '',
+  };
+  const items            = cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
+  const delivery_service = form.delivery_service.value;
+  const notes            = form.notes.value || null;
+
+  // UI loading
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  try {
+    const res = await fetch(`${API_URL}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items, customer,
+        wilaya_id:        parseInt(wilayaId, 10),
+        commune_id:       parseInt(communeId, 10),
+        shipping_price:   shippingPrice,
+        shipping_type:    shippingType,
+        delivery_service,
+        center_id:        centerId   ? parseInt(centerId, 10) : null,
+        center_name:      centerName || null,
+        notes
+      })
     });
-    renderCart();
+
+    if (res.ok) {
+      const data = await res.json();
+      fbq('track', 'Purchase', { value: subtotal + shippingPrice, currency: 'DZD' });
+      localStorage.removeItem('nidly_cart');
+
+      // Afficher le modal de succès
+      document.getElementById('successTitle').textContent = t('successTitle');
+      document.getElementById('successMsg').innerHTML = t('successMsg');
+      document.getElementById('closeSuccessBtn').textContent = currentLang === 'ar' ? 'متابعة' : 'Continuer';
+
+      // Afficher le tracking si disponible
+      if (data.tracking_yalidine) {
+        const trackEl = document.getElementById('successTracking');
+        trackEl.textContent = `${t('successTracking')} ${data.tracking_yalidine}`;
+        trackEl.classList.add('visible');
+      }
+
+      const modal = document.getElementById('orderSuccessModal');
+      modal.classList.add('active');
+      document.getElementById('closeSuccessBtn').onclick = () => {
+        modal.classList.remove('active');
+        window.location.href = 'index.html';
+      };
+    } else {
+      const err = await res.json();
+      alert(err.message || 'Erreur lors de la commande');
+    }
+  } catch {
+    alert(t('serverErr'));
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+  }
+});
+
+// ─── Init ───
+document.addEventListener('DOMContentLoaded', () => {
+  setLang(currentLang);
+
+  loadWilayas().then(() => {
+    const wilayaSelect  = document.getElementById('wilayaSelect');
+    const communeSelect = document.getElementById('communeSelect');
+
+    // Changement de wilaya → charger communes + frais + centres
+    wilayaSelect.addEventListener('change', async (e) => {
+      const id = e.target.value;
+      // Reset commune + centre
+      communeSelect.innerHTML = `<option value="">${t('firstWilaya')}</option>`;
+      communeSelect.disabled = true;
+      document.getElementById('centerSelect').innerHTML = `<option value="">${t('selectCenter')}</option>`;
+      currentFees = null; updateFeeDisplay(); shippingPrice = 0; updateSummary();
+
+      if (!id) return;
+      // Charger en parallèle
+      await Promise.all([
+        loadCommunes(id),
+        loadFees(id),
+        loadCenters(id),
+      ]);
+    });
+
+    // Changement shipping type → UI + recalcul
+    document.querySelectorAll('input[name="shipping_type"]').forEach(r =>
+      r.addEventListener('change', updateDeliveryUI)
+    );
+
+    // Changement service (express/eco) → recalcul + affichage
+    document.querySelectorAll('input[name="delivery_service"]').forEach(r =>
+      r.addEventListener('change', () => {
+        document.getElementById('optionEco').classList.toggle('selected',
+          document.querySelector('input[name="delivery_service"]:checked')?.value === 'economique');
+        document.getElementById('optionExpress').classList.toggle('selected',
+          document.querySelector('input[name="delivery_service"]:checked')?.value === 'express');
+        updateFeeDisplay();
+        computeShipping();
+      })
+    );
+
+    // Init UI
+    updateDeliveryUI();
+    document.getElementById('optionEco').classList.add('selected');
+    document.getElementById('optionDesk').classList.add('selected');
   });
 
-  function removeFromCart(productId) {
-    const cart = getCart().filter(p => String(p.id) !== String(productId));
-    localStorage.setItem('nidly_cart', JSON.stringify(cart));
-    renderCart();
-  }
+  renderCart();
+});
 </script>
 </body>
 </html>
