@@ -6,7 +6,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-67J6Z9L6D7');
 </script>
 <meta charset="UTF-8">
@@ -24,6 +23,8 @@
   --sage: #A8B5A0;
   --sage-l: #D6E0D2;
   --gold: #C9A96E;
+  --wa: #25D366;
+  --wa-dark: #128C7E;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
@@ -34,9 +35,7 @@ body {
   font-weight:300;
   overflow-x:hidden;
 }
-[lang="ar"] body, body.ar {
-  font-family: 'Cairo', sans-serif;
-}
+[lang="ar"] body, body.ar { font-family: 'Cairo', sans-serif; }
 body::before {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:.45;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
@@ -71,34 +70,19 @@ nav {
 }
 .nav-cart-btn:hover { background:var(--bark); }
 
-/* ── Lang Toggle ── */
 .lang-toggle {
-  background: white;
-  border: 1.5px solid rgba(196,123,107,.3);
-  border-radius: 2rem;
-  padding: .3rem .2rem;
-  display: flex;
-  gap: .1rem;
-  cursor: pointer;
+  background: white; border: 1.5px solid rgba(196,123,107,.3);
+  border-radius: 2rem; padding: .3rem .2rem;
+  display: flex; gap: .1rem; cursor: pointer;
 }
 .lang-btn {
-  padding: .25rem .6rem;
-  border-radius: 2rem;
-  border: none;
-  background: transparent;
-  font-size: .68rem;
-  font-weight: 500;
-  color: var(--bark);
-  cursor: pointer;
-  transition: all .2s;
-  letter-spacing: .05em;
+  padding: .25rem .6rem; border-radius: 2rem; border: none;
+  background: transparent; font-size: .68rem; font-weight: 500;
+  color: var(--bark); cursor: pointer; transition: all .2s; letter-spacing: .05em;
 }
-.lang-btn.active {
-  background: var(--terra);
-  color: white;
-}
+.lang-btn.active { background: var(--terra); color: white; }
 
-/* INTRO */
+/* ── INTRO ── */
 .intro {
   padding:6rem 1.4rem 2.5rem;
   text-align:center; max-width:560px; margin:0 auto;
@@ -126,6 +110,81 @@ nav {
   font-size:.68rem; color:var(--bark);
 }
 
+/* ── NOTICE COUVERCLES ── */
+.notice-wrap {
+  padding: 0 1.2rem 2rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.notice-card {
+  background: linear-gradient(135deg, #fff9f7 0%, #fff3ee 100%);
+  border: 1.5px solid rgba(196,123,107,.35);
+  border-radius: 1.3rem;
+  padding: 1.3rem 1.3rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.notice-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--terra), var(--gold), var(--terra));
+  border-radius: 1.3rem 1.3rem 0 0;
+}
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .85rem;
+}
+.notice-icon {
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: var(--terra);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.notice-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--char); line-height: 1.25;
+}
+.notice-sub {
+  font-size: .72rem; color: var(--bark); opacity: .75;
+  margin-top: .1rem;
+}
+.notice-divider {
+  height: 1px; background: rgba(196,123,107,.18); margin-bottom: .85rem;
+}
+.notice-list {
+  list-style: none; display: flex; flex-direction: column; gap: .52rem;
+  margin-bottom: .9rem;
+}
+.notice-list li {
+  display: flex; align-items: flex-start; gap: .55rem;
+  font-size: .8rem; color: var(--bark); line-height: 1.5;
+}
+.notice-check {
+  flex-shrink: 0;
+  width: 19px; height: 19px;
+  background: var(--sage-l);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; color: var(--bark);
+  margin-top: .05rem;
+}
+.notice-highlight {
+  background: rgba(196,123,107,.08);
+  border-radius: .65rem;
+  padding: .6rem .9rem;
+  font-size: .77rem;
+  color: var(--terra);
+  display: flex; align-items: center; gap: .5rem;
+  font-style: italic;
+}
+
+/* ── PHOTOS ── */
 .photo-grid {
   padding:0 1.2rem 2.5rem;
   display:grid; grid-template-columns:1fr 1fr; gap:.5rem;
@@ -208,6 +267,138 @@ nav {
 .btn-add:active { transform:scale(0.97); }
 .lot-card.featured .btn-add { background:var(--char); }
 
+/* ── WHATSAPP CONTACT SECTION ── */
+.wa-section {
+  padding: 0 1.2rem 3rem;
+}
+.wa-card {
+  background: linear-gradient(135deg, #f0faf4 0%, #e8f7ef 100%);
+  border: 1.5px solid rgba(37,211,102,.25);
+  border-radius: 1.4rem;
+  padding: 1.6rem 1.4rem;
+  position: relative;
+  overflow: hidden;
+}
+.wa-card::after {
+  content: '💬';
+  position: absolute;
+  right: -10px; bottom: -14px;
+  font-size: 5rem;
+  opacity: .06;
+  pointer-events: none;
+}
+.wa-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  margin-bottom: 1rem;
+}
+.wa-logo {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: var(--wa);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: 0 4px 14px rgba(37,211,102,.3);
+}
+.wa-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 400;
+  color: var(--char); line-height: 1.15;
+}
+.wa-card-sub {
+  font-size: .75rem; color: var(--bark); opacity: .8; margin-top: .2rem; line-height: 1.5;
+}
+.wa-features {
+  display: flex; flex-direction: column; gap: .45rem;
+  margin-bottom: 1.2rem;
+}
+.wa-feat {
+  display: flex; align-items: center; gap: .55rem;
+  font-size: .8rem; color: var(--bark);
+}
+.wa-feat-dot {
+  width: 7px; height: 7px; flex-shrink: 0;
+  border-radius: 50%; background: var(--wa);
+}
+.wa-order-note {
+  background: rgba(37,211,102,.08);
+  border: 1px solid rgba(37,211,102,.2);
+  border-radius: .75rem;
+  padding: .75rem .95rem;
+  font-size: .75rem;
+  color: #1a6b3a;
+  display: flex; align-items: flex-start; gap: .5rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.55;
+}
+.wa-order-note-icon { flex-shrink: 0; font-size: .95rem; margin-top: .05rem; }
+.btn-wa {
+  display: flex; align-items: center; justify-content: center; gap: .65rem;
+  width: 100%;
+  background: var(--wa);
+  color: white;
+  padding: .95rem 1.5rem;
+  border-radius: 3rem;
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; font-weight: 500;
+  letter-spacing: .03em;
+  text-decoration: none;
+  transition: all .25s;
+  box-shadow: 0 6px 20px rgba(37,211,102,.3);
+}
+.btn-wa:hover { background: var(--wa-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,.35); }
+.btn-wa:active { transform: scale(.97); }
+.btn-wa svg { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+
+/* ── FLOATING WHATSAPP ── */
+.wa-float {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.2rem;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .55rem;
+}
+.wa-float-bubble {
+  background: white;
+  border: 1px solid rgba(37,211,102,.3);
+  border-radius: 1rem 1rem 0 1rem;
+  padding: .55rem .9rem;
+  font-size: .72rem;
+  color: var(--bark);
+  max-width: 160px;
+  line-height: 1.45;
+  box-shadow: 0 4px 18px rgba(0,0,0,.1);
+  animation: floatIn .6s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: 2s;
+  opacity: 0;
+}
+@keyframes floatIn { to { opacity: 1; } }
+.wa-float-btn {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--wa);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 22px rgba(37,211,102,.45);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  animation: floatBounce 2.5s ease-in-out infinite;
+  animation-delay: 3s;
+}
+.wa-float-btn:hover { transform: scale(1.1); box-shadow: 0 10px 28px rgba(37,211,102,.5); }
+.wa-float-btn svg { width: 26px; height: 26px; fill: white; }
+@keyframes floatBounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+html[dir="rtl"] .wa-float { right: auto; left: 1.2rem; }
+html[dir="rtl"] .wa-float-bubble { border-radius: 1rem 1rem 1rem 0; }
+
+/* ── WHY ── */
 .why-section { background:var(--char); padding:3.5rem 1.4rem; }
 .why-section .sec-label { color:var(--dusty); }
 .why-section .sec-title { color:white; }
@@ -219,6 +410,7 @@ nav {
 .why-card h4 { font-family:'Cormorant Garamond',serif; font-size:1rem; color:white; margin-bottom:.28rem; }
 .why-card p { font-size:.7rem; color:rgba(255,255,255,.38); line-height:1.6; }
 
+/* ── COMPARE ── */
 .compare-section { padding:3.5rem 1.2rem 4rem; overflow-x:auto; }
 .compare-section table { width:100%; border-collapse:collapse; min-width:300px; }
 .compare-section thead th { font-family:'Cormorant Garamond',serif; font-size:.9rem; font-weight:400; padding:.7rem .5rem; border-bottom:2px solid var(--blush); color:var(--char); text-align:center; }
@@ -229,6 +421,7 @@ nav {
 .price-cell { font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--terra); }
 .hl { background:rgba(196,123,107,.04); }
 
+/* ── REVIEWS ── */
 .reviews { padding:3.5rem 1.2rem; background:var(--blush); }
 .reviews .sec-title { margin-bottom:1.6rem; }
 .reviews-scroll { display:flex; gap:.9rem; overflow-x:auto; padding-bottom:.4rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
@@ -241,6 +434,7 @@ nav {
 .r-name { font-size:.76rem; font-weight:500; color:var(--char); }
 .r-loc { font-size:.63rem; color:var(--bark); opacity:.6; }
 
+/* ── CTA ── */
 .cta-section { padding:4rem 1.4rem; text-align:center; background:var(--terra); position:relative; overflow:hidden; }
 .cta-section::before { content:''; position:absolute; width:260px; height:260px; border-radius:50%; border:1px solid rgba(255,255,255,.12); top:50%; left:50%; transform:translate(-50%,-50%); }
 .cta-section::after { content:''; position:absolute; width:400px; height:400px; border-radius:50%; border:1px solid rgba(255,255,255,.07); top:50%; left:50%; transform:translate(-50%,-50%); }
@@ -274,6 +468,8 @@ html[dir="rtl"] .lot-tagline,
 html[dir="rtl"] .sz-name { font-family: 'Cairo', sans-serif; }
 html[dir="rtl"] .compare-section thead th:first-child { text-align:right; }
 html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
+html[dir="rtl"] .notice-card::before { background: linear-gradient(270deg, var(--terra), var(--gold), var(--terra)); }
+html[dir="rtl"] .wa-card::after { right:auto; left:-10px; }
 
 @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
 @keyframes spin   { to{transform:rotate(360deg)} }
@@ -286,7 +482,8 @@ html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
 @media (min-width:768px) {
   nav { padding:1.1rem 3rem; }
   .nav-logo { font-size:1.8rem; }
-  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .compare-section, .reviews { max-width:1100px; margin-left:auto; margin-right:auto; }
+  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .wa-section, .compare-section, .reviews { max-width:1100px; margin-left:auto; margin-right:auto; }
+  .notice-wrap { max-width: 1100px; }
   .why-section { padding:5rem 4rem; }
   .cta-section { padding:6rem 3rem; }
   footer { padding:2.2rem 4rem; }
@@ -297,6 +494,12 @@ html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
   .photo-grid .p-main { aspect-ratio:21/8; border-radius:1.6rem; }
   .photo-grid .p-sm { display:none; }
   .divider { padding:0 3rem; margin:2.5rem auto; }
+  .notice-wrap { padding: 0 3rem 2.5rem; }
+  .notice-card { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .notice-card::before { border-radius: 1.3rem 0 0 1.3rem; width: 3px; height: 100%; top: 0; right: auto; }
+  .notice-card-left { flex: 0 0 auto; }
+  .notice-card-right { flex: 1; }
+  .notice-list { flex-direction: row; flex-wrap: wrap; gap: .5rem 1.5rem; }
   .sizes-section { padding:0 3rem 3.5rem; }
   .sizes-stack { flex-direction:row; gap:1rem; }
   .size-row { flex-direction:column; align-items:flex-start; flex:1; padding:1.5rem; }
@@ -307,6 +510,12 @@ html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
   .lot-photo { aspect-ratio:4/3; }
   .lot-name { font-size:1.4rem; }
   .lot-price { font-size:1.7rem; }
+  .wa-section { padding: 0 3rem 4rem; }
+  .wa-card { display: flex; gap: 2rem; align-items: center; }
+  .wa-card-content { flex: 1; }
+  .wa-card-action { flex-shrink: 0; min-width: 220px; }
+  .wa-features { flex-direction: row; flex-wrap: wrap; gap: .4rem 1.2rem; margin-bottom: .9rem; }
+  .btn-wa { width: auto; }
   .why-grid { grid-template-columns:repeat(4,1fr); gap:1.2rem; }
   .compare-section { padding:4.5rem 3rem 5rem; overflow-x:visible; }
   .compare-section thead th { font-size:1rem; padding:.9rem .8rem; }
@@ -317,7 +526,8 @@ html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
   .cta-section h2 { font-size:3rem; }
 }
 @media (min-width:1200px) {
-  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .compare-section, .reviews { max-width:1200px; }
+  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .wa-section, .compare-section, .reviews { max-width:1200px; }
+  .notice-wrap { max-width: 1200px; }
   .intro h1 { font-size:5.2rem; }
   .photo-grid .p-main { aspect-ratio:21/7; }
 }
@@ -342,6 +552,18 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
 </head>
 <body>
 
+<!-- ── FLOATING WHATSAPP BUTTON ── -->
+<div class="wa-float">
+  <div class="wa-float-bubble" data-fr="💬 Personnalisez votre lot !" data-ar="💬 خصّصي طردك!">
+    💬 Personnalisez votre lot !
+  </div>
+  <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="wa-float-btn" title="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+</div>
+
 <nav>
   <a href="../index.html" class="nav-logo">Ni<span>dly</span></a>
   <div class="nav-right">
@@ -364,6 +586,38 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
     <span class="badge">📦 <span data-fr="Empilables" data-ar="قابلة للتكديس">Empilables</span></span>
     <span class="badge">🚀 <span data-fr="48h en Algérie" data-ar="48 ساعة في الجزائر">48h en Algérie</span></span>
     <span class="badge">3 <span data-fr="tailles" data-ar="مقاسات">tailles</span></span>
+  </div>
+</div>
+
+<!-- ── NOTICE COUVERCLES ── -->
+<div class="notice-wrap">
+  <div class="notice-card">
+    <div class="notice-header">
+      <div class="notice-icon">📦</div>
+      <div>
+        <div class="notice-title" data-fr="Petite précision importante !" data-ar="ملاحظة مهمة !">Petite précision importante !</div>
+        <div class="notice-sub" data-fr="Les boîtes montrées dans la vidéo sont pour démonstration uniquement." data-ar="الصناديق المعروضة في الفيديو هي للعرض فقط.">Les boîtes montrées dans la vidéo sont pour démonstration uniquement.</div>
+      </div>
+    </div>
+    <div class="notice-divider"></div>
+    <ul class="notice-list">
+      <li>
+        <span class="notice-check">✓</span>
+        <span data-fr="<strong>Avec couvercles</strong> — pour protéger de la poussière" data-ar="<strong>مع أغطية</strong> — للحماية من الغبار"><strong>Avec couvercles</strong> — pour protéger de la poussière</span>
+      </li>
+      <li>
+        <span class="notice-check">✓</span>
+        <span data-fr="Idéal pour garder vos affaires <strong>propres et bien organisées</strong>" data-ar="مثالي للحفاظ على أغراضكم <strong>نظيفة ومنظمة</strong>">Idéal pour garder vos affaires <strong>propres et bien organisées</strong></span>
+      </li>
+      <li>
+        <span class="notice-check">✓</span>
+        <span data-fr="Parfait pour vêtements, sous-vêtements ou accessoires" data-ar="مثالي للملابس، الملابس الداخلية أو الإكسسوارات">Parfait pour vêtements, sous-vêtements ou accessoires</span>
+      </li>
+    </ul>
+    <div class="notice-highlight">
+      <span>💡</span>
+      <span data-fr="Même utilité… mais avec un vrai <strong>+ au quotidien</strong> ! Organisez votre espace facilement et sans stress ✨" data-ar="نفس الاستخدام… لكن مع <strong>قيمة مضافة حقيقية</strong> يومياً! نظّمي مساحتك بسهولة وبدون ضغط ✨">Même utilité… mais avec un vrai <strong>+ au quotidien</strong> ! Organisez votre espace facilement et sans stress ✨</span>
+    </div>
   </div>
 </div>
 
@@ -438,6 +692,38 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
     <div style="text-align:center;padding:3rem;color:var(--bark)">
       <div style="width:28px;height:28px;border:2px solid var(--blush);border-top-color:var(--terra);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem"></div>
       <span data-fr="Chargement…" data-ar="جارٍ التحميل…">Chargement…</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHATSAPP CONTACT SECTION ── -->
+<section class="wa-section">
+  <div class="wa-card">
+    <div class="wa-card-content">
+      <div class="wa-card-header">
+        <div class="wa-logo">💬</div>
+        <div>
+          <div class="wa-card-title" data-fr="Personnalisez votre lot" data-ar="خصّصي طردك">Personnalisez votre lot</div>
+          <div class="wa-card-sub" data-fr="On est là pour vous aider à choisir la formule parfaite." data-ar="نحن هنا لمساعدتك في اختيار الطرد المثالي.">On est là pour vous aider à choisir la formule parfaite.</div>
+        </div>
+      </div>
+      <div class="wa-features">
+        <div class="wa-feat"><div class="wa-feat-dot"></div><span data-fr="Composition sur mesure selon vos besoins" data-ar="تركيبة مخصصة حسب احتياجاتك">Composition sur mesure selon vos besoins</span></div>
+        <div class="wa-feat"><div class="wa-feat-dot"></div><span data-fr="Conseils personnalisés & réponse rapide" data-ar="نصائح شخصية وردود سريعة">Conseils personnalisés & réponse rapide</span></div>
+        <div class="wa-feat"><div class="wa-feat-dot"></div><span data-fr="Plus d'infos sur les produits & tailles" data-ar="مزيد من المعلومات حول المنتجات والمقاسات">Plus d'infos sur les produits & tailles</span></div>
+      </div>
+      <div class="wa-order-note">
+        <span class="wa-order-note-icon">🔒</span>
+        <span data-fr="Rassurez-vous : nous ne confirmons une commande que lorsque nous sommes sûrs de pouvoir la livrer. Aucune mauvaise surprise." data-ar="اطمئني: لا نؤكد الطلب إلا عندما نكون متأكدين من إمكانية التوصيل. بدون أي مفاجآت سيئة.">Rassurez-vous : nous ne confirmons une commande que lorsque nous sommes sûrs de pouvoir la livrer. Aucune mauvaise surprise.</span>
+      </div>
+    </div>
+    <div class="wa-card-action">
+      <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="btn-wa">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span data-fr="Contactez-nous sur WhatsApp" data-ar="تواصلي معنا على واتساب">Contactez-nous sur WhatsApp</span>
+      </a>
     </div>
   </div>
 </section>
@@ -539,7 +825,6 @@ src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
 
 <script src="../js/config.js"></script>
 <script>
-// ── Traduction FR/AR ──
 const API = API_URL;
 let currentLang = localStorage.getItem('nidly_lang') || 'fr';
 
@@ -549,19 +834,13 @@ function setLang(lang) {
   const html = document.documentElement;
   html.setAttribute('lang', lang);
   html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-
-  // Boutons actifs
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('active', b.textContent.trim() === (lang === 'fr' ? 'FR' : 'ع'));
   });
-
-  // Traduire tous les éléments avec data-fr / data-ar
   document.querySelectorAll('[data-fr]').forEach(el => {
     const txt = el.getAttribute(`data-${lang}`);
     if (txt) el.innerHTML = txt;
   });
-
-  // Mettre à jour toast et panier
   updateCartCount();
 }
 
@@ -574,7 +853,6 @@ function updateCartCount() {
   } catch(e) {}
 }
 
-// ── Lots ──
 const B = '../assets/';
 const META = {
   'lot-mini': {
@@ -623,7 +901,6 @@ function cardHTML(lot) {
   const savings = m[`savings_${lang}`] || m.savings_fr || null;
   const pop = m[`pop_${lang}`] || m.pop_fr || '';
   const addLabel = lang === 'ar' ? 'أضيفي ←' : 'Ajouter →';
-
   const photos = (m.imgs||[]).map((url,i)=>
     `<img src="${url}" alt="" class="${i===0?'active':''}" loading="${i===0?'eager':'lazy'}">`
   ).join('');
@@ -633,7 +910,6 @@ function cardHTML(lot) {
   const compo = m.compo.map(c=>
     `<div class="c-chip"><span class="cn" style="color:${c.c}">${c.n}</span><span class="cs">${c.s}</span></div>`
   ).join('') + `<div class="c-total">= ${m.total} ${lang==='ar'?'صناديق':'boîtes'}</div>`;
-
   return `
   <div class="lot-card${m.featured?' featured':''}" data-slug="${slug}">
     ${m.featured?`<div class="pop-ribbon">${pop}</div>`:''}
@@ -708,7 +984,6 @@ function addToCart(id,name,price,img='') {
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
-// Init
 setLang(currentLang);
 render();
 </script>
