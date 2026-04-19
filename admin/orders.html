@@ -30,36 +30,38 @@
 
   /* ── Filtres ── */
   .filters-bar {
-    background: white;
-    border-radius: 0.75rem;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1.5rem;
+    background: white; border-radius: 0.75rem;
+    padding: 1rem 1.2rem; margin-bottom: 1.5rem;
     border: 1px solid rgba(212,165,160,0.2);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
   }
   .filters-bar label { font-size: 0.8rem; color: var(--bark); font-weight: 500; white-space: nowrap; }
   .filters-bar input[type="date"], .filters-bar select {
-    padding: 0.45rem 0.7rem;
-    border: 1.5px solid rgba(212,165,160,0.4);
-    border-radius: 0.5rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.85rem;
-    color: var(--charcoal);
-    background: var(--cream);
+    padding: 0.45rem 0.7rem; border: 1.5px solid rgba(212,165,160,0.4);
+    border-radius: 0.5rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; color: var(--charcoal); background: var(--cream);
   }
   .filter-group { display: flex; align-items: center; gap: 0.5rem; }
+
+  /* ── Search ── */
+  .search-wrapper {
+    display: flex; align-items: center; gap: 0.4rem;
+    background: var(--cream); border: 1.5px solid rgba(212,165,160,0.4);
+    border-radius: 0.5rem; padding: 0 0.7rem;
+  }
+  .search-wrapper svg { width: 14px; height: 14px; color: var(--bark); flex-shrink: 0; opacity: 0.6; }
+  .search-wrapper input {
+    border: none; background: transparent; padding: 0.45rem 0;
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+    color: var(--charcoal); outline: none; width: 180px;
+  }
+  .search-wrapper input::placeholder { color: var(--bark); opacity: 0.6; }
+
   .btn-reset {
-    padding: 0.45rem 0.9rem;
-    background: none;
-    border: 1.5px solid rgba(212,165,160,0.4);
-    border-radius: 0.5rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    color: var(--bark);
-    cursor: pointer;
+    padding: 0.45rem 0.9rem; background: none;
+    border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    color: var(--bark); cursor: pointer;
   }
   .btn-reset:hover { background: rgba(212,165,160,0.1); }
   .orders-count { margin-left: auto; font-size: 0.82rem; color: var(--bark); }
@@ -69,6 +71,7 @@
     background: white; border-radius: 1rem; padding: 1.5rem;
     margin-bottom: 1rem; border: 1px solid rgba(212,165,160,0.2);
     box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    transition: box-shadow .2s;
   }
   .order-header {
     display: flex; justify-content: space-between; align-items: flex-start;
@@ -100,7 +103,6 @@
   .info-block .value { color: var(--charcoal); line-height: 1.5; }
   .info-block .value span { display: block; }
 
-  /* ── Boutons contact ── */
   .contact-actions { display: flex; gap: 0.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
   .btn-call {
     display: inline-flex; align-items: center; gap: 0.35rem;
@@ -143,7 +145,12 @@
     border-left: 3px solid var(--terracotta);
   }
 
-  .order-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(212,165,160,0.15); }
+  .order-actions {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid rgba(212,165,160,0.15);
+    align-items: center;
+  }
   .btn { padding: 0.5rem 1.1rem; border: none; border-radius: 0.5rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
   .btn-confirm { background: var(--sage); color: white; }
   .btn-ship    { background: #5C6BC0; color: white; }
@@ -151,10 +158,40 @@
   .btn:hover   { filter: brightness(1.1); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+  /* ── Delete button ── */
+  .btn-delete {
+    margin-left: auto;
+    padding: 0.4rem 0.85rem; border: 1.5px solid #FFCDD2; border-radius: 0.5rem;
+    background: none; color: #C62828; font-size: 0.78rem; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all .2s; display: inline-flex; align-items: center; gap: 0.3rem;
+  }
+  .btn-delete:hover { background: #FFEBEE; border-color: #EF9A9A; }
+
+  /* ── Confirm delete dialog ── */
+  .delete-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 9998;
+  }
+  .delete-overlay.active { opacity: 1; pointer-events: all; }
+  .delete-dialog {
+    background: white; padding: 2rem 1.8rem; border-radius: 1rem;
+    max-width: 360px; width: 90%; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    animation: popIn .25s ease;
+  }
+  .delete-dialog h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; color: var(--charcoal); margin-bottom: 0.6rem; }
+  .delete-dialog p { font-size: 0.88rem; color: var(--bark); margin-bottom: 1.5rem; line-height: 1.5; }
+  .delete-dialog-btns { display: flex; gap: 0.7rem; justify-content: center; }
+  .btn-cancel-del { padding: 0.55rem 1.2rem; border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem; background: none; color: var(--bark); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; cursor: pointer; }
+  .btn-confirm-del { padding: 0.55rem 1.2rem; border: none; border-radius: 0.5rem; background: #C62828; color: white; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; cursor: pointer; }
+  .btn-confirm-del:hover { background: #B71C1C; }
+  @keyframes popIn { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
   .empty-state { text-align: center; padding: 4rem 2rem; color: var(--bark); }
   .loading { text-align: center; padding: 3rem; color: var(--bark); }
 
-  /* Toast */
   .toast {
     position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
     background: var(--charcoal); color: white;
@@ -163,11 +200,26 @@
     transition: opacity .3s; z-index: 9999;
   }
   .toast.show { opacity: 1; }
+
+  /* ── Highlight on search ── */
+  mark { background: #FFF176; border-radius: 2px; padding: 0 2px; }
 </style>
 </head>
 <body>
 
-<div class="toast" id="toast">Copié ✓</div>
+<div class="toast" id="toast"></div>
+
+<!-- Delete confirmation dialog -->
+<div class="delete-overlay" id="deleteOverlay">
+  <div class="delete-dialog">
+    <h3>Supprimer cette commande ?</h3>
+    <p>Cette action est irréversible. La commande sera définitivement supprimée.</p>
+    <div class="delete-dialog-btns">
+      <button class="btn-cancel-del" onclick="closeDeleteDialog()">Annuler</button>
+      <button class="btn-confirm-del" id="confirmDeleteBtn">Supprimer</button>
+    </div>
+  </div>
+</div>
 
 <nav class="admin-nav">
   <a href="orders.html">📦 Commandes</a>
@@ -177,8 +229,14 @@
 <div class="container">
   <h1>Gestion des commandes</h1>
 
-  <!-- ── Filtres ── -->
   <div class="filters-bar">
+    <!-- Search -->
+    <div class="filter-group">
+      <div class="search-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="filterSearch" placeholder="Nom ou téléphone…" oninput="applyFilters()">
+      </div>
+    </div>
     <div class="filter-group">
       <label>Du</label>
       <input type="date" id="filterFrom">
@@ -210,6 +268,13 @@
   if (!token) window.location.href = 'login.html';
 
   let allOrders = [];
+  let pendingDeleteId = null;
+
+  // ── Normalize phone: +213XXXXXXXXX → 0XXXXXXXXX
+  function normalizePhone(phone) {
+    if (!phone) return '';
+    return phone.replace(/^\+213/, '0');
+  }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -229,6 +294,7 @@
 
   function copyAllInfo(order) {
     const c = order.customer || {};
+    const phone  = normalizePhone(c.phone);
     const wilaya  = order.wilaya_name  || `Wilaya #${order.wilaya_id}`  || '—';
     const commune = order.commune_name || `Commune #${order.commune_id}` || '—';
     const items   = order.items.map(i => `- ${i.name} x${i.qty} = ${i.price * i.qty} DA`).join('\n');
@@ -236,7 +302,7 @@
     const shipping = order.shipping_type === 'maison' ? 'À domicile' : 'Point relais';
     const text = `Commande #${order.id.slice(0,8).toUpperCase()}
 Client : ${c.name || '—'}
-Téléphone : ${c.phone || '—'}
+Téléphone : ${phone || '—'}
 Adresse : ${c.address || '—'}, ${commune}, ${wilaya}
 Livraison : ${shipping} — ${order.shipping_price || 0} DA
 Articles :
@@ -253,8 +319,16 @@ ${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
     return { pending: 'En attente', confirmed: 'Confirmée', shipped: 'Expédiée', delivered: 'Livrée' }[s] || s;
   }
 
-  function renderOrder(order) {
+  // highlight search term in text
+  function highlight(text, term) {
+    if (!term || !text) return text || '';
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return String(text).replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+  }
+
+  function renderOrder(order, searchTerm = '') {
     const c = order.customer || {};
+    const phone    = normalizePhone(c.phone);
     const wilaya   = order.wilaya_name  || `Wilaya #${order.wilaya_id}`  || '—';
     const commune  = order.commune_name || `Commune #${order.commune_id}` || '—';
     const adresse  = [c.address, commune, wilaya].filter(Boolean).join(', ');
@@ -267,13 +341,15 @@ ${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
     const total = order.total_amount || (subtotal + (order.shipping_price || 0));
     const notesHtml = order.notes ? `<div class="notes-block">📝 ${order.notes}</div>` : '';
 
+    // Highlighted name and phone for search
+    const displayName  = highlight(c.name  || '—', searchTerm);
+    const displayPhone = highlight(phone   || '—', searchTerm);
+
     let actions = '';
     if (order.status === 'pending')   actions = `<button class="btn btn-confirm" onclick="updateStatus('${order.id}','confirmed')">✓ Confirmer</button>`;
     if (order.status === 'confirmed') actions = `<button class="btn btn-ship"    onclick="updateStatus('${order.id}','shipped')">🚚 Marquer expédiée</button>`;
     if (order.status === 'shipped')   actions = `<button class="btn btn-deliver" onclick="updateStatus('${order.id}','delivered')">✅ Marquer livrée</button>`;
     if (order.status === 'delivered') actions = '<span style="color:var(--sage);font-size:.85rem;">✔ Commande terminée</span>';
-
-    const phone = c.phone || '';
 
     return `
       <div class="order-card" data-id="${order.id}">
@@ -293,8 +369,8 @@ ${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
           <div class="info-block">
             <div class="label">👤 Client</div>
             <div class="value">
-              <span><strong>${c.name || '—'}</strong></span>
-              <span>📞 ${phone || '—'}</span>
+              <span><strong>${displayName}</strong></span>
+              <span>📞 ${displayPhone}</span>
               <span>📍 ${adresse}</span>
             </div>
             <div class="contact-actions">
@@ -327,15 +403,49 @@ ${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
         </div>
 
         ${notesHtml}
-        <div class="order-actions">${actions}</div>
+        <div class="order-actions">
+          ${actions}
+          <button class="btn-delete" onclick="promptDelete('${order.id}')">🗑 Supprimer</button>
+        </div>
       </div>
     `;
   }
 
+  // ── Delete flow ──
+  function promptDelete(orderId) {
+    pendingDeleteId = orderId;
+    document.getElementById('deleteOverlay').classList.add('active');
+    document.getElementById('confirmDeleteBtn').onclick = () => confirmDelete();
+  }
+  function closeDeleteDialog() {
+    pendingDeleteId = null;
+    document.getElementById('deleteOverlay').classList.remove('active');
+  }
+  async function confirmDelete() {
+    if (!pendingDeleteId) return;
+    closeDeleteDialog();
+    try {
+      const res = await fetch(`${API_URL}/api/orders/${pendingDeleteId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        showToast('Commande supprimée');
+        loadOrders();
+      } else {
+        showToast('Erreur lors de la suppression');
+      }
+    } catch (err) {
+      showToast('Erreur réseau');
+    }
+  }
+
+  // ── Filters ──
   function applyFilters() {
     const from   = document.getElementById('filterFrom').value;
     const to     = document.getElementById('filterTo').value;
     const status = document.getElementById('filterStatus').value;
+    const search = document.getElementById('filterSearch').value.trim().toLowerCase();
     const el     = document.getElementById('ordersList');
 
     let filtered = allOrders.filter(order => {
@@ -343,6 +453,12 @@ ${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
       if (from && date < new Date(from)) return false;
       if (to   && date > new Date(to + 'T23:59:59')) return false;
       if (status && order.status !== status) return false;
+      if (search) {
+        const c = order.customer || {};
+        const phone = normalizePhone(c.phone || '').toLowerCase();
+        const name  = (c.name || '').toLowerCase();
+        if (!name.includes(search) && !phone.includes(search)) return false;
+      }
       return true;
     });
 
@@ -354,14 +470,15 @@ ${order.notes ? 'Notes : ' + order.notes : ''}`.trim();
     if (!filtered.length) {
       el.innerHTML = '<div class="empty-state">Aucune commande pour ces filtres.</div>';
     } else {
-      el.innerHTML = filtered.map(renderOrder).join('');
+      el.innerHTML = filtered.map(o => renderOrder(o, search)).join('');
     }
   }
 
   function resetFilters() {
-    document.getElementById('filterFrom').value = '';
-    document.getElementById('filterTo').value = '';
+    document.getElementById('filterFrom').value   = '';
+    document.getElementById('filterTo').value     = '';
     document.getElementById('filterStatus').value = '';
+    document.getElementById('filterSearch').value = '';
     applyFilters();
   }
 
