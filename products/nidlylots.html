@@ -977,9 +977,19 @@ document.querySelectorAll('.btn-p,.btn-wh,.btn-wa,.btn-add').forEach(btn=>{
 });
 
 /* cart */
-function addCart(id,name,price){
-  try{const c=JSON.parse(localStorage.getItem('nidly_cart')||'[]');const ex=c.find(i=>i.id===id);if(ex)ex.qty++;else c.push({id,name,price,qty:1});localStorage.setItem('nidly_cart',JSON.stringify(c));}catch(e){}
-  const t=document.getElementById('toast');t.textContent=`✓ ${name} ajouté au panier !`;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);
+function addToCart(id,name,price,img='') {
+  try {
+    const cart=JSON.parse(localStorage.getItem('nidly_cart')||'[]');
+    const ex=cart.find(i=>i.id===id);
+    if(ex) ex.qty++; else cart.push({id,name,price,qty:1,img});
+    localStorage.setItem('nidly_cart',JSON.stringify(cart));
+    updateCartCount();
+  } catch(e){}
+  const t=document.getElementById('toast');
+  const msg = currentLang === 'ar' ? `✓ تمت الإضافة!` : `✓ ${name} ajouté !`;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
 }
 </script>
 </body>
