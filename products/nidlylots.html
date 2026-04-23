@@ -1,906 +1,833 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-67J6Z9L6D7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-67J6Z9L6D7');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nidly — Boîtes de Rangement avec Couvercles</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Boîtes de Rangement — Nidly</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --ink:#0f0d0b;--ink2:#1e1a16;--cream:#faf8f3;--warm:#f3ede0;--blush:#ecddd3;
-  --terra:#c4714a;--gold:#c9a55a;--sage:#8a9e88;--dust:#b8957a;--wa:#25D366;
+:root {
+  --cream: #FAF7F2;
+  --blush: #F0E0D6;
+  --dusty: #D4A5A0;
+  --terra: #C47B6B;
+  --bark: #7A5C52;
+  --char: #2C2420;
+  --sage: #A8B5A0;
+  --sage-l: #D6E0D2;
+  --gold: #C9A96E;
+  --wa: #25D366;
+  --wa-dark: #128C7E;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
-body::before{content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;opacity:.03;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23f)'/%3E%3C/svg%3E");}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--cream);
+  color:var(--char);
+  font-family:'DM Sans', sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+}
+[lang="ar"] body, body.ar { font-family: 'Cairo', sans-serif; }
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:.45;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
 
-/* cursor */
-#cur{position:fixed;z-index:9999;pointer-events:none;width:12px;height:12px;border-radius:50%;background:var(--terra);transform:translate(-50%,-50%);transition:width .25s,height .25s,opacity .3s;mix-blend-mode:multiply;}
-#cur-r{position:fixed;z-index:9998;pointer-events:none;width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(196,113,74,.4);transform:translate(-50%,-50%);transition:width .4s cubic-bezier(.34,1.56,.64,1),height .4s cubic-bezier(.34,1.56,.64,1);}
-body.hov #cur{width:36px;height:36px;opacity:.12;}body.hov #cur-r{width:56px;height:56px;}
-@media(pointer:coarse){#cur,#cur-r{display:none;}body{cursor:auto;}}
-
-/* nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;transition:background .4s,box-shadow .4s;}
-nav.sc{background:rgba(250,248,243,.94);backdrop-filter:blur(22px);box-shadow:0 1px 0 rgba(196,113,74,.1);}
-.logo{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:300;letter-spacing:.12em;color:var(--cream);text-decoration:none;transition:color .4s;}
-.logo.dk{color:var(--ink);}.logo span{color:var(--terra);font-style:italic;}
-.nav-r{display:flex;gap:.6rem;align-items:center;}
-.np{padding:.4rem 1.1rem;border-radius:3rem;font-size:.72rem;font-weight:500;letter-spacing:.05em;text-decoration:none;border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.9);transition:all .25s;cursor:none;}
-nav.sc .np{border-color:rgba(196,113,74,.3);color:var(--ink);}
-.np.cta{background:var(--terra);border-color:var(--terra);color:#fff;}
-
-/* hero */
-.hero{min-height:100svh;display:grid;place-items:center;position:relative;overflow:hidden;background:var(--ink);}
-.hero-bg{position:absolute;inset:0;background:
-  radial-gradient(ellipse 70% 60% at 80% 20%,rgba(196,113,74,.18),transparent 65%),
-  radial-gradient(ellipse 50% 50% at 10% 80%,rgba(201,165,90,.12),transparent 60%),
-  radial-gradient(ellipse 80% 80% at 50% 50%,#1e1a16,#0f0d0b 100%);}
-.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);}
-.o1{width:600px;height:600px;background:radial-gradient(circle,rgba(196,113,74,.25),transparent 70%);top:-100px;right:-100px;animation:of1 12s ease-in-out infinite;}
-.o2{width:400px;height:400px;background:radial-gradient(circle,rgba(201,165,90,.18),transparent 70%);bottom:-50px;left:-80px;animation:of2 15s ease-in-out infinite;}
-@keyframes of1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-40px,30px) scale(1.1)}}
-@keyframes of2{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-40px) scale(1.08)}}
-.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
-.ptcl{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--gold);animation:pdrift linear infinite;opacity:0;}
-@keyframes pdrift{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.6}90%{opacity:.3}100%{opacity:0;transform:translateY(-100px) translateX(30px)}}
-.hcnt{position:relative;z-index:5;text-align:center;padding:8rem 1.5rem 4rem;max-width:900px;}
-.eyebrow{display:inline-flex;align-items:center;gap:.8rem;font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;opacity:0;animation:fup .8s .3s ease forwards;}
-.eyebrow::before,.eyebrow::after{content:'';display:block;width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-@keyframes fup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.htitle{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,10vw,7.5rem);font-weight:300;line-height:.95;color:var(--cream);margin-bottom:1.5rem;}
-.htitle .ln{display:block;overflow:hidden;}
-.htitle .ln span{display:block;animation:sup .9s cubic-bezier(.16,1,.3,1) both;}
-.htitle .ln:nth-child(1) span{animation-delay:.5s}.htitle .ln:nth-child(2) span{animation-delay:.65s}
-.htitle em{color:var(--terra);font-style:italic;}
-@keyframes sup{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
-.hsub{font-size:clamp(.85rem,2vw,1rem);color:rgba(250,248,243,.5);line-height:1.9;max-width:460px;margin:0 auto 2rem;opacity:0;animation:fup .8s 1.1s ease forwards;}
-.hbadges{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;opacity:0;animation:fup .8s 1.25s ease forwards;}
-.hb{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:3rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);font-size:.72rem;color:rgba(255,255,255,.75);transition:all .25s;}
-.hb.lid{background:rgba(196,113,74,.25);border-color:rgba(196,113,74,.6);color:#ffcfb8;font-weight:600;}
-.hcta{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fup .8s 1.4s ease forwards;}
-.btn-p{display:inline-flex;align-items:center;gap:.55rem;padding:.95rem 2.2rem;border-radius:3rem;background:var(--terra);color:#fff;font-size:.88rem;font-weight:500;text-decoration:none;border:none;cursor:none;transition:all .3s;position:relative;overflow:hidden;}
-.btn-p::before{content:'';position:absolute;inset:0;border-radius:3rem;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .3s;}
-.btn-p:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(196,113,74,.45);}.btn-p:hover::before{opacity:1;}
-.btn-o{display:inline-flex;align-items:center;gap:.55rem;padding:.95rem 2.2rem;border-radius:3rem;background:transparent;border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);font-size:.88rem;text-decoration:none;cursor:none;transition:all .3s;}
-.btn-o:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#fff;transform:translateY(-2px);}
-.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fup .8s 2s ease forwards;}
-.sline{width:1px;height:50px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.3),transparent);animation:sp 2s ease-in-out infinite;}
-@keyframes sp{0%,100%{opacity:.4}50%{opacity:1}}
-.slbl{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);}
-
-/* marquee */
-.marquee-strip{background:var(--terra);padding:.75rem 0;overflow:hidden;}
-.mtrack{display:flex;animation:ms 22s linear infinite;width:max-content;}
-.mi{display:inline-flex;align-items:center;gap:.6rem;padding:0 2.5rem;font-size:.72rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.9);white-space:nowrap;}
-@keyframes ms{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* reveal */
-.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
-.rv.on{opacity:1;transform:translateY(0);}
-.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
-
-/* section chrome */
-.seyebrow{display:inline-flex;align-items:center;gap:.7rem;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--terra);margin-bottom:1.1rem;}
-.seyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--terra);}
-.sh{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,6vw,4rem);font-weight:300;line-height:1.05;color:var(--ink);}
-.sh em{color:var(--terra);font-style:italic;}
-.sh.lt{color:var(--cream);}.sh.lt em{color:var(--gold);}
-
-/* ═══ COUVERCLES SECTION ═══ */
-.lid-section{padding:6rem 2rem;background:var(--ink2);position:relative;overflow:hidden;}
-.lid-section::before{content:'';position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(ellipse 60% 50% at 15% 50%,rgba(196,113,74,.15),transparent 65%),
-             radial-gradient(ellipse 50% 60% at 85% 30%,rgba(201,165,90,.1),transparent 60%);}
-.lid-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-.lid-eyebrow{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:.7rem;}
-.lid-eyebrow::before{content:'';display:block;width:20px;height:1.5px;background:var(--gold);}
-.lid-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,4.2rem);font-weight:300;line-height:1.02;color:var(--cream);margin-bottom:1.3rem;}
-.lid-h .acc{display:inline-block;background:linear-gradient(135deg,var(--terra),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-style:italic;}
-.lid-desc{font-size:.9rem;color:rgba(250,248,243,.45);line-height:1.85;margin-bottom:2rem;}
-.lid-pts{display:flex;flex-direction:column;gap:.85rem;}
-.lid-pt{display:flex;align-items:flex-start;gap:1rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:1rem;padding:1.1rem 1.2rem;transition:background .3s,border-color .3s;}
-.lid-pt:hover{background:rgba(196,113,74,.1);border-color:rgba(196,113,74,.3);}
-.lid-pt-ico{font-size:1.3rem;flex-shrink:0;margin-top:.05rem;}
-.lid-pt-t{font-size:.88rem;font-weight:500;color:var(--cream);margin-bottom:.2rem;}
-.lid-pt-d{font-size:.75rem;color:rgba(250,248,243,.4);line-height:1.6;}
-
-/* visuel animé couvercle */
-.lid-vis{display:flex;justify-content:center;align-items:center;position:relative;padding:3rem 4rem;}
-.lid-box{display:flex;flex-direction:column;align-items:center;gap:.4rem;position:relative;}
-.lbd-lid{width:220px;height:46px;border-radius:14px 14px 5px 5px;background:linear-gradient(160deg,var(--terra),#d4855e);box-shadow:0 -4px 22px rgba(196,113,74,.45);display:flex;align-items:center;justify-content:center;animation:lidF 3s ease-in-out infinite;z-index:3;}
-@keyframes lidF{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.lbd-body{width:220px;height:130px;border-radius:5px 5px 14px 14px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;}
-.lbd-lid-lbl{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:500;}
-.lbd-body-lbl{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,248,243,.4);}
-.lfb{position:absolute;background:rgba(250,248,243,.07);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px);border-radius:.8rem;padding:.5rem .9rem;font-size:.7rem;color:rgba(255,255,255,.7);white-space:nowrap;}
-.lfb1{bottom:-1rem;right:-1.5rem;animation:fb1 4s ease-in-out infinite;}
-.lfb2{top:0;right:-2rem;animation:fb2 5s ease-in-out infinite;}
-.lfb3{top:50%;left:-3rem;transform:translateY(-50%);animation:fb1 6s ease-in-out infinite;}
-@keyframes fb1{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-@keyframes fb2{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-.nav--btn {
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.9rem 1.2rem;
+  background:rgba(250,247,242,.92);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(196,123,107,.1);
+}
+.nav-logo {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; font-weight:300; letter-spacing:.08em;
+  color:var(--char); text-decoration:none;
+}
+.nav-logo span { color:var(--terra); font-style:italic; }
+.nav-right { display:flex; gap:.7rem; align-items:center; }
+.nav-back {
+  font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--bark); text-decoration:none; padding:.4rem .85rem;
+  border:1px solid rgba(196,123,107,.25); border-radius:2rem; transition:all .2s;
+}
+.nav-back:hover { background:var(--blush); color:var(--terra); }
+.nav-cart-btn {
   background:var(--terra); color:white;
   padding:.4rem .95rem; border-radius:2rem;
   font-size:.7rem; letter-spacing:.06em;
   text-decoration:none; display:inline-block; transition:background .2s;
 }
 .nav-cart-btn:hover { background:var(--bark); }
-/* ═══ UTILITÉS SECTION ═══ */
-.uses-section{padding:7rem 2rem;background:var(--cream);position:relative;}
-.uses-section::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(196,113,74,.06),transparent 65%);pointer-events:none;}
-.uses-inner{max-width:1200px;margin:0 auto;}
-.uses-hdr{text-align:center;margin-bottom:3.5rem;}
-.uses-sub{font-size:.9rem;color:var(--dust);max-width:480px;margin:.8rem auto 0;line-height:1.8;}
-.utabs{display:flex;gap:.45rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;}
-.utab{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.2rem;border-radius:3rem;border:1.5px solid rgba(196,113,74,.2);background:transparent;font-family:'Outfit',sans-serif;font-size:.78rem;color:var(--dust);cursor:none;transition:all .25s;}
-.utab:hover{border-color:var(--terra);color:var(--terra);}
-.utab.on{background:var(--terra);border-color:var(--terra);color:#fff;font-weight:500;}
-.upanels{}
-.upanel{display:none;animation:pIn .4s ease both;}
-.upanel.on{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.2rem;}
-@keyframes pIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.ucard{background:#fff;border:1px solid rgba(196,113,74,.1);border-radius:1.3rem;padding:1.5rem 1.4rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s,border-color .3s;position:relative;overflow:hidden;cursor:none;}
-.ucard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--terra),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
-.ucard:hover{transform:translateY(-8px);box-shadow:0 20px 45px rgba(100,70,50,.1);border-color:rgba(196,113,74,.25);}
-.ucard:hover::after{transform:scaleX(1);}
-.ucard-ico{font-size:2rem;margin-bottom:.85rem;display:block;}
-.ucard-t{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--ink);margin-bottom:.3rem;}
-.ucard-d{font-size:.78rem;color:var(--dust);line-height:1.65;}
-.ucard-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.9rem;}
-.uctag{background:var(--warm);border-radius:2rem;padding:.18rem .6rem;font-size:.65rem;color:var(--dust);}
-.ucard-sz{position:absolute;top:.9rem;right:.9rem;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:#fff;}
-.sxl{background:var(--terra);}.sl{background:var(--dust);}.sm{background:var(--sage);}
 
-/* ═══ PRODUITS ═══ */
-.prod-section{padding:7rem 2rem 6rem;background:var(--warm);}
-.prod-inner{max-width:1200px;margin:0 auto;}
-.prod-hdr{display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;}
-.prod-sub{font-size:.85rem;color:var(--dust);max-width:300px;line-height:1.8;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.5rem;}
-.pcard{background:#fff;border-radius:1.6rem;overflow:hidden;border:1.5px solid rgba(200,180,160,.15);transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s,border-color .3s;position:relative;cursor:none;}
-.pcard:hover{transform:translateY(-10px);box-shadow:0 32px 64px rgba(100,70,50,.14);border-color:rgba(196,113,74,.25);}
-.pcard.feat{border-color:var(--terra);}
-.pbadge{position:absolute;top:1.1rem;left:1.1rem;z-index:5;background:var(--terra);color:#fff;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .9rem;border-radius:3rem;}
-.pbadge.gold{background:linear-gradient(135deg,var(--gold),#e0bd7a);}
-.pphoto{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--blush);}
-.pphoto img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0;transition:opacity .5s ease,transform .7s ease;}
-.pphoto img.on{opacity:1;}
-.pcard:hover .pphoto img.on{transform:scale(1.06);}
-.pphoto::after{content:'';position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(15,13,11,.3),transparent);pointer-events:none;}
-.pdots{position:absolute;bottom:.9rem;right:.9rem;z-index:3;display:flex;gap:4px;}
-.pdot{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.4);border:none;padding:0;cursor:none;transition:all .25s;}
-.pdot.on{background:#fff;width:16px;}
-.plid{position:absolute;top:.9rem;right:.9rem;z-index:5;background:rgba(196,113,74,.85);backdrop-filter:blur(6px);border-radius:2rem;padding:.28rem .75rem;font-size:.62rem;font-weight:600;color:#fff;letter-spacing:.05em;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;gap:.3rem;}
-.plbl{position:absolute;bottom:.9rem;left:.9rem;z-index:4;background:rgba(250,248,243,.85);backdrop-filter:blur(10px);border-radius:2rem;padding:.28rem .8rem;font-size:.65rem;font-weight:500;letter-spacing:.06em;color:var(--terra);border:1px solid rgba(255,255,255,.7);}
-.pbody{padding:1.5rem;}
-.pname{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--ink);margin-bottom:.2rem;line-height:1;}
-.ptagline{font-size:.78rem;color:var(--dust);font-style:italic;margin-bottom:1rem;line-height:1.5;}
-.pcompo{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;}
-.pchip{display:flex;align-items:center;gap:.3rem;background:var(--warm);border:1px solid rgba(200,170,140,.2);border-radius:.5rem;padding:.3rem .7rem;font-size:.74rem;}
-.pchip .csz{font-weight:600;font-size:.8rem;}.pchip .cct{color:var(--dust);}
-.ptotal{background:var(--blush);border-radius:.5rem;padding:.3rem .7rem;font-size:.72rem;color:#8a6a5a;}
-.puses{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1.2rem;}
-.puse{background:#f0f4ee;border-radius:2rem;padding:.2rem .65rem;font-size:.67rem;color:#5a7058;}
-.pfoot{display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid rgba(196,113,74,.1);}
-.pprice{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:400;color:var(--terra);line-height:1;}
-.ppnote{font-size:.64rem;color:var(--dust);margin-top:.15rem;}
-.btn-add{background:var(--ink);color:#fff;border:none;padding:.8rem 1.5rem;border-radius:3rem;font-family:'Outfit',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.04em;cursor:none;transition:all .3s;display:inline-flex;align-items:center;gap:.4rem;}
-.btn-add:hover{background:var(--terra);}
-.pcard.feat .btn-add{background:var(--terra);}.pcard.feat .btn-add:hover{background:var(--ink);}
-.arr{transition:transform .3s;}.btn-add:hover .arr{transform:translateX(4px);}
-
-/* ═══ TAILLES ═══ */
-.sz-section{padding:6rem 2rem;background:var(--ink);position:relative;overflow:hidden;}
-.sz-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 90% 10%,rgba(196,113,74,.12),transparent 60%);pointer-events:none;}
-.sz-inner{max-width:1200px;margin:0 auto;}
-.sz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:4rem;}
-.szcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:1.4rem;padding:2rem 1.6rem;position:relative;overflow:hidden;transition:background .3s,border-color .3s,transform .3s;}
-.szcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--terra),var(--gold));opacity:0;transition:opacity .3s;}
-.szcard:hover{background:rgba(255,255,255,.07);border-color:rgba(196,113,74,.3);transform:translateY(-6px);}.szcard:hover::before{opacity:1;}
-.szletter{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:rgba(250,248,243,.08);position:absolute;top:1.2rem;right:1.4rem;line-height:1;}
-.szblock{border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;width:fit-content;}
-.bxl{width:52px;height:34px;background:var(--terra);}.bl{width:38px;height:26px;background:var(--dust);}.bm{width:26px;height:26px;background:var(--sage);}
-.szlbl{font-size:.6rem;font-weight:700;color:#fff;letter-spacing:.08em;}
-.szname{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--cream);margin-bottom:.2rem;}
-.szdims{font-size:.72rem;color:rgba(250,248,243,.3);letter-spacing:.05em;margin-bottom:.9rem;}
-.sztags{display:flex;flex-wrap:wrap;gap:.3rem;}
-.sztag{background:rgba(255,255,255,.06);border-radius:2rem;padding:.2rem .6rem;font-size:.67rem;color:rgba(250,248,243,.5);}
-
-/* ═══ FEATURES ═══ */
-.feat-section{padding:7rem 2rem;background:var(--cream);}
-.feat-inner{max-width:1200px;margin:0 auto;}
-.feat-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
-.fc{background:#fff;border-radius:1.2rem;padding:1.5rem 1.4rem;border:1px solid rgba(196,113,74,.08);transition:box-shadow .3s,border-color .3s,transform .3s;position:relative;overflow:hidden;}
-.fc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--terra),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .35s ease;}
-.fc:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(100,70,50,.1);border-color:rgba(196,113,74,.2);}.fc:hover::after{transform:scaleX(1);}
-.fi{font-size:1.5rem;margin-bottom:.8rem;display:block;}
-.ft{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ink);margin-bottom:.35rem;}
-.fd{font-size:.75rem;color:var(--dust);line-height:1.65;}
-.stat-row{display:flex;gap:2.5rem;margin-top:2.5rem;}
-.stat-n{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--terra);line-height:1;}
-.stat-d{font-size:.72rem;color:var(--dust);margin-top:.3rem;}
-
-/* ═══ COMPARE ═══ */
-.cmp-section{padding:6rem 2rem;background:var(--warm);}
-.cmp-inner{max-width:1000px;margin:0 auto;}
-.cmp-wrap{overflow-x:auto;border-radius:1.4rem;box-shadow:0 20px 60px rgba(100,70,50,.1);margin-top:3.5rem;}
-table.ct{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border-radius:1.4rem;overflow:hidden;min-width:480px;}
-.ct thead th{padding:1.4rem 1rem;text-align:center;background:#fff;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;color:var(--ink);border-bottom:2px solid var(--warm);position:relative;}
-.ct thead th:first-child{text-align:left;font-size:.78rem;color:var(--dust);}
-.ct thead th.hl{background:rgba(196,113,74,.05);color:var(--terra);}
-.ct thead th.hl::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--terra),var(--gold));}
-.ct tbody td{padding:.85rem 1rem;text-align:center;font-size:.82rem;color:#6b5b4e;border-bottom:1px solid var(--warm);}
-.ct tbody td:first-child{text-align:left;color:var(--ink);font-size:.85rem;}
-.ct tbody tr:last-child td{border-bottom:none;}
-.ct tbody tr:hover td{background:rgba(196,113,74,.03);}
-.ct .hl{background:rgba(196,113,74,.04);font-weight:500;color:var(--ink);}
-.ptd{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--terra);}
-.ptd.hl{font-size:1.5rem;}.chk{color:var(--terra);}
-
-/* ═══ AVIS ═══ */
-.rev-section{padding:6rem 2rem;background:var(--ink);position:relative;overflow:hidden;}
-.rev-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 40% at 50% 50%,rgba(196,113,74,.08),transparent 65%);pointer-events:none;}
-.rev-inner{max-width:1200px;margin:0 auto;}
-.rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;margin-top:3.5rem;}
-.rcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:1.3rem;padding:1.7rem;transition:background .3s,border-color .3s,transform .3s;}
-.rcard:hover{background:rgba(255,255,255,.07);border-color:rgba(196,113,74,.25);transform:translateY(-5px);}
-.rstars{color:var(--gold);font-size:.8rem;margin-bottom:.9rem;}
-.rq{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(250,248,243,.75);line-height:1.65;margin-bottom:1.2rem;}
-.rq::before{content:'"';color:var(--terra);font-size:1.6rem;line-height:0;vertical-align:-.4rem;margin-right:.2rem;}
-.rauth{display:flex;align-items:center;gap:.7rem;}
-.ravt{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--terra),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.rname{font-size:.8rem;font-weight:500;color:var(--cream);}
-.rcity{font-size:.66rem;color:rgba(250,248,243,.35);}
-
-/* ═══ WA ═══ */
-.wa-section{padding:5rem 2rem;}
-.wa-inner{max-width:900px;margin:0 auto;}
-.wa-card{background:linear-gradient(135deg,#f1faf5,#e8f7ed);border:1.5px solid rgba(37,211,102,.2);border-radius:1.5rem;padding:2.5rem;position:relative;overflow:hidden;display:flex;flex-wrap:wrap;gap:2rem;align-items:center;}
-.wa-card::after{content:'💬';position:absolute;right:-15px;bottom:-20px;font-size:7rem;opacity:.05;pointer-events:none;}
-.wa-left{flex:1;min-width:240px;}
-.wa-top{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem;}
-.wa-logo{width:50px;height:50px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;box-shadow:0 6px 20px rgba(37,211,102,.35);}
-.wa-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ink);}
-.wa-sub{font-size:.78rem;color:#3a6b4a;opacity:.8;}
-.wa-feats{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
-.wa-feat{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:#2d5a3d;}
-.wa-dot{width:8px;height:8px;border-radius:50%;background:var(--wa);flex-shrink:0;}
-.wa-note{background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.18);border-radius:.75rem;padding:.8rem 1rem;font-size:.77rem;color:#1a5c32;line-height:1.55;display:flex;gap:.5rem;}
-.wa-right{flex-shrink:0;}
-.btn-wa{display:inline-flex;align-items:center;gap:.7rem;background:var(--wa);color:#fff;padding:1.1rem 2.2rem;border-radius:3rem;border:none;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:500;text-decoration:none;cursor:none;transition:all .3s;box-shadow:0 8px 26px rgba(37,211,102,.3);}
-.btn-wa:hover{background:#1dad55;transform:translateY(-3px);box-shadow:0 16px 40px rgba(37,211,102,.4);}
-.btn-wa svg{width:22px;height:22px;fill:#fff;}
-
-/* ═══ CTA ═══ */
-.cta-section{position:relative;overflow:hidden;padding:8rem 2rem;background:var(--terra);text-align:center;}
-.cta-section::before,.cta-section::after{content:'';position:absolute;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
-.cta-section::before{width:700px;height:700px;border:1px solid rgba(255,255,255,.1);}
-.cta-section::after{width:400px;height:400px;border:1px solid rgba(255,255,255,.15);}
-.cta-in{position:relative;z-index:5;max-width:600px;margin:0 auto;}
-.cta-ey{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:1.5rem;display:block;}
-.cta-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,8vw,4.5rem);font-weight:300;color:#fff;line-height:1.05;margin-bottom:1.2rem;}
-.cta-h em{font-style:italic;opacity:.85;}
-.cta-sub{font-size:.9rem;color:rgba(255,255,255,.7);line-height:1.8;margin-bottom:2.5rem;}
-.btn-wh{display:inline-flex;align-items:center;gap:.6rem;background:#fff;color:var(--terra);padding:1rem 2.5rem;border-radius:3rem;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:600;text-decoration:none;cursor:none;transition:all .3s;box-shadow:0 10px 32px rgba(0,0,0,.2);}
-.btn-wh:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.25);}
-
-/* float wa */
-.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem;}
-.wa-bubble{background:#fff;border:1px solid rgba(37,211,102,.25);border-radius:1rem 1rem 0 1rem;padding:.65rem 1rem;font-size:.73rem;color:#2a5a35;max-width:170px;line-height:1.5;box-shadow:0 6px 24px rgba(0,0,0,.1);animation:bIn .7s cubic-bezier(.34,1.56,.64,1) 3s both;opacity:0;}
-@keyframes bIn{to{opacity:1}}
-.wa-btn{width:56px;height:56px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 26px rgba(37,211,102,.5);text-decoration:none;cursor:none;animation:bbounce 3s ease-in-out 4s infinite;}
-@keyframes bbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.wa-btn svg{width:28px;height:28px;fill:#fff;}
-
-footer{background:var(--ink2);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
-.flogo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#fff;letter-spacing:.1em;text-decoration:none;}
-.flogo span{color:var(--terra);font-style:italic;}
-.fcopy{font-size:.65rem;color:rgba(255,255,255,.25);}
-.flinks{display:flex;gap:1.5rem;}
-.flink{font-size:.7rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;}
-.flink:hover{color:var(--terra);}
-
-#toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:.85rem 1.8rem;border-radius:3rem;font-size:.82rem;z-index:1000;transition:transform .45s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;border:1px solid rgba(196,113,74,.3);box-shadow:0 10px 30px rgba(0,0,0,.25);}
-#toast.show{transform:translateX(-50%) translateY(0);}
-
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:900px){
-  nav{padding:.9rem 1.2rem;}
-  .np:not(.cta){display:none;}
-  .hcnt{padding:7rem 1.2rem 3rem;}
-  .lid-inner{grid-template-columns:1fr;gap:3rem;}
-  .lid-vis{display:none;}
-  .feat-layout{grid-template-columns:1fr;gap:3rem;}
-  .feat-grid{grid-template-columns:1fr 1fr;}
-  .sz-grid{grid-template-columns:1fr;gap:.8rem;}
+.lang-toggle {
+  background: white; border: 1.5px solid rgba(196,123,107,.3);
+  border-radius: 2rem; padding: .3rem .2rem;
+  display: flex; gap: .1rem; cursor: pointer;
 }
-@media(max-width:600px){
-  .lid-section,.uses-section,.prod-section,.sz-section,.feat-section,.cmp-section,.rev-section,.wa-section,.cta-section{padding:4.5rem 1.2rem;}
-  .cards{grid-template-columns:1fr;}
-  .feat-grid{grid-template-columns:1fr;}
-  .stat-row{gap:1.5rem;}
-  .utab{padding:.45rem .85rem;font-size:.72rem;}
-  footer{flex-direction:column;align-items:center;text-align:center;}
-  .wa-float{bottom:1rem;right:1rem;}
-  .prod-hdr{flex-direction:column;}
+.lang-btn {
+  padding: .25rem .6rem; border-radius: 2rem; border: none;
+  background: transparent; font-size: .68rem; font-weight: 500;
+  color: var(--bark); cursor: pointer; transition: all .2s; letter-spacing: .05em;
+}
+.lang-btn.active { background: var(--terra); color: white; }
+
+/* ── INTRO ── */
+.intro {
+  padding:6rem 1.4rem 2.5rem;
+  text-align:center; max-width:560px; margin:0 auto;
+}
+.intro-eyebrow {
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-size:.67rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--terra); margin-bottom:1.1rem;
+}
+.intro-eyebrow::before,.intro-eyebrow::after {
+  content:''; display:block; width:16px; height:1px; background:var(--terra);
+}
+.intro h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,9vw,4rem);
+  font-weight:300; line-height:1.08; color:var(--char); margin-bottom:.8rem;
+}
+.intro h1 em { color:var(--terra); font-style:italic; }
+.intro p { font-size:.9rem; color:var(--bark); line-height:1.75; margin-bottom:1.8rem; }
+.intro-badges { display:flex; gap:.45rem; justify-content:center; flex-wrap:wrap; }
+.badge {
+  display:inline-flex; align-items:center; gap:.3rem;
+  background:white; border:1px solid rgba(212,165,160,.3);
+  border-radius:2rem; padding:.3rem .8rem;
+  font-size:.68rem; color:var(--bark);
+}
+
+/* ── NOTICE COUVERCLES ── */
+.notice-wrap {
+  padding: 0 1.2rem 2rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+.notice-card {
+  background: linear-gradient(135deg, #fff9f7 0%, #fff3ee 100%);
+  border: 1.5px solid rgba(196,123,107,.35);
+  border-radius: 1.3rem;
+  padding: 1.3rem 1.3rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.notice-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--terra), var(--gold), var(--terra));
+  border-radius: 1.3rem 1.3rem 0 0;
+}
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .85rem;
+}
+.notice-icon {
+  width: 34px; height: 34px; flex-shrink: 0;
+  background: var(--terra);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.notice-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--char); line-height: 1.25;
+}
+.notice-sub {
+  font-size: .72rem; color: var(--bark); opacity: .75;
+  margin-top: .1rem;
+}
+.notice-divider {
+  height: 1px; background: rgba(196,123,107,.18); margin-bottom: .85rem;
+}
+.notice-list {
+  list-style: none; display: flex; flex-direction: column; gap: .52rem;
+  margin-bottom: .9rem;
+}
+.notice-list li {
+  display: flex; align-items: flex-start; gap: .55rem;
+  font-size: .8rem; color: var(--bark); line-height: 1.5;
+}
+.notice-check {
+  flex-shrink: 0;
+  width: 19px; height: 19px;
+  background: var(--sage-l);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .65rem; color: var(--bark);
+  margin-top: .05rem;
+}
+.notice-highlight {
+  background: rgba(196,123,107,.08);
+  border-radius: .65rem;
+  padding: .6rem .9rem;
+  font-size: .77rem;
+  color: var(--terra);
+  display: flex; align-items: center; gap: .5rem;
+  font-style: italic;
+}
+
+/* ── PHOTOS ── */
+.photo-grid {
+  padding:0 1.2rem 2.5rem;
+  display:grid; grid-template-columns:1fr 1fr; gap:.5rem;
+}
+.photo-grid .p-main {
+  grid-column:1/-1;
+  border-radius:1.3rem; overflow:hidden; background:var(--blush);
+  aspect-ratio:3/2; position:relative;
+}
+.photo-grid .p-main img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 6s ease; }
+.photo-grid .p-main:hover img { transform:scale(1.04); }
+.p-main .p-label { position:absolute; bottom:.8rem; left:.8rem; display:flex; gap:.4rem; }
+.p-main .p-label span {
+  background:rgba(250,247,242,.88); backdrop-filter:blur(8px);
+  border-radius:2rem; padding:.28rem .75rem;
+  font-size:.63rem; color:var(--bark);
+  border:1px solid rgba(255,255,255,.6);
+}
+.photo-grid .p-sm { border-radius:1.1rem; overflow:hidden; background:var(--blush); aspect-ratio:1/1; position:relative; }
+.photo-grid .p-sm img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
+.photo-grid .p-sm:hover img { transform:scale(1.05); }
+.p-sm .p-lbl {
+  position:absolute; bottom:.5rem; left:.5rem;
+  background:rgba(44,36,32,.5); backdrop-filter:blur(5px);
+  border-radius:1rem; padding:.22rem .6rem;
+  font-size:.6rem; letter-spacing:.07em; text-transform:uppercase;
+  color:rgba(255,255,255,.85);
+}
+
+.divider { display:flex; align-items:center; gap:1rem; padding:0 1.4rem; margin:2rem 0 1.8rem; }
+.divider::before,.divider::after { content:''; flex:1; height:1px; background:rgba(212,165,160,.3); }
+.divider span { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dusty); white-space:nowrap; }
+
+.sec-label { font-size:.67rem; letter-spacing:.2em; text-transform:uppercase; color:var(--terra); margin-bottom:.7rem; display:block; }
+.sec-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,6vw,2.8rem); font-weight:300; line-height:1.1; color:var(--char); margin-bottom:1.5rem; }
+.sec-title em { color:var(--terra); font-style:italic; }
+
+.sizes-section { padding:0 1.2rem 2.5rem; }
+.sizes-stack { display:flex; flex-direction:column; gap:.8rem; }
+.size-row { display:flex; align-items:center; gap:1.1rem; background:white; border-radius:1rem; padding:1.1rem 1.2rem; border:1.5px solid rgba(212,165,160,.18); transition:border-color .2s, box-shadow .2s; }
+.size-row:hover { border-color:var(--dusty); box-shadow:0 6px 20px rgba(122,92,82,.07); }
+.sz-box { flex-shrink:0; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:500; color:white; letter-spacing:.04em; }
+.sz-box.xl { width:50px; height:36px; background:var(--terra); }
+.sz-box.l  { width:38px; height:28px; background:var(--bark); }
+.sz-box.s  { width:26px; height:26px; background:var(--sage); }
+.sz-info { flex:1; }
+.sz-name { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:var(--char); margin-bottom:.1rem; }
+.sz-dims { font-size:.7rem; color:var(--bark); opacity:.6; margin-bottom:.3rem; }
+.sz-uses { display:flex; flex-wrap:wrap; gap:.25rem; }
+.sz-u { background:var(--cream); border-radius:1rem; padding:.16rem .5rem; font-size:.62rem; color:var(--bark); }
+
+.lots-section { padding:0 1.2rem 3rem; }
+.lot-card { background:white; border-radius:1.4rem; border:1.5px solid rgba(212,165,160,.2); overflow:hidden; margin-bottom:1.1rem; transition:box-shadow .3s; position:relative; }
+.lot-card:last-child { margin-bottom:0; }
+.lot-card.featured { border-color:var(--terra); }
+.lot-card:hover { box-shadow:0 14px 44px rgba(122,92,82,.11); }
+.pop-ribbon { position:absolute; top:0; left:50%; transform:translateX(-50%); background:var(--terra); color:white; font-size:.6rem; letter-spacing:.12em; text-transform:uppercase; padding:.26rem 1rem; border-radius:0 0 .7rem .7rem; white-space:nowrap; z-index:5; }
+.lot-photo { position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--blush); }
+.lot-photo img { width:100%; height:100%; object-fit:cover; display:block; position:absolute; inset:0; opacity:0; transition:opacity .5s ease; }
+.lot-photo img.active { opacity:1; }
+.gal-dots { position:absolute; bottom:.6rem; right:.7rem; display:flex; gap:4px; z-index:2; }
+.gal-dot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.45); border:none; cursor:pointer; padding:0; transition:all .2s; }
+.gal-dot.active { background:white; width:13px; border-radius:3px; }
+.lot-tag-bar { position:absolute; top:.7rem; left:.7rem; z-index:2; }
+.lot-tag-label { background:rgba(250,247,242,.88); backdrop-filter:blur(6px); border-radius:2rem; padding:.25rem .7rem; font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:var(--terra); border:1px solid rgba(196,123,107,.22); }
+.lot-body { padding:1.2rem; }
+.lot-name { font-family:'Cormorant Garamond',serif; font-size:1.55rem; font-weight:400; color:var(--char); margin-bottom:.15rem; }
+.lot-tagline { font-size:.78rem; color:var(--bark); opacity:.75; font-style:italic; margin-bottom:.9rem; }
+.lot-compo { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.9rem; }
+.c-chip { display:flex; align-items:center; gap:.28rem; background:var(--cream); border:1px solid rgba(212,165,160,.22); border-radius:.45rem; padding:.28rem .6rem; font-size:.73rem; }
+.c-chip .cn { font-weight:500; }
+.c-chip .cs { color:var(--bark); opacity:.7; }
+.c-total { background:var(--blush); border-radius:.45rem; padding:.28rem .6rem; font-size:.7rem; color:var(--bark); }
+.uses-row { display:flex; flex-wrap:wrap; gap:.28rem; margin-bottom:1.1rem; }
+.u-tag { background:var(--sage-l); border-radius:2rem; padding:.18rem .55rem; font-size:.67rem; color:var(--bark); }
+.lot-foot { display:flex; align-items:center; justify-content:space-between; padding-top:.9rem; border-top:1px solid rgba(212,165,160,.14); }
+.lot-price { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:400; color:var(--terra); line-height:1; }
+.lot-save { display:inline-block; background:var(--sage-l); color:var(--bark); font-size:.6rem; padding:.16rem .48rem; border-radius:2rem; margin-top:.22rem; }
+.btn-add { background:var(--terra); color:white; padding:.75rem 1.3rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.8rem; font-weight:500; letter-spacing:.04em; transition:all .22s; }
+.btn-add:active { transform:scale(0.97); }
+.lot-card.featured .btn-add { background:var(--char); }
+
+/* ── WHATSAPP CONTACT SECTION ── */
+.wa-section {
+  padding: 0 1.2rem 3rem;
+}
+.wa-card {
+  background: linear-gradient(135deg, #f0faf4 0%, #e8f7ef 100%);
+  border: 1.5px solid rgba(37,211,102,.25);
+  border-radius: 1.4rem;
+  padding: 1.6rem 1.4rem;
+  position: relative;
+  overflow: hidden;
+}
+.wa-card::after {
+  content: '💬';
+  position: absolute;
+  right: -10px; bottom: -14px;
+  font-size: 5rem;
+  opacity: .06;
+  pointer-events: none;
+}
+.wa-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  margin-bottom: 1rem;
+}
+.wa-logo {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: var(--wa);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.35rem;
+  box-shadow: 0 4px 14px rgba(37,211,102,.3);
+}
+.wa-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 400;
+  color: var(--char); line-height: 1.15;
+}
+.wa-card-sub {
+  font-size: .75rem; color: var(--bark); opacity: .8; margin-top: .2rem; line-height: 1.5;
+}
+.wa-features {
+  display: flex; flex-direction: column; gap: .45rem;
+  margin-bottom: 1.2rem;
+}
+.wa-feat {
+  display: flex; align-items: center; gap: .55rem;
+  font-size: .8rem; color: var(--bark);
+}
+.wa-feat-dot {
+  width: 7px; height: 7px; flex-shrink: 0;
+  border-radius: 50%; background: var(--wa);
+}
+.wa-order-note {
+  background: rgba(37,211,102,.08);
+  border: 1px solid rgba(37,211,102,.2);
+  border-radius: .75rem;
+  padding: .75rem .95rem;
+  font-size: .75rem;
+  color: #1a6b3a;
+  display: flex; align-items: flex-start; gap: .5rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.55;
+}
+.wa-order-note-icon { flex-shrink: 0; font-size: .95rem; margin-top: .05rem; }
+.btn-wa {
+  display: flex; align-items: center; justify-content: center; gap: .65rem;
+  width: 100%;
+  background: var(--wa);
+  color: white;
+  padding: .95rem 1.5rem;
+  border-radius: 3rem;
+  border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; font-weight: 500;
+  letter-spacing: .03em;
+  text-decoration: none;
+  transition: all .25s;
+  box-shadow: 0 6px 20px rgba(37,211,102,.3);
+}
+.btn-wa:hover { background: var(--wa-dark); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,.35); }
+.btn-wa:active { transform: scale(.97); }
+.btn-wa svg { width: 20px; height: 20px; fill: white; flex-shrink: 0; }
+
+/* ── FLOATING WHATSAPP ── */
+.wa-float {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.2rem;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .55rem;
+}
+.wa-float-bubble {
+  background: white;
+  border: 1px solid rgba(37,211,102,.3);
+  border-radius: 1rem 1rem 0 1rem;
+  padding: .55rem .9rem;
+  font-size: .72rem;
+  color: var(--bark);
+  max-width: 160px;
+  line-height: 1.45;
+  box-shadow: 0 4px 18px rgba(0,0,0,.1);
+  animation: floatIn .6s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: 2s;
+  opacity: 0;
+}
+@keyframes floatIn { to { opacity: 1; } }
+.wa-float-btn {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--wa);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 22px rgba(37,211,102,.45);
+  text-decoration: none;
+  transition: transform .2s, box-shadow .2s;
+  animation: floatBounce 2.5s ease-in-out infinite;
+  animation-delay: 3s;
+}
+.wa-float-btn:hover { transform: scale(1.1); box-shadow: 0 10px 28px rgba(37,211,102,.5); }
+.wa-float-btn svg { width: 26px; height: 26px; fill: white; }
+@keyframes floatBounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+html[dir="rtl"] .wa-float { right: auto; left: 1.2rem; }
+html[dir="rtl"] .wa-float-bubble { border-radius: 1rem 1rem 1rem 0; }
+
+/* ── WHY ── */
+.why-section { background:var(--char); padding:3.5rem 1.4rem; }
+.why-section .sec-label { color:var(--dusty); }
+.why-section .sec-title { color:white; }
+.why-section .sec-title em { color:var(--dusty); }
+.why-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+.why-card { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.07); border-radius:1rem; padding:1.2rem; transition:background .25s; }
+.why-card:active { background:rgba(196,123,107,.12); }
+.why-icon { font-size:1.4rem; margin-bottom:.55rem; display:block; }
+.why-card h4 { font-family:'Cormorant Garamond',serif; font-size:1rem; color:white; margin-bottom:.28rem; }
+.why-card p { font-size:.7rem; color:rgba(255,255,255,.38); line-height:1.6; }
+
+/* ── COMPARE ── */
+.compare-section { padding:3.5rem 1.2rem 4rem; overflow-x:auto; }
+.compare-section table { width:100%; border-collapse:collapse; min-width:300px; }
+.compare-section thead th { font-family:'Cormorant Garamond',serif; font-size:.9rem; font-weight:400; padding:.7rem .5rem; border-bottom:2px solid var(--blush); color:var(--char); text-align:center; }
+.compare-section thead th:first-child { text-align:left; font-size:.75rem; }
+.compare-section tbody td { padding:.6rem .5rem; text-align:center; border-bottom:1px solid rgba(212,165,160,.12); font-size:.75rem; color:var(--bark); }
+.compare-section tbody td:first-child { text-align:left; color:var(--char); font-size:.78rem; }
+.compare-section tbody tr:hover td { background:rgba(240,224,214,.2); }
+.price-cell { font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--terra); }
+.hl { background:rgba(196,123,107,.04); }
+
+/* ── REVIEWS ── */
+.reviews { padding:3.5rem 1.2rem; background:var(--blush); }
+.reviews .sec-title { margin-bottom:1.6rem; }
+.reviews-scroll { display:flex; gap:.9rem; overflow-x:auto; padding-bottom:.4rem; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.reviews-scroll::-webkit-scrollbar { display:none; }
+.review-card { background:white; border-radius:1.1rem; padding:1.2rem; min-width:230px; flex-shrink:0; }
+.r-stars { color:var(--gold); font-size:.76rem; margin-bottom:.65rem; }
+.r-text { font-size:.8rem; color:var(--bark); line-height:1.7; font-style:italic; margin-bottom:.85rem; }
+.r-author { display:flex; align-items:center; gap:.5rem; }
+.r-avatar { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.8rem; }
+.r-name { font-size:.76rem; font-weight:500; color:var(--char); }
+.r-loc { font-size:.63rem; color:var(--bark); opacity:.6; }
+
+/* ── CTA ── */
+.cta-section { padding:4rem 1.4rem; text-align:center; background:var(--terra); position:relative; overflow:hidden; }
+.cta-section::before { content:''; position:absolute; width:260px; height:260px; border-radius:50%; border:1px solid rgba(255,255,255,.12); top:50%; left:50%; transform:translate(-50%,-50%); }
+.cta-section::after { content:''; position:absolute; width:400px; height:400px; border-radius:50%; border:1px solid rgba(255,255,255,.07); top:50%; left:50%; transform:translate(-50%,-50%); }
+.cta-section h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,8vw,3rem); font-weight:300; color:white; line-height:1.1; margin-bottom:.75rem; position:relative; z-index:1; }
+.cta-section h2 em { font-style:italic; opacity:.85; }
+.cta-section p { color:rgba(255,255,255,.7); font-size:.85rem; line-height:1.7; max-width:300px; margin:0 auto 1.7rem; position:relative; z-index:1; }
+.btn-white { background:white; color:var(--terra); padding:.82rem 1.9rem; border-radius:3rem; font-family:'DM Sans',sans-serif; font-size:.85rem; font-weight:500; border:none; cursor:pointer; letter-spacing:.04em; text-decoration:none; display:inline-block; position:relative; z-index:1; transition:all .25s; }
+.btn-white:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.15); }
+
+footer { background:var(--char); padding:1.8rem 1.4rem; display:flex; align-items:center; justify-content:space-between; }
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:white; letter-spacing:.08em; text-decoration:none; }
+.footer-logo span { color:var(--terra); font-style:italic; }
+.footer-copy { font-size:.63rem; color:rgba(255,255,255,.28); }
+
+.toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(120px); background:var(--char); color:white; padding:.75rem 1.5rem; border-radius:3rem; font-size:.8rem; z-index:1000; transition:transform .4s cubic-bezier(.34,1.56,.64,1); pointer-events:none; white-space:nowrap; border:1px solid rgba(255,255,255,.08); }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+/* RTL */
+html[dir="rtl"] .nav-right { flex-direction: row-reverse; }
+html[dir="rtl"] .intro-eyebrow::before,
+html[dir="rtl"] .intro-eyebrow::after { display:none; }
+html[dir="rtl"] .lot-tag-bar { left:auto; right:.7rem; }
+html[dir="rtl"] .p-main .p-label { left:auto; right:.8rem; }
+html[dir="rtl"] .p-sm .p-lbl { left:auto; right:.5rem; }
+html[dir="rtl"] .gal-dots { right:auto; left:.7rem; }
+html[dir="rtl"] .pop-ribbon { font-family: 'Cairo', sans-serif; }
+html[dir="rtl"] .sec-title,
+html[dir="rtl"] .sec-label,
+html[dir="rtl"] .lot-name,
+html[dir="rtl"] .lot-tagline,
+html[dir="rtl"] .sz-name { font-family: 'Cairo', sans-serif; }
+html[dir="rtl"] .compare-section thead th:first-child { text-align:right; }
+html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
+html[dir="rtl"] .notice-card::before { background: linear-gradient(270deg, var(--terra), var(--gold), var(--terra)); }
+html[dir="rtl"] .wa-card::after { right:auto; left:-10px; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+@keyframes spin   { to{transform:rotate(360deg)} }
+.intro > * { animation:fadeUp .65s ease both; }
+.intro > *:nth-child(1){animation-delay:.1s}
+.intro > *:nth-child(2){animation-delay:.22s}
+.intro > *:nth-child(3){animation-delay:.34s}
+.intro > *:nth-child(4){animation-delay:.46s}
+
+@media (min-width:768px) {
+  nav { padding:1.1rem 3rem; }
+  .nav-logo { font-size:1.8rem; }
+  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .wa-section, .compare-section, .reviews { max-width:1100px; margin-left:auto; margin-right:auto; }
+  .notice-wrap { max-width: 1100px; }
+  .why-section { padding:5rem 4rem; }
+  .cta-section { padding:6rem 3rem; }
+  footer { padding:2.2rem 4rem; }
+  .intro { padding:8rem 3rem 4rem; text-align:center; }
+  .intro h1 { font-size:4.5rem; }
+  .intro p { font-size:1rem; max-width:480px; margin:0 auto 1.8rem; }
+  .photo-grid { padding:0 3rem 3.5rem; display:block; }
+  .photo-grid .p-main { aspect-ratio:21/8; border-radius:1.6rem; }
+  .photo-grid .p-sm { display:none; }
+  .divider { padding:0 3rem; margin:2.5rem auto; }
+  .notice-wrap { padding: 0 3rem 2.5rem; }
+  .notice-card { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .notice-card::before { border-radius: 1.3rem 0 0 1.3rem; width: 3px; height: 100%; top: 0; right: auto; }
+  .notice-card-left { flex: 0 0 auto; }
+  .notice-card-right { flex: 1; }
+  .notice-list { flex-direction: row; flex-wrap: wrap; gap: .5rem 1.5rem; }
+  .sizes-section { padding:0 3rem 3.5rem; }
+  .sizes-stack { flex-direction:row; gap:1rem; }
+  .size-row { flex-direction:column; align-items:flex-start; flex:1; padding:1.5rem; }
+  .sz-name { font-size:1.15rem; }
+  .lots-section { padding:0 3rem 4.5rem; }
+  #lotsContainer { display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
+  .lot-card { margin-bottom:0; }
+  .lot-photo { aspect-ratio:4/3; }
+  .lot-name { font-size:1.4rem; }
+  .lot-price { font-size:1.7rem; }
+  .wa-section { padding: 0 3rem 4rem; }
+  .wa-card { display: flex; gap: 2rem; align-items: center; }
+  .wa-card-content { flex: 1; }
+  .wa-card-action { flex-shrink: 0; min-width: 220px; }
+  .wa-features { flex-direction: row; flex-wrap: wrap; gap: .4rem 1.2rem; margin-bottom: .9rem; }
+  .btn-wa { width: auto; }
+  .why-grid { grid-template-columns:repeat(4,1fr); gap:1.2rem; }
+  .compare-section { padding:4.5rem 3rem 5rem; overflow-x:visible; }
+  .compare-section thead th { font-size:1rem; padding:.9rem .8rem; }
+  .compare-section tbody td { font-size:.85rem; padding:.75rem .8rem; }
+  .reviews { padding:4.5rem 3rem 5rem; }
+  .reviews-scroll { overflow-x:visible; flex-wrap:wrap; }
+  .review-card { min-width:0; flex:1; min-width:200px; }
+  .cta-section h2 { font-size:3rem; }
+}
+@media (min-width:1200px) {
+  .intro, .photo-grid, .divider, .sizes-section, .lots-section, .wa-section, .compare-section, .reviews { max-width:1200px; }
+  .notice-wrap { max-width: 1200px; }
+  .intro h1 { font-size:5.2rem; }
+  .photo-grid .p-main { aspect-ratio:21/7; }
 }
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '994276880442450');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
-<div id="cur"></div>
-<div id="cur-r"></div>
 
-<!-- FLOAT WA -->
+<!-- ── FLOATING WHATSAPP BUTTON ── -->
 <div class="wa-float">
-  <div class="wa-bubble">💬 Commandez ou posez vos questions !</div>
-  <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="wa-btn">
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <div class="wa-float-bubble" data-fr="💬 Personnalisez votre lot !" data-ar="💬 خصّصي طردك!">
+    💬 Personnalisez votre lot !
+  </div>
+  <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="wa-float-btn" title="WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
   </a>
 </div>
 
-<nav id="nav">
-  <a href="#" class="logo" id="navLogo">Ni<span>dly</span></a>
-  <div class="nav-r">
-    <a href="#lots" class="np">Les lots</a>
-<a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>  </div>
+<nav>
+  <a href="../index.html" class="nav-logo">Ni<span>dly</span></a>
+  <div class="nav-right">
+    <div class="lang-toggle" title="Changer la langue">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('ar')">ع</button>
+    </div>
+    <a href="../index.html" class="nav-back" data-fr="← Accueil" data-ar="الرئيسية →">← Accueil</a>
+    <a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>
+  </div>
 </nav>
 
-<!-- ══ HERO ══ -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="orb o1"></div><div class="orb o2"></div>
-  <div class="particles" id="ptcls"></div>
-  <div class="hcnt">
-    <div class="eyebrow">Collection boîtes de rangement</div>
-    <h1 class="htitle">
-      <span class="ln"><span>Chaque chose</span></span>
-      <span class="ln"><span><em>à sa place.</em></span></span>
-    </h1>
-    <p class="hsub">Des boîtes empilables pour la cuisine, le maquillage, la pharmacie, le dressing et le bureau — livrées avec leurs couvercles.</p>
-    <div class="hbadges">
-      <div class="hb lid">🔒 Couvercles inclus</div>
-      <div class="hb">♻️ Plastique alimentaire</div>
-      <div class="hb">📦 Empilables</div>
-      <div class="hb">🚀 48h en Algérie</div>
-    </div>
-    <div class="hcta">
-      <a href="#lots" class="btn-p">Choisir mon lot <span class="arr">→</span></a>
-      <a href="https://wa.me/213551901977" target="_blank" class="btn-o">Nous contacter</a>
-    </div>
-  </div>
-  <div class="scroll-hint"><div class="sline"></div><span class="slbl">Découvrir</span></div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-strip">
-  <div class="mtrack">
-    <div class="mi">🔒 Couvercles inclus</div><div class="mi">·</div>
-    <div class="mi">✦ Livraison 48h</div><div class="mi">·</div>
-    <div class="mi">✦ Maquillage · Cuisine · Médical · Bébé</div><div class="mi">·</div>
-    <div class="mi">✦ Plastique alimentaire</div><div class="mi">·</div>
-    <div class="mi">✦ 3 tailles empilables</div><div class="mi">·</div>
-    <div class="mi">🔒 Couvercles inclus</div><div class="mi">·</div>
-    <div class="mi">✦ Livraison 48h</div><div class="mi">·</div>
-    <div class="mi">✦ Maquillage · Cuisine · Médical · Bébé</div><div class="mi">·</div>
-    <div class="mi">✦ Plastique alimentaire</div><div class="mi">·</div>
-    <div class="mi">✦ 3 tailles empilables</div><div class="mi">·</div>
+<!-- INTRO -->
+<div class="intro">
+  <div class="intro-eyebrow" data-fr="Collection boîtes de rangement" data-ar="مجموعة صناديق التنظيم">Collection boîtes de rangement</div>
+  <h1 data-fr="Chaque chose<br><em>à sa place</em>" data-ar="كل شيء<br><em>في مكانه</em>">Chaque chose<br><em>à sa place</em></h1>
+  <p data-fr="Des boîtes empilables, modulables et résistantes — pour la cuisine, le maquillage, le dressing, le bureau." data-ar="صناديق قابلة للتكديس والتعديل ومتينة — للمطبخ، المكياج، الدولاب، والمكتب.">Des boîtes empilables, modulables et résistantes — pour la cuisine, le maquillage, le dressing, le bureau.</p>
+  <div class="intro-badges">
+    <span class="badge">♻️ <span data-fr="Plastique alimentaire" data-ar="بلاستيك غذائي">Plastique alimentaire</span></span>
+    <span class="badge">📦 <span data-fr="Empilables" data-ar="قابلة للتكديس">Empilables</span></span>
+    <span class="badge">🚀 <span data-fr="48h en Algérie" data-ar="48 ساعة في الجزائر">48h en Algérie</span></span>
+    <span class="badge">3 <span data-fr="tailles" data-ar="مقاسات">tailles</span></span>
   </div>
 </div>
 
-<!-- ══ SECTION COUVERCLES ══ -->
-<section class="lid-section">
-  <div class="lid-inner">
-    <div class="lid-text">
-      <div class="rv">
-        <div class="lid-eyebrow">La vraie différence</div>
-        <h2 class="lid-h">Des boîtes livrées<br>avec leurs <span class="acc">couvercles.</span></h2>
-        <p class="lid-desc">Pas juste un rangement de plus. Chaque boîte est équipée d'un couvercle solide qui protège vos affaires de la poussière et de l'humidité — tous les jours, pour des années.</p>
-      </div>
-      <div class="lid-pts rv d2">
-        <div class="lid-pt">
-          <div class="lid-pt-ico">🛡️</div>
-          <div>
-            <div class="lid-pt-t">Zéro poussière, zéro souci</div>
-            <div class="lid-pt-d">Couvercle fermé = affaires propres. Adieu la poussière sur vos pinceaux ou dans vos épices. Ouvrez le tiroir, tout est impeccable.</div>
-          </div>
-        </div>
-        <div class="lid-pt">
-          <div class="lid-pt-ico">💧</div>
-          <div>
-            <div class="lid-pt-t">Protection humidité</div>
-            <div class="lid-pt-d">Cuisine, salle de bain, pharmacie : vos contenus restent au sec. Idéal pour les médicaments et les épices qui détestent l'humidité.</div>
-          </div>
-        </div>
-        <div class="lid-pt">
-          <div class="lid-pt-ico">📦</div>
-          <div>
-            <div class="lid-pt-t">Empilables grâce au couvercle plat</div>
-            <div class="lid-pt-d">Le design plat du couvercle est pensé pour l'empilement stable. Vous gagnez de la hauteur sans rien perdre en sécurité.</div>
-          </div>
-        </div>
-        <div class="lid-pt">
-          <div class="lid-pt-ico">✨</div>
-          <div>
-            <div class="lid-pt-t">Un rendu visuel soigné</div>
-            <div class="lid-pt-d">Ouvrez un tiroir et voyez des boîtes fermées, uniformes, nettes. Le rangement devient quelque chose dont vous êtes fière.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- VISUEL ANIMÉ -->
-    <div class="lid-vis rv d3">
-      <div class="lid-box">
-        <div class="lbd-lid"><span class="lbd-lid-lbl">🔒 Couvercle inclus</span></div>
-        <div class="lbd-body"><span class="lbd-body-lbl">Boîte XL · 19 × 13.5 × 8 cm</span></div>
-        <div class="lfb lfb1">📦 Empilable</div>
-        <div class="lfb lfb2">🛡️ Anti-poussière</div>
-        <div class="lfb lfb3">💧 Anti-humidité</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ UTILITÉS ══ -->
-<section class="uses-section" id="utilites">
-  <div class="uses-inner">
-    <div class="uses-hdr rv">
-      <div class="seyebrow">Pour chaque espace de votre vie</div>
-      <h2 class="sh">Une boîte pour<br><em>chaque besoin</em></h2>
-      <p class="uses-sub">Pas juste pour le maquillage. Nos boîtes s'adaptent à chaque pièce, chaque routine, chaque façon de vivre — couvercle toujours inclus.</p>
-    </div>
-    <div class="utabs rv d2">
-      <button class="utab on" data-tab="makeup">💄 Beauté</button>
-      <button class="utab" data-tab="food">🍽️ Cuisine</button>
-      <button class="utab" data-tab="medical">💊 Médical</button>
-      <button class="utab" data-tab="dressing">👗 Dressing</button>
-      <button class="utab" data-tab="bureau">📚 Bureau</button>
-      <button class="utab" data-tab="bebe">🍼 Bébé</button>
-    </div>
-    <div class="upanels rv d3">
-
-      <div class="upanel on" id="tab-makeup">
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">💄</span>
-          <div class="ucard-t">Rouges à lèvres</div>
-          <div class="ucard-d">8 à 12 rouges à lèvres rangés debout dans la boîte L. Le couvercle évite qu'ils ramassent la poudre du fond du tiroir. Fini les capuchons collants.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Tiroir</span><span class="uctag">Vanity</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">🖌️</span>
-          <div class="ucard-t">Pinceaux de maquillage</div>
-          <div class="ucard-d">Tous vos pinceaux à plat dans la boîte XL, poils protégés, couvercle fermé. Plus de pinceaux qui traînent et ramassent la poussière entre deux utilisations.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Vanity</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sm">M</span>
-          <span class="ucard-ico">💍</span>
-          <div class="ucard-t">Bijoux & accessoires</div>
-          <div class="ucard-d">Bagues, boucles d'oreilles, épingles à cheveux : la boîte M les garde séparés et sans emmêlements. Couvercle = rien ne tombe, rien ne s'oxyde.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte M</span><span class="uctag">Coiffeuse</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">🧴</span>
-          <div class="ucard-t">Soins du visage</div>
-          <div class="ucard-d">Sérum, crème, contour des yeux dans l'ordre de votre routine. Couvercle fermé pour conserver la fraîcheur des formules et garder le tout hors poussière.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Salle de bain</span></div>
-        </div>
-      </div>
-
-      <div class="upanel" id="tab-food">
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">🌿</span>
-          <div class="ucard-t">Épices & herbes</div>
-          <div class="ucard-d">Cumin, paprika, curcuma, coriandre rangés par famille en boîte XL. Le couvercle préserve les arômes et empêche les sachets de se déverser partout dans le placard.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Placard cuisine</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">☕</span>
-          <div class="ucard-t">Sachets de thé & café</div>
-          <div class="ucard-d">Triés par saveur dans une boîte L, couvercle fermé. Les arômes sont préservés, les sachets ne sèchent pas et ne s'écrasent plus au fond du tiroir.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Plan de travail</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">🍝</span>
-          <div class="ucard-t">Restes de pâtes, lentilles</div>
-          <div class="ucard-d">Les sachets ouverts terminent toujours en désordre. Versez le reste dans une boîte XL : couvercle fermé jusqu'à la prochaine utilisation, sans insectes ni humidité.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Garde-manger</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sm">M</span>
-          <span class="ucard-ico">🍬</span>
-          <div class="ucard-t">Snacks & bonbons emballés</div>
-          <div class="ucard-d">Boîte M dans un tiroir salon ou cuisine : barres chocolatées, dattes, noix. Couvercle fermé, le chat n'y touche pas et les enfants savent où chercher.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte M</span><span class="uctag">Salon · Cuisine</span></div>
-        </div>
-      </div>
-
-      <div class="upanel" id="tab-medical">
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">💊</span>
-          <div class="ucard-t">Médicaments familiaux</div>
-          <div class="ucard-d">Paracétamol, ibuprofène, antispasmodiques — une boîte XL par catégorie (adultes / enfants). Couvercle fermé = protégé de l'humidité, premier ennemi des comprimés.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Armoire à pharmacie</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">🩹</span>
-          <div class="ucard-t">Premiers secours</div>
-          <div class="ucard-d">Pansements, compresses, bande, alcool : tout en boîte L, propre et prêt à l'emploi. En cas d'urgence, vous savez exactement où regarder — pas de fouille dans un tiroir chaotique.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Urgences</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sm">M</span>
-          <span class="ucard-ico">💉</span>
-          <div class="ucard-t">Matériel médical régulier</div>
-          <div class="ucard-d">Pour les patients diabétiques ou sous traitement : seringues, lancettes, bandelettes dans une boîte M fermée. Discret, propre, hygiénique, toujours à portée.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte M</span><span class="uctag">Usage régulier</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">🌡️</span>
-          <div class="ucard-t">Vitamines & compléments</div>
-          <div class="ucard-d">Vitamines C, D, magnésium, zinc, oméga — une boîte L par membre de la famille. Couvercle fermé pour la fraîcheur des capsules. Chacun sait où sont ses compléments.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Routine santé</span></div>
-        </div>
-      </div>
-
-      <div class="upanel" id="tab-dressing">
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">🧦</span>
-          <div class="ucard-t">Chaussettes & collants</div>
-          <div class="ucard-d">Chaussettes pliées par paire en boîte XL, couvercle fermé. Même si le placard prend la poussière, vos chaussettes restent impeccables et prêtes à enfiler.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Dressing</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">👙</span>
-          <div class="ucard-t">Sous-vêtements</div>
-          <div class="ucard-d">2 boîtes XL côte à côte : une pour les culottes, une pour les soutiens-gorge. Couvercle fermé, tiroir ouvert, choix fait en secondes. Chaque matin sans stress.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Tiroir dressing</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">🎀</span>
-          <div class="ucard-t">Ceintures & foulards roulés</div>
-          <div class="ucard-d">Roulez ceintures et foulards fins dans la boîte L. Debout, visibles d'un coup d'œil, sans se défroisser. Le couvercle évite qu'ils prennent l'odeur du placard.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Accessoires</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sm">M</span>
-          <span class="ucard-ico">🪡</span>
-          <div class="ucard-t">Trousse de couture</div>
-          <div class="ucard-d">Fils, aiguilles, boutons, dés à coudre dans une boîte M. Couvercle fermé = rien ne se perd, rien ne pique les doigts par surprise. Votre boîte à couture toujours prête.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte M</span><span class="uctag">Couture</span></div>
-        </div>
-      </div>
-
-      <div class="upanel" id="tab-bureau">
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">✏️</span>
-          <div class="ucard-t">Stylos, crayons, surligneurs</div>
-          <div class="ucard-d">Triés par type dans la boîte L, couvercle fermé. Les stylos ne sèchent plus, ne roulent plus partout. Ouvrez le tiroir, prenez ce qu'il faut, refermez.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Tiroir bureau</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sm">M</span>
-          <span class="ucard-ico">🔌</span>
-          <div class="ucard-t">Câbles & chargeurs</div>
-          <div class="ucard-d">USB-C, Lightning, HDMI, écouteurs — chaque câble dans sa boîte M. Couvercle fermé entre les utilisations. Fini les emmêlements, fini le temps perdu à démêler.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte M</span><span class="uctag">Tech</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">📎</span>
-          <div class="ucard-t">Petite papeterie</div>
-          <div class="ucard-d">Agrafes, trombones, post-its, ruban adhésif dans une boîte L. Rien ne tombe, rien ne rouille sous le couvercle. Un tiroir de bureau propre et professionnel.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Bureau</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">📒</span>
-          <div class="ucard-t">Fournitures scolaires enfants</div>
-          <div class="ucard-d">Une boîte XL par matière ou par enfant : gomme, taille-crayon, règle, rapporteur. Couvercle fermé le soir = rien ne se perd la veille d'une rentrée ou d'un contrôle.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">École</span></div>
-        </div>
-      </div>
-
-      <div class="upanel" id="tab-bebe">
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">🍼</span>
-          <div class="ucard-t">Tétines & anneaux</div>
-          <div class="ucard-d">Tétines propres dans une boîte L fermée : protégées des bactéries et de la poussière entre chaque utilisation. Hygiénique, pratique, rassurant pour les parents.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Hygiène bébé</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sxl">XL</span>
-          <span class="ucard-ico">🧸</span>
-          <div class="ucard-t">Petits jouets</div>
-          <div class="ucard-d">Lego, figurines, petites voitures dans une boîte XL par type. Couvercle fermé la nuit : le salon retrouve son calme et les pièces ne se perdent plus sous le canapé.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte XL</span><span class="uctag">Chambre enfant</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sm">M</span>
-          <span class="ucard-ico">💊</span>
-          <div class="ucard-t">Médicaments & thermomètre bébé</div>
-          <div class="ucard-d">Sirop de dentition, solution nasale, thermomètre dans une boîte M dédiée. Fermée, hors de portée des grands enfants, prête pour les moments où bébé n'est pas bien.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte M</span><span class="uctag">Santé bébé</span></div>
-        </div>
-        <div class="ucard">
-          <span class="ucard-sz sl">L</span>
-          <span class="ucard-ico">🧴</span>
-          <div class="ucard-t">Soins & cosmétiques bébé</div>
-          <div class="ucard-d">Crème hydratante, huile de massage, cotons, lingettes en boîte L sur la table à langer. Couvercle fermé entre les changes : rien ne sèche, rien ne traîne.</div>
-          <div class="ucard-tags"><span class="uctag">Boîte L</span><span class="uctag">Table à langer</span></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══ LOTS ══ -->
-<section class="prod-section" id="lots">
-  <div class="prod-inner">
-    <div class="prod-hdr">
-      <div class="rv"><div class="seyebrow">Formules & prix</div><h2 class="sh">Choisis ton<br><em>lot idéal</em></h2></div>
-      <p class="prod-sub rv d2">Trois formules avec couvercles inclus, livrées en 48h partout en Algérie.</p>
-    </div>
-    <div class="cards">
-      <div class="pcard rv d1">
-        <div class="pbadge">🌱 Pour commencer</div>
-        <div class="pphoto" id="gal-mini">
-          <img src="../assets/boiteslot1.png" class="on" alt="Lot Mini">
-          <img src="../assets/boiteslotllp6.jpg" alt="2">
-          <div class="pdots"><button class="pdot on" data-i="0"></button><button class="pdot" data-i="1"></button></div>
-          <div class="plid">🔒 Couvercles inclus</div>
-          <div class="plbl">6 boîtes</div>
-        </div>
-        <div class="pbody">
-          <div class="pname">Lot Mini</div>
-          <div class="ptagline">L'essentiel pour commencer à s'organiser.</div>
-          <div class="pcompo">
-            <div class="pchip"><span class="csz" style="color:var(--terra)">1×</span><span class="cct">XL</span></div>
-            <div class="pchip"><span class="csz" style="color:var(--dust)">2×</span><span class="cct">L</span></div>
-            <div class="pchip"><span class="csz" style="color:var(--sage)">3×</span><span class="cct">M</span></div>
-            <div class="ptotal">= 6 boîtes + 6 couvercles</div>
-          </div>
-          <div class="puses"><span class="puse">💄 Maquillage</span><span class="puse">💊 Pharmacie</span><span class="puse">✏️ Bureau</span></div>
-          <div class="pfoot">
-            <div><div class="pprice">2 000 DA</div><div class="ppnote">idéal 1 tiroir</div></div>
-           <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="pcard feat rv d2">
-        <div class="pbadge gold">⭐ Le plus populaire</div>
-        <div class="pphoto" id="gal-standard">
-          <img src="../assets/boiteslotllp1.jpg" class="on" alt="Lot Standard">
-          <img src="../assets/boiteslotllp4.jpg" alt="2">
-          <img src="../assets/boiteslot1.png" alt="3">
-          <div class="pdots"><button class="pdot on" data-i="0"></button><button class="pdot" data-i="1"></button><button class="pdot" data-i="2"></button></div>
-          <div class="plid">🔒 Couvercles inclus</div>
-          <div class="plbl">11 boîtes</div>
-        </div>
-        <div class="pbody">
-          <div class="pname">Lot Standard</div>
-          <div class="ptagline">L'équilibre parfait entre quantité et prix.</div>
-          <div class="pcompo">
-            <div class="pchip"><span class="csz" style="color:var(--terra)">2×</span><span class="cct">XL</span></div>
-            <div class="pchip"><span class="csz" style="color:var(--dust)">4×</span><span class="cct">L</span></div>
-            <div class="pchip"><span class="csz" style="color:var(--sage)">5×</span><span class="cct">M</span></div>
-            <div class="ptotal">= 11 boîtes + 11 couvercles</div>
-          </div>
-          <div class="puses"><span class="puse">💄 Maquillage</span><span class="puse">🍽️ Cuisine</span><span class="puse">💊 Médical</span><span class="puse">👗 Dressing</span></div>
-          <div class="pfoot">
-            <div><div class="pprice">3 300 DA</div><div class="ppnote">🌿 Meilleur rapport</div></div>
-            <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="pcard rv d3">
-        <div class="pbadge">👑 Organisation totale</div>
-        <div class="pphoto" id="gal-mega">
-          <img src="../assets/BAA.png" class="on" alt="Lot Méga">
-          <img src="../assets/boiteslotllp1.jpg" alt="2">
-          <div class="pdots"><button class="pdot on" data-i="0"></button><button class="pdot" data-i="1"></button></div>
-          <div class="plid">🔒 Couvercles inclus</div>
-          <div class="plbl">22 boîtes</div>
-        </div>
-        <div class="pbody">
-          <div class="pname">Lot Méga</div>
-          <div class="ptagline">Pour transformer toute la maison en une seule fois.</div>
-          <div class="pcompo">
-            <div class="pchip"><span class="csz" style="color:var(--terra)">4×</span><span class="cct">XL</span></div>
-            <div class="pchip"><span class="csz" style="color:var(--dust)">8×</span><span class="cct">L</span></div>
-            <div class="pchip"><span class="csz" style="color:var(--sage)">10×</span><span class="cct">M</span></div>
-            <div class="ptotal">= 22 boîtes + 22 couvercles</div>
-          </div>
-          <div class="puses"><span class="puse">🏠 Maison entière</span><span class="puse">🍼 Bébé</span><span class="puse">🎓 Scolaire</span></div>
-          <div class="pfoot">
-            <div><div class="pprice">5 400 DA</div><div class="ppnote">✨ Meilleur prix/boîte</div></div>
- <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ TAILLES ══ -->
-<section class="sz-section">
-  <div class="sz-inner">
-    <div class="rv"><div class="seyebrow" style="color:var(--gold)">Formats disponibles</div><h2 class="sh lt">Conçues pour<br><em>tout ranger</em></h2></div>
-    <div class="sz-grid">
-      <div class="szcard rv d1">
-        <div class="szletter">XL</div>
-        <div class="szblock bxl"><span class="szlbl">XL</span></div>
-        <div class="szname">Extra Large</div>
-        <div class="szdims">19 × 13.5 × 8 cm</div>
-        <div class="sztags"><span class="sztag">💄 Maquillage</span><span class="sztag">👗 Dressing</span><span class="sztag">🌿 Épices</span><span class="sztag">🧸 Jouets</span><span class="sztag">👙 Sous-vêtements</span></div>
-      </div>
-      <div class="szcard rv d2">
-        <div class="szletter">L</div>
-        <div class="szblock bl"><span class="szlbl">L</span></div>
-        <div class="szname">Large</div>
-        <div class="szdims">19 × 8 × 7 cm</div>
-        <div class="sztags"><span class="sztag">✏️ Bureau</span><span class="sztag">🩹 Premiers secours</span><span class="sztag">☕ Thé & café</span><span class="sztag">🧦 Chaussettes</span><span class="sztag">🍼 Tétines</span></div>
-      </div>
-      <div class="szcard rv d3">
-        <div class="szletter">M</div>
-        <div class="szblock bm"><span class="szlbl">M</span></div>
-        <div class="szname">Medium</div>
-        <div class="szdims">7 × 7 × 5 cm</div>
-        <div class="sztags"><span class="sztag">💍 Bijoux</span><span class="sztag">💉 Médical</span><span class="sztag">🔌 Câbles</span><span class="sztag">🍬 Snacks</span><span class="sztag">🪡 Couture</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FEATURES ══ -->
-<section class="feat-section">
-  <div class="feat-inner">
-    <div class="feat-layout">
+<!-- ── NOTICE COUVERCLES ── -->
+<div class="notice-wrap">
+  <div class="notice-card">
+    <div class="notice-header">
+      <div class="notice-icon">📦</div>
       <div>
-        <div class="rv"><div class="seyebrow">Pourquoi Nidly</div><h2 class="sh">Fait pour<br><em>durer</em></h2></div>
-        <div class="stat-row rv d2">
-          <div><div class="stat-n counter" data-t="48">0</div><div class="stat-d">heures de livraison<br>partout en Algérie</div></div>
-          <div><div class="stat-n counter" data-t="3">0</div><div class="stat-d">tailles empilables<br>disponibles</div></div>
-          <div><div class="stat-n">★★★★★</div><div class="stat-d">note moyenne<br>de nos clients</div></div>
+        <div class="notice-title" data-fr="Petite précision importante !" data-ar="ملاحظة مهمة !">Petite précision importante !</div>
+        <div class="notice-sub" data-fr="Les boîtes montrées dans la vidéo sont pour démonstration uniquement." data-ar="الصناديق المعروضة في الفيديو هي للعرض فقط.">Les boîtes montrées dans la vidéo sont pour démonstration uniquement.</div>
+      </div>
+    </div>
+    <div class="notice-divider"></div>
+    <ul class="notice-list">
+      <li>
+        <span class="notice-check">✓</span>
+        <span data-fr="<strong>Avec couvercles</strong> — pour protéger de la poussière" data-ar="<strong>مع أغطية</strong> — للحماية من الغبار"><strong>Avec couvercles</strong> — pour protéger de la poussière</span>
+      </li>
+      <li>
+        <span class="notice-check">✓</span>
+        <span data-fr="Idéal pour garder vos affaires <strong>propres et bien organisées</strong>" data-ar="مثالي للحفاظ على أغراضكم <strong>نظيفة ومنظمة</strong>">Idéal pour garder vos affaires <strong>propres et bien organisées</strong></span>
+      </li>
+      <li>
+        <span class="notice-check">✓</span>
+        <span data-fr="Parfait pour vêtements, sous-vêtements ou accessoires" data-ar="مثالي للملابس، الملابس الداخلية أو الإكسسوارات">Parfait pour vêtements, sous-vêtements ou accessoires</span>
+      </li>
+    </ul>
+    <div class="notice-highlight">
+      <span>💡</span>
+      <span data-fr="Même utilité… mais avec un vrai <strong>+ au quotidien</strong> ! Organisez votre espace facilement et sans stress ✨" data-ar="نفس الاستخدام… لكن مع <strong>قيمة مضافة حقيقية</strong> يومياً! نظّمي مساحتك بسهولة وبدون ضغط ✨">Même utilité… mais avec un vrai <strong>+ au quotidien</strong> ! Organisez votre espace facilement et sans stress ✨</span>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTOS -->
+<div class="photo-grid">
+  <div class="p-main">
+    <img src="../assets/boiteslot1.png" alt="Boîtes Nidly" loading="eager">
+    <div class="p-label">
+      <span data-fr="📦 Empilables" data-ar="📦 قابلة للتكديس">📦 Empilables</span>
+      <span data-fr="3 tailles" data-ar="3 مقاسات">3 tailles</span>
+    </div>
+  </div>
+  <div class="p-sm">
+    <img src="../assets/boiteslotllp1.jpg" alt="Dans le tiroir" loading="lazy">
+    <span class="p-lbl" data-fr="Dans le tiroir" data-ar="داخل الدرج">Dans le tiroir</span>
+  </div>
+  <div class="p-sm">
+    <img src="../assets/lots.png" alt="Taille XL" loading="lazy">
+    <span class="p-lbl" data-fr="Taille XL" data-ar="مقاس XL">Taille XL</span>
+  </div>
+</div>
+
+<div class="divider"><span data-fr="Les 3 tailles" data-ar="المقاسات الـ 3">Les 3 tailles</span></div>
+
+<!-- SIZES -->
+<section class="sizes-section">
+  <span class="sec-label" data-fr="Formats disponibles" data-ar="المقاسات المتوفرة">Formats disponibles</span>
+  <h2 class="sec-title" data-fr="Conçues pour<br><em>tout ranger</em>" data-ar="مصممة<br><em>لتنظيم كل شيء</em>">Conçues pour<br><em>tout ranger</em></h2>
+  <div class="sizes-stack">
+    <div class="size-row">
+      <div class="sz-box xl">XL</div>
+      <div class="sz-info">
+        <div class="sz-name" data-fr="Extra Large" data-ar="إكسترا لارج">Extra Large</div>
+        <div class="sz-dims">19 × 13.5 × 8 cm</div>
+        <div class="sz-uses">
+          <span class="sz-u" data-fr="💄 Maquillage" data-ar="💄 مكياج">💄 Maquillage</span>
+          <span class="sz-u" data-fr="👗 Dressing" data-ar="👗 دولاب">👗 Dressing</span>
         </div>
       </div>
-      <div class="feat-grid">
-        <div class="fc rv d1"><span class="fi">🌿</span><div class="ft">Matériaux sûrs</div><div class="fd">Plastique alimentaire, sans BPA, sans arêtes. Sûr pour toute la famille, même les bébés.</div></div>
-        <div class="fc rv d2"><span class="fi">🔒</span><div class="ft">Couvercles inclus</div><div class="fd">Chaque boîte livrée avec son couvercle plat. Zéro poussière, zéro humidité, zéro surprise.</div></div>
-        <div class="fc rv d3"><span class="fi">📦</span><div class="ft">Empilables</div><div class="fd">Le couvercle plat est conçu pour l'empilement stable. Gagnez de la hauteur, pas du désordre.</div></div>
-        <div class="fc rv d4"><span class="fi">🚀</span><div class="ft">Express 48h</div><div class="fd">Livraison confirmée avant expédition. Partout en Algérie, sans mauvaise surprise.</div></div>
+    </div>
+    <div class="size-row">
+      <div class="sz-box l">L</div>
+      <div class="sz-info">
+        <div class="sz-name" data-fr="Large" data-ar="لارج">Large</div>
+        <div class="sz-dims">19 × 8 × 7 cm</div>
+        <div class="sz-uses">
+          <span class="sz-u" data-fr="📚 Bureau" data-ar="📚 مكتب">📚 Bureau</span>
+          <span class="sz-u" data-fr="💄 Maquillage" data-ar="💄 مكياج">💄 Maquillage</span>
+        </div>
+      </div>
+    </div>
+    <div class="size-row">
+      <div class="sz-box s">M</div>
+      <div class="sz-info">
+        <div class="sz-name" data-fr="Medium" data-ar="سمول">Medium</div>
+        <div class="sz-dims">7 × 7 × 5 cm</div>
+        <div class="sz-uses">
+          <span class="sz-u" data-fr="💍 Bijoux" data-ar="💍 مجوهرات">💍 Bijoux</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ COMPARE ══ -->
-<section class="cmp-section">
-  <div class="cmp-inner">
-    <div class="rv"><div class="seyebrow">Comparatif</div><h2 class="sh">Quel lot pour <em>toi ?</em></h2></div>
-    <div class="cmp-wrap rv d2">
-      <table class="ct">
-        <thead><tr><th></th><th>Mini</th><th class="hl">Standard ⭐</th><th>Méga</th></tr></thead>
-        <tbody>
-          <tr><td>Total boîtes</td><td>6</td><td class="hl">11</td><td>22</td></tr>
-          <tr><td>Boîtes XL</td><td>1</td><td class="hl">2</td><td>4</td></tr>
-          <tr><td>Boîtes L</td><td>2</td><td class="hl">4</td><td>8</td></tr>
-          <tr><td>Boîtes M</td><td>3</td><td class="hl">5</td><td>10</td></tr>
-          <tr><td>Couvercles inclus</td><td><span class="chk">✓ 6</span></td><td class="hl"><span class="chk">✓ 11</span></td><td><span class="chk">✓ 22</span></td></tr>
-          <tr><td>Idéal pour</td><td>1 tiroir</td><td class="hl">1–2 tiroirs</td><td>3–4 tiroirs</td></tr>
-          <tr><td>Prix</td><td class="ptd">2 000 DA</td><td class="ptd hl">3 300 DA</td><td class="ptd">5 400 DA</td></tr>
-        </tbody>
-      </table>
+<div class="divider"><span data-fr="Les lots" data-ar="الطرود">Les lots</span></div>
+
+<!-- LOTS -->
+<section class="lots-section" id="lots">
+  <span class="sec-label" data-fr="Formules & prix" data-ar="الباقات والأسعار">Formules & prix</span>
+  <h2 class="sec-title" data-fr="Choisis ton<br><em>lot idéal</em>" data-ar="اختاري<br><em>طردك المثالي</em>">Choisis ton<br><em>lot idéal</em></h2>
+  <div id="lotsContainer">
+    <div style="text-align:center;padding:3rem;color:var(--bark)">
+      <div style="width:28px;height:28px;border:2px solid var(--blush);border-top-color:var(--terra);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem"></div>
+      <span data-fr="Chargement…" data-ar="جارٍ التحميل…">Chargement…</span>
     </div>
   </div>
 </section>
 
-<!-- ══ AVIS ══ -->
-<section class="rev-section">
-  <div class="rev-inner">
-    <div class="rv"><div class="seyebrow" style="color:var(--gold)">Elles adorent</div><h2 class="sh lt">Ce qu'elles <em>disent</em></h2></div>
-    <div class="rev-grid">
-      <div class="rcard rv d1">
-        <div class="rstars">★★★★★</div>
-        <p class="rq">Mon tiroir maquillage est enfin organisé. Les couvercles font vraiment la différence, plus de poussière sur mes pinceaux !</p>
-        <div class="rauth"><div class="ravt">🌸</div><div><div class="rname">Amira M.</div><div class="rcity">Alger</div></div></div>
-      </div>
-      <div class="rcard rv d2">
-        <div class="rstars">★★★★★</div>
-        <p class="rq">J'ai rangé les épices et les médicaments. Le couvercle ferme bien, j'adore le côté hygiénique — surtout pour la pharmacie.</p>
-        <div class="rauth"><div class="ravt">🌿</div><div><div class="rname">Kenza B.</div><div class="rcity">Alger</div></div></div>
-      </div>
-      <div class="rcard rv d3">
-        <div class="rstars">★★★★★</div>
-        <p class="rq">Reçu en 2 jours. J'ai utilisé les boîtes M pour les médicaments de bébé — parfait pour garder tout propre et fermé, loin des petites mains.</p>
-        <div class="rauth"><div class="ravt">☀️</div><div><div class="rname">Maria L.</div><div class="rcity">Béjaïa</div></div></div>
-      </div>
-      <div class="rcard rv d4">
-        <div class="rstars">★★★★★</div>
-        <p class="rq">J'avais peur que ce soit des boîtes basiques. Mais la qualité est vraiment bonne et les couvercles tiennent bien. Je commande un 2ème lot !</p>
-        <div class="rauth"><div class="ravt">💐</div><div><div class="rname">Yasmine R.</div><div class="rcity">Constantine</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ WHATSAPP ══ -->
+<!-- ── WHATSAPP CONTACT SECTION ── -->
 <section class="wa-section">
-  <div class="wa-inner rv">
-    <div class="wa-card">
-      <div class="wa-left">
-        <div class="wa-top">
-          <div class="wa-logo">💬</div>
-          <div><div class="wa-title">Personnalisez votre lot</div><div class="wa-sub">On est là pour vous aider à choisir la formule parfaite.</div></div>
+  <div class="wa-card">
+    <div class="wa-card-content">
+      <div class="wa-card-header">
+        <div class="wa-logo">💬</div>
+        <div>
+          <div class="wa-card-title" data-fr="Personnalisez votre lot" data-ar="خصّصي طردك">Personnalisez votre lot</div>
+          <div class="wa-card-sub" data-fr="On est là pour vous aider à choisir la formule parfaite." data-ar="نحن هنا لمساعدتك في اختيار الطرد المثالي.">On est là pour vous aider à choisir la formule parfaite.</div>
         </div>
-        <div class="wa-feats">
-          <div class="wa-feat"><div class="wa-dot"></div><span>Composition sur mesure selon vos espaces</span></div>
-          <div class="wa-feat"><div class="wa-dot"></div><span>Conseils personnalisés & réponse rapide</span></div>
-          <div class="wa-feat"><div class="wa-dot"></div><span>Questions sur les tailles, couvercles ou usages</span></div>
-        </div>
-        <div class="wa-note"><span>🔒</span><span>Nous ne confirmons une commande que lorsque nous sommes sûrs de pouvoir livrer. Zéro mauvaise surprise.</span></div>
       </div>
-      <div class="wa-right">
-        <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="btn-wa">
-          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Contactez-nous sur WhatsApp
-        </a>
+      <div class="wa-features">
+        <div class="wa-feat"><div class="wa-feat-dot"></div><span data-fr="Composition sur mesure selon vos besoins" data-ar="تركيبة مخصصة حسب احتياجاتك">Composition sur mesure selon vos besoins</span></div>
+        <div class="wa-feat"><div class="wa-feat-dot"></div><span data-fr="Conseils personnalisés & réponse rapide" data-ar="نصائح شخصية وردود سريعة">Conseils personnalisés & réponse rapide</span></div>
+        <div class="wa-feat"><div class="wa-feat-dot"></div><span data-fr="Plus d'infos sur les produits & tailles" data-ar="مزيد من المعلومات حول المنتجات والمقاسات">Plus d'infos sur les produits & tailles</span></div>
+      </div>
+      <div class="wa-order-note">
+        <span class="wa-order-note-icon">🔒</span>
+        <span data-fr="Rassurez-vous : nous ne confirmons une commande que lorsque nous sommes sûrs de pouvoir la livrer. Aucune mauvaise surprise." data-ar="اطمئني: لا نؤكد الطلب إلا عندما نكون متأكدين من إمكانية التوصيل. بدون أي مفاجآت سيئة.">Rassurez-vous : nous ne confirmons une commande que lorsque nous sommes sûrs de pouvoir la livrer. Aucune mauvaise surprise.</span>
+      </div>
+    </div>
+    <div class="wa-card-action">
+      <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="btn-wa">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span data-fr="Contactez-nous sur WhatsApp" data-ar="تواصلي معنا على واتساب">Contactez-nous sur WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why-section">
+  <span class="sec-label" data-fr="Pourquoi Nidly" data-ar="لماذا نيدلي">Pourquoi Nidly</span>
+  <h2 class="sec-title" data-fr="Fait pour<br><em>durer</em>" data-ar="مصنوع<br><em>ليدوم</em>">Fait pour<br><em>durer</em></h2>
+  <div class="why-grid">
+    <div class="why-card"><span class="why-icon">🌿</span><h4 data-fr="Matériaux doux" data-ar="مواد ناعمة">Matériaux doux</h4><p data-fr="Sans arêtes, agréables au toucher." data-ar="بدون حواف حادة، لطيفة على اللمس.">Sans arêtes, agréables au toucher.</p></div>
+    <div class="why-card"><span class="why-icon">📦</span><h4 data-fr="Modulable" data-ar="قابل للتعديل">Modulable</h4><p data-fr="S'adapte à toutes les configurations." data-ar="يتكيف مع جميع التكوينات.">S'adapte à toutes les configurations.</p></div>
+    <div class="why-card"><span class="why-icon">♻️</span><h4 data-fr="Éco-pensé" data-ar="صديق للبيئة">Éco-pensé</h4><p data-fr="Plastique alimentaire réutilisable." data-ar="بلاستيك غذائي قابل لإعادة الاستخدام.">Plastique alimentaire réutilisable.</p></div>
+    <div class="why-card"><span class="why-icon">🚀</span><h4 data-fr="Express" data-ar="توصيل سريع">Express</h4><p data-fr="Livraison 48h partout en Algérie." data-ar="توصيل خلال 48 ساعة في كل الجزائر.">Livraison 48h partout en Algérie.</p></div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="compare-section">
+  <span class="sec-label" data-fr="Comparatif" data-ar="المقارنة">Comparatif</span>
+  <h2 class="sec-title" data-fr="Quel lot pour <em>toi ?</em>" data-ar="أي طرد <em>يناسبك؟</em>">Quel lot pour <em>toi ?</em></h2>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th data-fr="Mini" data-ar="ميني">Mini</th>
+        <th class="hl" style="color:var(--terra)" data-fr="Standard ⭐" data-ar="ستاندار ⭐">Standard ⭐</th>
+        <th data-fr="Méga" data-ar="ميغا">Méga</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>6</td><td class="hl">11</td><td>22</td></tr>
+      <tr><td data-fr="Boîtes XL" data-ar="صناديق XL">Boîtes XL</td><td>1</td><td class="hl">2</td><td>4</td></tr>
+      <tr><td data-fr="Boîtes L" data-ar="صناديق L">Boîtes L</td><td>2</td><td class="hl">4</td><td>8</td></tr>
+      <tr><td data-fr="Boîtes M" data-ar="صناديق S">Boîtes M</td><td>3</td><td class="hl">5</td><td>10</td></tr>
+      <tr><td data-fr="Idéal pour" data-ar="مثالي لـ">Idéal pour</td><td data-fr="1 tiroir" data-ar="درج واحد">1 tiroir</td><td class="hl" data-fr="1–2 tiroirs" data-ar="1-2 أدراج">1–2 tiroirs</td><td data-fr="3-4 tiroirs" data-ar="3-4 أدراج">3-4 tiroirs</td></tr>
+      <tr>
+        <td data-fr="Prix" data-ar="السعر">Prix</td>
+        <td class="price-cell">2 000 DA</td>
+        <td class="price-cell hl" style="color:var(--terra)">3 300 DA</td>
+        <td class="price-cell">5 400 DA</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <span class="sec-label" data-fr="Elles adorent" data-ar="آراء العملاء">Elles adorent</span>
+  <h2 class="sec-title" data-fr="Ce qu'elles <em>disent</em>" data-ar="ماذا <em>يقولون</em>">Ce qu'elles <em>disent</em></h2>
+  <div class="reviews-scroll">
+    <div class="review-card">
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text" data-fr="Mon tiroir de maquillage est enfin organisé et tellement joli !" data-ar="درج المكياج الخاص بي منظم أخيراً ورائع جداً!">Mon tiroir de maquillage est enfin organisé et tellement joli !</p>
+      <div class="r-author">
+        <div class="r-avatar" style="background:var(--blush)">🌸</div>
+        <div><div class="r-name">Amira M.</div><div class="r-loc">Alger</div></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text" data-fr="Tout mon placard cuisine est rangé. Les boîtes XL sont parfaites pour les pâtes." data-ar="كل خزانة مطبخي منظمة الآن. الصناديق XL مثالية للمعكرونة.">Tout mon placard cuisine est rangé. Les boîtes XL sont parfaites pour les pâtes.</p>
+      <div class="r-author">
+        <div class="r-avatar" style="background:var(--sage-l)">🌿</div>
+        <div><div class="r-name">Kenza B.</div><div class="r-loc">Alger</div></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text" data-fr="Reçu en 2 jours. Les boîtes L pour le maquillage sont exactement ce qu'il fallait." data-ar="وصلت خلال يومين. صناديق L للمكياج هي بالضبط ما كنت أحتاجه.">Reçu en 2 jours. Les boîtes L pour le maquillage sont exactement ce qu'il fallait.</p>
+      <div class="r-author">
+        <div class="r-avatar" style="background:#FFF0E8">☀️</div>
+        <div><div class="r-name">Maria L.</div><div class="r-loc">Béjaïa</div></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="r-stars">★★★★★</div>
+      <p class="r-text" data-fr="Rapport qualité-prix imbattable. Je vais en commander un deuxième !" data-ar="جودة/سعر لا يُضاهى. سأطلب مجموعة ثانية!">Rapport qualité-prix imbattable. Je vais en commander un deuxième !</p>
+      <div class="r-author">
+        <div class="r-avatar" style="background:var(--blush)">💐</div>
+        <div><div class="r-name">Yasmine R.</div><div class="r-loc">Constantine</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ CTA ══ -->
+<!-- CTA -->
 <section class="cta-section">
-  <div class="cta-in rv">
-    <span class="cta-ey">Livraison 48h — Couvercles inclus dans chaque lot</span>
-    <h2 class="cta-h">Ton intérieur mérite<br><em>mieux.</em></h2>
-    <p class="cta-sub">Commande maintenant et reçois ton lot — avec tous les couvercles — sous 48h, partout en Algérie.</p>
-    <a href="#lots" class="btn-wh">Choisir mon lot →</a>
-  </div>
+  <h2 data-fr="Ton intérieur mérite<br><em>mieux.</em>" data-ar="منزلك يستحق<br><em>الأفضل.</em>">Ton intérieur mérite<br><em>mieux.</em></h2>
+  <p data-fr="Commande maintenant et reçois ton lot sous 48h." data-ar="اطلبي الآن واستلمي طردك خلال 48 ساعة.">Commande maintenant et reçois ton lot sous 48h.</p>
+  <a href="#lots" class="btn-white" data-fr="Choisir mon lot →" data-ar="← اختاري طردك">Choisir mon lot →</a>
 </section>
 
 <footer>
-  <a href="#" class="flogo">Ni<span>dly</span></a>
-  <div class="flinks">
-    <a href="#lots" class="flink">Les lots</a>
-    <a href="#utilites" class="flink">Utilités</a>
-    <a href="https://wa.me/213551901977" class="flink">WhatsApp</a>
-  </div>
-  <p class="fcopy">© 2026 Nidly — Tous droits réservés</p>
+  <a href="../index.html" class="footer-logo">Ni<span>dly</span></a>
+  <p class="footer-copy">© 2026 Nidly</p>
 </footer>
-<div id="toast"></div>
 
+<div class="toast" id="toast"></div>
+
+<script src="../js/config.js"></script>
 <script>
-/* cursor */
-const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
-let cx=0,cy=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
-(function loop(){rx+=(cx-rx)*.12;ry+=(cy-ry)*.12;cur.style.cssText=`left:${cx}px;top:${cy}px`;curR.style.cssText=`left:${rx}px;top:${ry}px`;requestAnimationFrame(loop);})();
-document.querySelectorAll('a,button,.pcard,.szcard,.fc,.rcard,.ucard,.lid-pt').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
-});
+const API = API_URL;
+let currentLang = localStorage.getItem('nidly_lang') || 'fr';
+
 function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('nidly_lang', lang);
@@ -925,58 +852,123 @@ function updateCartCount() {
     if (btn) btn.innerHTML = `🛍 <span data-fr="Panier" data-ar="السلة">${currentLang === 'ar' ? 'السلة' : 'Panier'}</span> (${tot})`;
   } catch(e) {}
 }
-/* nav */
-const nav=document.getElementById('nav'),navLogo=document.getElementById('navLogo');
-window.addEventListener('scroll',()=>{const s=window.scrollY>50;nav.classList.toggle('sc',s);navLogo.classList.toggle('dk',s);},{passive:true});
 
-/* particles */
-const pc=document.getElementById('ptcls');
-for(let i=0;i<16;i++){const p=document.createElement('div');p.className='ptcl';p.style.cssText=`left:${Math.random()*100}%;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;`;pc.appendChild(p);}
+const B = '../assets/';
+const META = {
+  'lot-mini': {
+    tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
+    tagline_fr:'L\'essentiel pour s\'organiser.', tagline_ar:'الأساسيات للتنظيم.',
+    compo:[{n:'1×',s:'XL',c:'var(--terra)'},{n:'2×',s:'L',c:'var(--bark)'},{n:'3×',s:'M',c:'var(--sage)'}],
+    total:6, savings:null,
+    uses_fr:['💄 Maquillage','💍 Bijoux','🧦 Chaussettes','✏️ Bureau'],
+    uses_ar:['💄 مكياج','💍 مجوهرات','🧦 جوارب','✏️ مكتب'],
+    imgs:[B+'boiteslot1.png', B+'boiteslotllp6.jpg']
+  },
+  'lot-standard': {
+    tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true, pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
+    tagline_fr:'L\'équilibre parfait entre quantité et prix.', tagline_ar:'التوازن المثالي بين الكمية والسعر.',
+    compo:[{n:'2×',s:'XL',c:'var(--terra)'},{n:'4×',s:'L',c:'var(--bark)'},{n:'5×',s:'M',c:'var(--sage)'}],
+    total:11, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
+    uses_fr:['💄 Maquillage','👙 Sous-vêtements','📚 Bureau','🍝 Cuisine'],
+    uses_ar:['💄 مكياج','👙 ملابس داخلية','📚 مكتب','🍝 مطبخ'],
+    imgs:[B+'boiteslotllp1.jpg', B+'boiteslotllp4.jpg', B+'boiteslot1.png']
+  },
+  'lot-mega': {
+    tag_fr:'👑 Organisation totale', tag_ar:'👑 تنظيم شامل', featured:false,
+    tagline_fr:'Pour transformer toute la maison.', tagline_ar:'لتحويل المنزل بأكمله.',
+    compo:[{n:'4×',s:'XL',c:'var(--terra)'},{n:'8×',s:'L',c:'var(--bark)'},{n:'10×',s:'M',c:'var(--sage)'}],
+    total:22, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
+    uses_fr:['🏠 Maison entière','🍝 Cuisine','👗 Dressing','💄 Vanity'],
+    uses_ar:['🏠 المنزل كله','🍝 مطبخ','👗 دولاب','💄 طاولة المكياج'],
+    imgs:[B+'BAA.png', B+'boiteslotllp1.jpg', B+'boiteslotllp4.jpg']
+  }
+};
+const ORDER = ['lot-mini','lot-standard','lot-mega'];
+const FALLBACK = [
+  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2000},
+  {id:'2',slug:'lot-standard',name:'Lot Standard',price:3300},
+  {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5400},
+];
 
-/* reveal */
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.12});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+function cardHTML(lot) {
+  const slug = lot.slug||'lot-mini';
+  const m = META[slug]||META['lot-mini'];
+  const lang = currentLang;
+  const price = lot.price||0;
+  const tag = m[`tag_${lang}`] || m.tag_fr;
+  const tagline = m[`tagline_${lang}`] || m.tagline_fr;
+  const uses = (m[`uses_${lang}`] || m.uses_fr).map(u=>`<span class="u-tag">${u}</span>`).join('');
+  const savings = m[`savings_${lang}`] || m.savings_fr || null;
+  const pop = m[`pop_${lang}`] || m.pop_fr || '';
+  const addLabel = lang === 'ar' ? 'أضيفي ←' : 'Ajouter →';
+  const photos = (m.imgs||[]).map((url,i)=>
+    `<img src="${url}" alt="" class="${i===0?'active':''}" loading="${i===0?'eager':'lazy'}">`
+  ).join('');
+  const dots = m.imgs.length>1
+    ? `<div class="gal-dots">${m.imgs.map((_,i)=>`<button class="gal-dot${i===0?' active':''}" data-idx="${i}"></button>`).join('')}</div>`
+    : '';
+  const compo = m.compo.map(c=>
+    `<div class="c-chip"><span class="cn" style="color:${c.c}">${c.n}</span><span class="cs">${c.s}</span></div>`
+  ).join('') + `<div class="c-total">= ${m.total} ${lang==='ar'?'صناديق':'boîtes'}</div>`;
+  return `
+  <div class="lot-card${m.featured?' featured':''}" data-slug="${slug}">
+    ${m.featured?`<div class="pop-ribbon">${pop}</div>`:''}
+    <div class="lot-photo" id="gallery-${slug}">
+      ${photos}${dots}
+      <div class="lot-tag-bar"><span class="lot-tag-label">${tag}</span></div>
+    </div>
+    <div class="lot-body">
+      <div class="lot-name">${lot.name}</div>
+      <div class="lot-tagline">${tagline}</div>
+      <div class="lot-compo">${compo}</div>
+      <div class="uses-row">${uses}</div>
+      <div class="lot-foot">
+        <div>
+          <div class="lot-price">${price.toLocaleString('fr-DZ')} DA</div>
+          ${savings?`<span class="lot-save">${savings}</span>`:''}
+        </div>
+        <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
+      </div>
+    </div>
+  </div>`;
+}
 
-/* tabs */
-document.querySelectorAll('.utab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.utab').forEach(b=>b.classList.remove('on'));
-    document.querySelectorAll('.upanel').forEach(p=>p.classList.remove('on'));
-    btn.classList.add('on');
-    document.getElementById('tab-'+btn.dataset.tab).classList.add('on');
-  });
-});
-
-/* galleries */
-['mini','standard','mega'].forEach(slug=>{
-  const g=document.getElementById('gal-'+slug);if(!g)return;
-  const imgs=g.querySelectorAll('img'),dots=g.querySelectorAll('.pdot');
-  if(imgs.length<2)return;
-  let cur=0;
-  function go(i){imgs[cur].classList.remove('on');dots[cur]?.classList.remove('on');cur=(i+imgs.length)%imgs.length;imgs[cur].classList.add('on');dots[cur]?.classList.add('on');}
-  dots.forEach((d,i)=>d.addEventListener('click',()=>go(i)));
+function initGallery(slug) {
+  const g = document.getElementById(`gallery-${slug}`);
+  if(!g) return;
+  const imgs = g.querySelectorAll('img');
+  if(imgs.length<=1) return;
+  const dotsEl = g.querySelector('.gal-dots');
+  let cur = 0;
+  function go(idx) {
+    imgs[cur].classList.remove('active');
+    if(dotsEl) dotsEl.children[cur]?.classList.remove('active');
+    cur = (idx+imgs.length)%imgs.length;
+    imgs[cur].classList.add('active');
+    if(dotsEl) dotsEl.children[cur]?.classList.add('active');
+  }
+  if(dotsEl) [...dotsEl.querySelectorAll('.gal-dot')].forEach((d,i)=>d.addEventListener('click',()=>go(i)));
   let sx=0;
-  g.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;},{passive:true});
-  g.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1);},{passive:true});
+  g.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+  g.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1)},{passive:true});
   setInterval(()=>go(cur+1),3800);
-});
+}
 
-/* counters */
-const cobs=new IntersectionObserver(es=>es.forEach(e=>{
-  if(!e.isIntersecting)return;
-  const el=e.target,t=+el.dataset.t,dur=1400,s=performance.now();
-  function tick(n){const p=Math.min((n-s)/dur,1),ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*t);if(p<1)requestAnimationFrame(tick);else el.textContent=t;}
-  requestAnimationFrame(tick);cobs.unobserve(el);
-}),{threshold:.5});
-document.querySelectorAll('.counter').forEach(el=>cobs.observe(el));
+async function render() {
+  const c = document.getElementById('lotsContainer');
+  let lots;
+  try {
+    const r = await fetch(`${API}/lots`);
+    if(!r.ok) throw new Error();
+    lots = await r.json();
+    if(!lots?.length) throw new Error();
+  } catch { lots=FALLBACK; }
+  const sorted = ORDER.map(s=>lots.find(l=>l.slug===s)).filter(Boolean);
+  lots.filter(l=>!ORDER.includes(l.slug)).forEach(l=>sorted.push(l));
+  c.innerHTML = sorted.map(cardHTML).join('');
+  sorted.forEach(l=>initGallery(l.slug));
+}
 
-/* magnetic buttons */
-document.querySelectorAll('.btn-p,.btn-wh,.btn-wa,.btn-add').forEach(btn=>{
-  btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();btn.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*.1}px,${(e.clientY-(r.top+r.height/2))*.1}px) translateY(-3px)`;});
-  btn.addEventListener('mouseleave',()=>{btn.style.transform='';});
-});
-
-/* cart */
 function addToCart(id,name,price,img='') {
   try {
     const cart=JSON.parse(localStorage.getItem('nidly_cart')||'[]');
@@ -991,6 +983,9 @@ function addToCart(id,name,price,img='') {
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
+
+setLang(currentLang);
+render();
 </script>
 </body>
 </html>
