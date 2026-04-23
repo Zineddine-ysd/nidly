@@ -121,7 +121,13 @@ nav.sc .np{border-color:rgba(196,113,74,.3);color:var(--ink);}
 .lfb3{top:50%;left:-3rem;transform:translateY(-50%);animation:fb1 6s ease-in-out infinite;}
 @keyframes fb1{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes fb2{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-
+.nav-cart-btn {
+  background:var(--terra); color:white;
+  padding:.4rem .95rem; border-radius:2rem;
+  font-size:.7rem; letter-spacing:.06em;
+  text-decoration:none; display:inline-block; transition:background .2s;
+}
+.nav-cart-btn:hover { background:var(--bark); }
 /* ═══ UTILITÉS SECTION ═══ */
 .uses-section{padding:7rem 2rem;background:var(--cream);position:relative;}
 .uses-section::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(196,113,74,.06),transparent 65%);pointer-events:none;}
@@ -340,8 +346,7 @@ footer{background:var(--ink2);padding:2rem 2.5rem;display:flex;align-items:cente
   <a href="#" class="logo" id="navLogo">Ni<span>dly</span></a>
   <div class="nav-r">
     <a href="#lots" class="np">Les lots</a>
-    <a href="https://wa.me/213551901977" class="np cta">Commander →</a>
-  </div>
+<a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>  </div>
 </nav>
 
 <!-- ══ HERO ══ -->
@@ -896,7 +901,30 @@ document.querySelectorAll('a,button,.pcard,.szcard,.fc,.rcard,.ucard,.lid-pt').f
   el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
 });
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('nidly_lang', lang);
+  const html = document.documentElement;
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim() === (lang === 'fr' ? 'FR' : 'ع'));
+  });
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    const txt = el.getAttribute(`data-${lang}`);
+    if (txt) el.innerHTML = txt;
+  });
+  updateCartCount();
+}
 
+function updateCartCount() {
+  try {
+    const cart = JSON.parse(localStorage.getItem('nidly_cart') || '[]');
+    const tot = cart.reduce((s, i) => s + i.qty, 0);
+    const btn = document.getElementById('cartBtn');
+    if (btn) btn.innerHTML = `🛍 <span data-fr="Panier" data-ar="السلة">${currentLang === 'ar' ? 'السلة' : 'Panier'}</span> (${tot})`;
+  } catch(e) {}
+}
 /* nav */
 const nav=document.getElementById('nav'),navLogo=document.getElementById('navLogo');
 window.addEventListener('scroll',()=>{const s=window.scrollY>50;nav.classList.toggle('sc',s);navLogo.classList.toggle('dk',s);},{passive:true});
