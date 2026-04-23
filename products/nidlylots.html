@@ -121,7 +121,7 @@ nav.sc .np{border-color:rgba(196,113,74,.3);color:var(--ink);}
 .lfb3{top:50%;left:-3rem;transform:translateY(-50%);animation:fb1 6s ease-in-out infinite;}
 @keyframes fb1{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes fb2{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
-.nav-cart-btn {
+.nav--btn {
   background:var(--terra); color:white;
   padding:.4rem .95rem; border-radius:2rem;
   font-size:.7rem; letter-spacing:.06em;
@@ -681,7 +681,7 @@ footer{background:var(--ink2);padding:2rem 2.5rem;display:flex;align-items:cente
           <div class="puses"><span class="puse">💄 Maquillage</span><span class="puse">💊 Pharmacie</span><span class="puse">✏️ Bureau</span></div>
           <div class="pfoot">
             <div><div class="pprice">2 000 DA</div><div class="ppnote">idéal 1 tiroir</div></div>
-            <button class="btn-add" onclick="addCart('lot-mini','Lot Mini',2000)">Ajouter <span class="arr">→</span></button>
+           <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
           </div>
         </div>
       </div>
@@ -708,7 +708,7 @@ footer{background:var(--ink2);padding:2rem 2.5rem;display:flex;align-items:cente
           <div class="puses"><span class="puse">💄 Maquillage</span><span class="puse">🍽️ Cuisine</span><span class="puse">💊 Médical</span><span class="puse">👗 Dressing</span></div>
           <div class="pfoot">
             <div><div class="pprice">3 300 DA</div><div class="ppnote">🌿 Meilleur rapport</div></div>
-            <button class="btn-add" onclick="addCart('lot-standard','Lot Standard',3300)">Ajouter <span class="arr">→</span></button>
+            <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
           </div>
         </div>
       </div>
@@ -734,7 +734,7 @@ footer{background:var(--ink2);padding:2rem 2.5rem;display:flex;align-items:cente
           <div class="puses"><span class="puse">🏠 Maison entière</span><span class="puse">🍼 Bébé</span><span class="puse">🎓 Scolaire</span></div>
           <div class="pfoot">
             <div><div class="pprice">5 400 DA</div><div class="ppnote">✨ Meilleur prix/boîte</div></div>
-            <button class="btn-add" onclick="addCart('lot-mega','Lot Méga',5400)">Ajouter <span class="arr">→</span></button>
+ <button class="btn-add" onclick="addToCart('${lot.id||slug}','${lot.name}',${price},'${m.imgs?.[0]||''}')">${addLabel}</button>
           </div>
         </div>
       </div>
