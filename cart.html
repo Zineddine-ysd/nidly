@@ -11,119 +11,488 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panier — Nidly</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=DM+Sans:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/common.css">
 <style>
-  html[dir="rtl"] body { font-family: 'Cairo', sans-serif; }
-  .cart-page { max-width: 900px; margin: 0 auto; padding: 6rem 2rem 4rem; }
-  .cart-page h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--charcoal); margin-bottom: 2rem; }
-  .cart-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: flex-start; }
-  .cart-item { gap: 1rem; display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(212,165,160,0.2); }
-  .cart-item-name { font-weight: 500; }
-  .cart-item-qty { color: var(--bark); font-size: 0.9rem; }
-  .cart-item-price { color: var(--terracotta); font-weight: 500; }
-  .cart-summary { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(212,165,160,0.3); }
-  .summary-line { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 0.35rem; }
-  .summary-line.total { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-top: 0.5rem; }
-  .checkout-form { background: white; padding: 2rem; border-radius: 1rem; border: 1px solid rgba(212,165,160,0.2); }
-  .checkout-form h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 1.5rem; }
-  .form-row { margin-bottom: 1rem; }
-  .form-row label { display: block; font-size: 0.8rem; color: var(--bark); margin-bottom: 0.4rem; }
-  .form-row input, .form-row select { width: 100%; padding: 0.7rem 0.8rem; border: 1.5px solid rgba(212,165,160,0.4); border-radius: 0.5rem; font-size: 0.9rem; box-sizing: border-box; }
-  .form-row small { display: block; margin-top: 0.3rem; font-size: 0.75rem; color: var(--bark); opacity: 0.8; }
-  .shipping-options { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.3rem; }
-  .shipping-option-item { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 0.9rem; line-height: 1.2; }
-  .shipping-option-item input[type="radio"] { width: 18px; height: 18px; min-width: 18px; accent-color: var(--terracotta); cursor: pointer; margin: 0; }
-  .btn-order { background: var(--terracotta); color: white; padding: 1rem 2rem; border: none; border-radius: 3rem; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 1.2rem; width: 100%; font-size: 1rem; }
-  .btn-order:hover { background: var(--bark); }
-  .empty-cart { text-align: center; padding: 4rem; color: var(--bark); }
-  .empty-cart a { color: var(--terracotta); }
-  @media (max-width: 800px) { .cart-layout { grid-template-columns: 1fr; } }
+/* ── BASE ── */
+:root {
+  --cream: #FAF7F2;
+  --blush: #F0E0D6;
+  --dusty: #D4A5A0;
+  --terra: #C47B6B;
+  --bark: #7A5C52;
+  --char: #2C2420;
+  --sage-l: #D6E0D2;
+  --gold: #C9A96E;
+  --wa: #25D366;
+  --wa-dark: #128C7E;
+}
+html[dir="rtl"] body { font-family: 'Cairo', sans-serif; }
+body { background: var(--cream); }
 
-  /* ── Success Modal ── */
-  .success-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 9999; }
-  .success-modal.active { opacity: 1; pointer-events: all; }
-  .success-box { background: white; padding: 2.5rem 2rem; border-radius: 1.5rem; text-align: center; max-width: 440px; width: 92%; animation: popIn .4s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
-  .success-icon { width: 70px; height: 70px; background: var(--terracotta); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.2rem; }
-  .success-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 0.8rem; }
-  .success-box p { font-size: 0.92rem; color: var(--bark); margin-bottom: 0.6rem; line-height: 1.6; }
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
 
-  /* ── WhatsApp block inside modal ── */
-  .wa-block {
-    background: #F0FFF4;
-    border: 1.5px solid #68BB87;
-    border-radius: 0.8rem;
-    padding: 1rem 1.1rem;
-    margin: 1.1rem 0 1.4rem;
-    font-size: 0.85rem;
-    color: #1A4731;
-    text-align: left;
-    line-height: 1.6;
-  }
-  html[dir="rtl"] .wa-block { text-align: right; }
-  .wa-block strong { color: #1A4731; }
-  .wa-block .wa-preview {
-    font-style: italic;
-    background: white;
-    border-radius: 0.5rem;
-    padding: 0.5rem 0.7rem;
-    margin-top: 0.5rem;
-    border: 1px solid rgba(104,187,135,0.3);
-    font-size: 0.82rem;
-    color: #2D6A4F;
-  }
-  .btn-whatsapp {
-    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    background: #25D366; color: white;
-    border: none; border-radius: 3rem;
-    padding: 0.85rem 1.5rem; font-size: 0.95rem; font-weight: 500;
-    cursor: pointer; font-family: 'DM Sans', sans-serif;
-    text-decoration: none; width: 100%;
-    transition: background .2s;
-    margin-bottom: 0.7rem;
-  }
-  .btn-whatsapp:hover { background: #1ebe5d; }
-  .btn-whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; }
+/* ── LANG ── */
+.lang-toggle { background: white; border: 1.5px solid rgba(196,123,107,.3); border-radius: 2rem; padding: .3rem .2rem; display: flex; gap: .1rem; }
+.lang-btn { padding: .25rem .6rem; border-radius: 2rem; border: none; background: transparent; font-size: .68rem; font-weight: 500; color: var(--bark); cursor: pointer; transition: all .2s; }
+.lang-btn.active { background: var(--terra); color: white; }
 
-  .btn-continue {
-    background: none; color: var(--bark);
-    border: 1.5px solid rgba(212,165,160,0.4);
-    border-radius: 3rem; padding: 0.6rem 1.5rem;
-    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
-    cursor: pointer; transition: background .2s;
-  }
-  .btn-continue:hover { background: rgba(212,165,160,0.1); }
+/* ── CART PAGE LAYOUT ── */
+.cart-page {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 6.5rem 1.4rem 5rem;
+}
 
-  @keyframes popIn { from { transform: scale(.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.cart-heading {
+  display: flex;
+  align-items: baseline;
+  gap: .9rem;
+  margin-bottom: 2rem;
+}
+.cart-heading h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 300;
+  color: var(--char);
+  line-height: 1;
+}
+.cart-count-badge {
+  background: var(--terra);
+  color: white;
+  font-size: .68rem;
+  font-weight: 500;
+  border-radius: 2rem;
+  padding: .2rem .65rem;
+  letter-spacing: .06em;
+}
 
-  .lang-toggle { background: white; border: 1.5px solid rgba(196,123,107,.3); border-radius: 2rem; padding: .3rem .2rem; display: flex; gap: .1rem; }
-  .lang-btn { padding: .25rem .6rem; border-radius: 2rem; border: none; background: transparent; font-size: .68rem; font-weight: 500; color: var(--bark); cursor: pointer; transition: all .2s; }
-  .lang-btn.active { background: var(--terracotta); color: white; }
+/* ── WARNING ── */
+.order-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: .8rem;
+  background: #fff8f5;
+  border-left: 3px solid var(--terra);
+  border-radius: 0 .75rem .75rem 0;
+  padding: .9rem 1.1rem;
+  margin-bottom: 2.2rem;
+  font-size: .82rem;
+  color: var(--bark);
+  line-height: 1.65;
+}
+html[dir="rtl"] .order-warning {
+  border-left: none;
+  border-right: 3px solid var(--terra);
+  border-radius: .75rem 0 0 .75rem;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.order-warning-icon { font-size: 1rem; flex-shrink: 0; margin-top: .15rem; opacity: .7; }
 
-  html[dir="rtl"] .cart-page h1,
-  html[dir="rtl"] .checkout-form h2,
-  html[dir="rtl"] .form-row label { text-align: right; }
-  html[dir="rtl"] .cart-item { flex-direction: row-reverse; }
+/* ── LAYOUT GRID ── */
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: flex-start;
+}
 
-  /* ── Bandeau avertissement retours ── */
-  .order-warning {
-    display: flex; align-items: flex-start; gap: 0.85rem;
-    background: #FFF5F5; border: 1.5px solid #E07070; border-radius: 0.75rem;
-    padding: 1rem 1.2rem; margin-bottom: 2rem;
-    font-size: 0.88rem; color: #6B2020; line-height: 1.6;
-  }
-  .order-warning-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.05rem; }
-  html[dir="rtl"] .order-warning { flex-direction: row-reverse; text-align: right; }
+/* ── PRODUCT IMAGES STRIP ── */
+.product-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .45rem;
+  margin-bottom: 1.4rem;
+  border-radius: 1.1rem;
+  overflow: hidden;
+}
+.product-strip-img {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  background: var(--blush);
+  position: relative;
+}
+.product-strip-img:first-child { border-radius: .9rem 0 0 .9rem; }
+.product-strip-img:last-child  { border-radius: 0 .9rem .9rem 0; }
+.product-strip-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+.product-strip-img:hover img { transform: scale(1.06); }
+.product-strip-img .strip-label {
+  position: absolute;
+  bottom: .4rem; left: .4rem;
+  background: rgba(44,36,32,.48);
+  backdrop-filter: blur(4px);
+  color: rgba(255,255,255,.9);
+  font-size: .55rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border-radius: .5rem;
+  padding: .18rem .5rem;
+}
+html[dir="rtl"] .product-strip-img .strip-label { left: auto; right: .4rem; }
 
-  /* ── Yalidine info badge ── */
-  .yalidine-badge {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    background: #EEF2FF; color: #3730A3;
-    border: 1px solid #C7D2FE; border-radius: 0.4rem;
-    padding: 0.2rem 0.55rem; font-size: 0.75rem; font-weight: 500;
-    margin-top: 0.4rem;
-  }
+/* ── CART PANEL (left) ── */
+.cart-panel { display: flex; flex-direction: column; gap: 0; }
+
+.cart-items-box {
+  background: white;
+  border-radius: 1.2rem;
+  border: 1.5px solid rgba(212,165,160,.18);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.cart-items-header {
+  padding: 1rem 1.3rem .7rem;
+  border-bottom: 1px solid rgba(212,165,160,.14);
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--terra);
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: 1rem 1.3rem;
+  border-bottom: 1px solid rgba(212,165,160,.1);
+  transition: background .2s;
+}
+.cart-item:last-child { border-bottom: none; }
+.cart-item:hover { background: #fdfaf8; }
+.cart-item-thumb {
+  width: 64px; height: 64px;
+  border-radius: .65rem;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(212,165,160,.2);
+}
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-weight: 500; font-size: .9rem; color: var(--char); margin-bottom: .15rem; }
+.cart-item-qty { font-size: .75rem; color: var(--bark); opacity: .7; }
+.cart-item-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: var(--terra);
+  font-weight: 400;
+  flex-shrink: 0;
+}
+.cart-item-remove {
+  background: none; border: none; cursor: pointer;
+  color: var(--bark); opacity: .3;
+  font-size: 1rem; padding: .3rem;
+  border-radius: 50%;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: opacity .2s, background .2s;
+}
+.cart-item-remove:hover { opacity: .8; background: var(--blush); }
+
+/* ── SUMMARY BOX ── */
+.summary-box {
+  background: white;
+  border-radius: 1.2rem;
+  border: 1.5px solid rgba(212,165,160,.18);
+  padding: 1.2rem 1.3rem;
+}
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .85rem;
+  color: var(--bark);
+  margin-bottom: .5rem;
+}
+.summary-line:last-child { margin-bottom: 0; }
+.summary-line.total {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  color: var(--char);
+  font-weight: 400;
+  padding-top: .75rem;
+  margin-top: .5rem;
+  border-top: 1px solid rgba(212,165,160,.18);
+}
+.summary-line.total span:last-child { color: var(--terra); }
+
+/* ── FORM (right) ── */
+.checkout-form {
+  background: white;
+  border-radius: 1.2rem;
+  border: 1.5px solid rgba(212,165,160,.18);
+  overflow: hidden;
+}
+.form-section-header {
+  padding: 1.3rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(212,165,160,.1);
+}
+.form-section-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--char);
+  margin-bottom: .2rem;
+}
+.form-section-header p {
+  font-size: .75rem;
+  color: var(--bark);
+  opacity: .7;
+  line-height: 1.5;
+}
+.form-body { padding: 1.4rem 1.5rem; }
+
+.form-row { margin-bottom: 1.15rem; }
+.form-row label {
+  display: block;
+  font-size: .71rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--bark);
+  margin-bottom: .45rem;
+  font-weight: 500;
+}
+.form-row input,
+.form-row select {
+  width: 100%;
+  padding: .82rem 1rem;
+  border: 1.5px solid rgba(212,165,160,.35);
+  border-radius: .7rem;
+  font-size: .9rem;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--char);
+  background: #fdfaf8;
+  box-sizing: border-box;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+html[dir="rtl"] .form-row input,
+html[dir="rtl"] .form-row select { text-align: right; font-family: 'Cairo', sans-serif; }
+.form-row input:focus,
+.form-row select:focus {
+  border-color: var(--terra);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(196,123,107,.1);
+}
+.form-row input::placeholder { color: rgba(122,92,82,.35); }
+.form-row select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A5C52' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .9rem center; padding-right: 2.2rem; }
+html[dir="rtl"] .form-row select { background-position: left .9rem center; padding-right: 1rem; padding-left: 2.2rem; }
+.form-row select:disabled { opacity: .5; cursor: not-allowed; }
+.form-row small {
+  display: block; margin-top: .4rem;
+  font-size: .7rem; color: var(--bark); opacity: .65; line-height: 1.5;
+}
+.form-divider {
+  height: 1px; background: rgba(212,165,160,.12);
+  margin: 1.2rem 0;
+}
+
+/* ── SHIPPING OPTIONS ── */
+.shipping-options { display: flex; flex-direction: column; gap: .5rem; margin-top: .4rem; }
+.shipping-option-item {
+  display: flex; align-items: center; gap: .7rem;
+  background: #fdfaf8;
+  border: 1.5px solid rgba(212,165,160,.25);
+  border-radius: .7rem;
+  padding: .75rem 1rem;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  font-size: .88rem;
+  color: var(--char);
+}
+.shipping-option-item:has(input:checked) {
+  border-color: var(--terra);
+  background: rgba(196,123,107,.04);
+}
+.shipping-option-item input[type="radio"] {
+  width: 16px; height: 16px; min-width: 16px;
+  accent-color: var(--terra); cursor: pointer; margin: 0;
+  border: none; padding: 0; background: transparent;
+  box-shadow: none;
+}
+.ship-label-main { font-size: .85rem; color: var(--char); font-weight: 400; }
+.ship-label-sub { font-size: .7rem; color: var(--bark); opacity: .65; margin-top: .05rem; }
+
+.yalidine-badge {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: #EEF2FF; color: #3730A3;
+  border: 1px solid #C7D2FE; border-radius: .4rem;
+  padding: .22rem .6rem; font-size: .7rem; font-weight: 500;
+  margin-top: .55rem;
+}
+
+/* ── PHONE CHECK NOTE ── */
+.phone-check-note {
+  display: flex; align-items: center; gap: .5rem;
+  background: rgba(201,169,110,.1);
+  border: 1px solid rgba(201,169,110,.3);
+  border-radius: .6rem;
+  padding: .55rem .8rem;
+  font-size: .72rem;
+  color: #6b5020;
+  margin-top: .45rem;
+  line-height: 1.5;
+}
+
+/* ── SUBMIT BUTTON ── */
+.btn-order {
+  background: var(--terra); color: white;
+  padding: 1rem 2rem; border: none; border-radius: 3rem;
+  font-family: 'DM Sans', sans-serif; cursor: pointer;
+  width: 100%; font-size: .95rem; font-weight: 500;
+  letter-spacing: .03em;
+  margin-top: 1.3rem;
+  transition: all .25s;
+  position: relative; overflow: hidden;
+  box-shadow: 0 6px 20px rgba(196,123,107,.3);
+}
+.btn-order:hover { background: var(--bark); box-shadow: 0 8px 28px rgba(122,92,82,.28); transform: translateY(-1px); }
+.btn-order:active { transform: scale(.98); }
+
+.secure-note {
+  display: flex; align-items: center; justify-content: center; gap: .4rem;
+  font-size: .68rem; color: var(--bark); opacity: .55;
+  margin-top: .75rem; text-align: center;
+}
+
+/* ── EMPTY CART ── */
+.empty-cart {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--bark);
+}
+.empty-cart-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .3; }
+.empty-cart h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--char); margin-bottom: .5rem; font-weight: 300; }
+.empty-cart p { font-size: .9rem; margin-bottom: 1.5rem; opacity: .7; }
+.btn-back {
+  display: inline-block;
+  background: var(--terra); color: white;
+  padding: .75rem 1.8rem; border-radius: 3rem;
+  text-decoration: none; font-size: .85rem;
+  font-family: 'DM Sans', sans-serif;
+  transition: background .2s;
+}
+.btn-back:hover { background: var(--bark); }
+
+/* ── SUCCESS MODAL ── */
+.success-modal {
+  position: fixed; inset: 0;
+  background: rgba(44,36,32,.55);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s ease;
+  z-index: 9999;
+  padding: 1rem;
+}
+.success-modal.active { opacity: 1; pointer-events: all; }
+.success-box {
+  background: white;
+  padding: 2.2rem 1.8rem 1.8rem;
+  border-radius: 1.6rem;
+  text-align: center;
+  max-width: 420px; width: 100%;
+  animation: popIn .4s cubic-bezier(.34,1.56,.64,1) both;
+  box-shadow: 0 30px 80px rgba(0,0,0,.15);
+}
+.success-icon {
+  width: 60px; height: 60px;
+  background: var(--terra); color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; margin: 0 auto 1.1rem;
+  box-shadow: 0 8px 24px rgba(196,123,107,.35);
+}
+.success-box h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 400;
+  color: var(--char); margin-bottom: .55rem;
+}
+.success-box p {
+  font-size: .84rem; color: var(--bark);
+  margin-bottom: 0; line-height: 1.65;
+}
+.wa-block {
+  background: #F0FFF4;
+  border: 1.5px solid #68BB87;
+  border-radius: .85rem;
+  padding: 1rem 1.1rem;
+  margin: 1.1rem 0 1.2rem;
+  font-size: .82rem;
+  color: #1A4731;
+  text-align: left;
+  line-height: 1.6;
+}
+html[dir="rtl"] .wa-block { text-align: right; }
+.wa-block strong { color: #1A4731; font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; }
+.wa-preview {
+  font-style: italic;
+  background: white;
+  border-radius: .55rem;
+  padding: .6rem .75rem;
+  margin-top: .5rem;
+  border: 1px solid rgba(104,187,135,.25);
+  font-size: .79rem;
+  color: #2D6A4F;
+  white-space: pre-wrap;
+  text-align: left;
+  max-height: 120px;
+  overflow-y: auto;
+  line-height: 1.6;
+}
+html[dir="rtl"] .wa-preview { text-align: right; }
+.btn-whatsapp {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  background: var(--wa); color: white;
+  border: none; border-radius: 3rem;
+  padding: .9rem 1.5rem; font-size: .9rem; font-weight: 500;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  text-decoration: none; width: 100%;
+  transition: all .25s;
+  margin-bottom: .65rem;
+  box-shadow: 0 6px 18px rgba(37,211,102,.3);
+}
+.btn-whatsapp:hover { background: var(--wa-dark); transform: translateY(-1px); }
+.btn-whatsapp svg { width: 18px; height: 18px; flex-shrink: 0; }
+.btn-continue {
+  background: none; color: var(--bark);
+  border: 1.5px solid rgba(212,165,160,.35);
+  border-radius: 3rem; padding: .6rem 1.5rem;
+  font-family: 'DM Sans', sans-serif; font-size: .82rem;
+  cursor: pointer; transition: background .2s, border-color .2s;
+  width: 100%;
+}
+.btn-continue:hover { background: var(--blush); border-color: var(--dusty); }
+
+@keyframes popIn { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ── RTL ── */
+html[dir="rtl"] .cart-heading { flex-direction: row-reverse; justify-content: flex-end; }
+html[dir="rtl"] .cart-item { flex-direction: row-reverse; }
+html[dir="rtl"] .summary-line { flex-direction: row-reverse; }
+html[dir="rtl"] .secure-note { flex-direction: row-reverse; }
+
+/* ── RESPONSIVE ── */
+@media (min-width: 820px) {
+  .cart-page { padding: 7rem 2.5rem 5rem; }
+  .cart-layout { grid-template-columns: 1.05fr 1fr; gap: 2rem; }
+  .product-strip-img { aspect-ratio: 4/3; }
+}
+@media (min-width: 1060px) {
+  .cart-page { padding: 7.5rem 3rem 5rem; }
+}
 </style>
+
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -133,25 +502,20 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></noscript>
 </head>
 
-<!-- ══════════════════════════════════
-     SUCCESS MODAL
-══════════════════════════════════ -->
+<!-- ══ SUCCESS MODAL ══ -->
 <div id="orderSuccessModal" class="success-modal">
   <div class="success-box">
     <div class="success-icon">✓</div>
-    <h2 id="successTitle">Merci pour votre commande</h2>
-    <p id="successMsg">Votre commande a été enregistrée avec succès.<br>Pour la <strong>confirmer définitivement</strong>, envoyez-nous le message WhatsApp ci-dessous :</p>
-
+    <h2 id="successTitle">Commande enregistrée</h2>
+    <p id="successMsg"></p>
     <div class="wa-block">
-      <strong>📲 Message à envoyer :</strong>
+      <strong id="waInstLabel">Message a envoyer</strong>
       <div class="wa-preview" id="waPreview"></div>
     </div>
-
     <a id="btnWhatsapp" href="#" target="_blank" rel="noopener" class="btn-whatsapp">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Envoyer le message de confirmation
+      <span id="waBtnLabel">Envoyer la confirmation</span>
     </a>
-
     <button class="btn-continue" id="closeSuccessBtn">Continuer sans WhatsApp</button>
   </div>
 </div>
@@ -167,100 +531,192 @@ fbq('track', 'PageView');
       <button class="lang-btn active" onclick="setLang('fr')">FR</button>
       <button class="lang-btn" onclick="setLang('ar')">ع</button>
     </div>
-    <a href="./cart.html" class="nav-cart" style="text-decoration:none;display:inline-block;">🛍 <span id="cartLabel">Panier</span> (0)</a>
+    <a href="./cart.html" class="nav-cart" style="text-decoration:none;display:inline-block;">
+      <span id="cartLabel">Panier</span> (<span id="cartCountNav">0</span>)
+    </a>
   </div>
 </nav>
 
 <div class="cart-page">
-  <h1 data-fr="Votre panier" data-ar="سلة التسوق">Votre panier</h1>
 
+  <!-- heading -->
+  <div class="cart-heading">
+    <h1 data-fr="Votre panier" data-ar="سلة التسوق">Votre panier</h1>
+    <span class="cart-count-badge" id="cartCountBadge">0 article</span>
+  </div>
+
+  <!-- warning -->
   <div class="order-warning">
-    <span class="order-warning-icon">🚫</span>
+    <span class="order-warning-icon">&#9888;</span>
     <span id="orderWarningText">
       <strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong>
       Les retours ne sont pas acceptés — chaque commande est traitée et expédiée rapidement.
-      Ne passez pas commande pour annuler ensuite, cela nous fait perdre du temps et du stock précieux.
     </span>
   </div>
 
+  <!-- cart content -->
   <div id="cartContent"></div>
+
+  <!-- checkout section (hidden when empty) -->
   <div id="checkoutSection" style="display:none;">
     <div class="cart-layout">
-      <div><div id="cartSummary" class="cart-summary"></div></div>
+
+      <!-- LEFT: product images + cart items + summary -->
+      <div class="cart-panel">
+
+        <!-- product images strip -->
+        <div class="product-strip">
+          <div class="product-strip-img">
+            <img src="assets/bl1.jpg" alt="Boites Nidly" loading="eager">
+            <span class="strip-label" data-fr="Vue d'ensemble" data-ar="نظرة عامة">Vue d'ensemble</span>
+          </div>
+          <div class="product-strip-img">
+            <img src="assets/bl2.jpg" alt="Boites rangement" loading="lazy">
+            <span class="strip-label" data-fr="Organisées" data-ar="منظمة">Organisées</span>
+          </div>
+          <div class="product-strip-img">
+            <img src="assets/bl3.jpg" alt="Boites empilées" loading="lazy">
+            <span class="strip-label" data-fr="Empilables" data-ar="قابلة للتكديس">Empilables</span>
+          </div>
+        </div>
+
+        <!-- items -->
+        <div class="cart-items-box">
+          <div class="cart-items-header" data-fr="Articles" data-ar="المنتجات">Articles</div>
+          <div id="cartItemsList"></div>
+        </div>
+
+        <!-- summary -->
+        <div class="summary-box" id="cartSummary"></div>
+
+      </div>
+
+      <!-- RIGHT: form -->
       <form id="checkoutForm" class="checkout-form">
-        <h2 data-fr="Informations de livraison" data-ar="معلومات التوصيل">Informations de livraison</h2>
-        <div class="form-row">
-          <label data-fr="Nom complet" data-ar="الاسم الكامل">Nom complet</label>
-          <input type="text" name="name" required placeholder="Sophie Martin">
+
+        <div class="form-section-header">
+          <h2 data-fr="Informations de livraison" data-ar="معلومات التوصيل">Informations de livraison</h2>
+          <p data-fr="Remplissez vos coordonnées — livraison assurée sous 48h partout en Algérie." data-ar="أدخل معلوماتك — توصيل مضمون خلال 48 ساعة في كل الجزائر.">Remplissez vos coordonnées — livraison assurée sous 48h partout en Algérie.</p>
         </div>
-        <div class="form-row">
-          <label data-fr="Téléphone" data-ar="الهاتف">Téléphone</label>
-          <input type="tel" name="phone" required placeholder="0555123456">
-        </div>
-        <div class="form-row">
-          <label data-fr="Adresse (rue, bâtiment...)" data-ar="العنوان (شارع، عمارة...)">Adresse (rue, bâtiment...)</label>
-          <input type="text" name="address" required placeholder="N° rue, immeuble, étage...">
-        </div>
-        <div class="form-row">
-          <label data-fr="Wilaya" data-ar="الولاية">Wilaya</label>
-          <select name="wilaya" id="wilayaSelect" required>
-            <option value="" data-fr="Sélectionner une wilaya" data-ar="اختر الولاية">Sélectionner une wilaya</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label data-fr="Commune" data-ar="البلدية">Commune</label>
-          <select name="commune" id="communeSelect" required disabled>
-            <option value="" data-fr="Choisissez d'abord la wilaya" data-ar="اختر الولاية أولاً">Choisissez d'abord la wilaya</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <label data-fr="Type de livraison" data-ar="نوع التوصيل">Type de livraison</label>
-          <div class="shipping-options">
-            <label class="shipping-option-item">
-              <input type="radio" name="shipping_type" value="desk" checked>
-              <span data-fr="Point relais / bureau Yalidine" data-ar="نقطة استلام / مكتب Yalidine">Point relais / bureau Yalidine</span>
-            </label>
-            <label class="shipping-option-item">
-              <input type="radio" name="shipping_type" value="maison">
-              <span data-fr="À domicile (Yalidine)" data-ar="توصيل للمنزل (Yalidine)">À domicile (Yalidine)</span>
-            </label>
+
+        <div class="form-body">
+
+          <div class="form-row">
+            <label data-fr="Nom complet" data-ar="الاسم الكامل">Nom complet</label>
+            <input type="text" name="name" required placeholder="Votre nom et prénom">
           </div>
-          <div class="yalidine-badge">
-            🚚 Livraison assurée par <strong style="margin-left:.2rem;">Yalidine</strong>
+
+          <div class="form-row">
+            <label data-fr="Numéro de téléphone" data-ar="رقم الهاتف">Numéro de téléphone</label>
+            <input type="tel" name="phone" required placeholder="0555 123 456" inputmode="tel">
+            <div class="phone-check-note" id="phoneCheckNote">
+              Assurez-vous que ce numéro est actif et reçoit des appels — le livreur vous contactera dessus.
+            </div>
           </div>
-          <small data-fr="Les frais de livraison s'adaptent à la wilaya et au type choisi." data-ar="تكاليف التوصيل تتغير حسب الولاية والنوع المختار.">Les frais de livraison s'adaptent à la wilaya et au type choisi.</small>
+
+          <div class="form-row">
+            <label data-fr="Adresse (rue, bâtiment, étage...)" data-ar="العنوان (شارع، عمارة، طابق...)">Adresse (rue, bâtiment, étage...)</label>
+            <input type="text" name="address" required placeholder="N° rue, immeuble, appartement...">
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="form-row">
+            <label data-fr="Wilaya" data-ar="الولاية">Wilaya</label>
+            <select name="wilaya" id="wilayaSelect" required>
+              <option value="">Sélectionner une wilaya</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label data-fr="Commune" data-ar="البلدية">Commune</label>
+            <select name="commune" id="communeSelect" required disabled>
+              <option value="">Choisissez d'abord la wilaya</option>
+            </select>
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="form-row">
+            <label data-fr="Type de livraison" data-ar="نوع التوصيل">Type de livraison</label>
+            <div class="shipping-options">
+              <label class="shipping-option-item">
+                <input type="radio" name="shipping_type" value="desk" checked>
+                <div>
+                  <div class="ship-label-main" data-fr="Point relais — bureau Yalidine" data-ar="نقطة استلام — مكتب Yalidine">Point relais — bureau Yalidine</div>
+                  <div class="ship-label-sub" data-fr="Vous récupérez votre colis au bureau le plus proche" data-ar="تستلم طردك من أقرب مكتب">Vous récupérez votre colis au bureau le plus proche</div>
+                </div>
+              </label>
+              <label class="shipping-option-item">
+                <input type="radio" name="shipping_type" value="maison">
+                <div>
+                  <div class="ship-label-main" data-fr="Livraison à domicile" data-ar="توصيل للمنزل">Livraison à domicile</div>
+                  <div class="ship-label-sub" data-fr="Le livreur se déplace chez vous directement" data-ar="يأتي المندوب إلى منزلك مباشرة">Le livreur se déplace chez vous directement</div>
+                </div>
+              </label>
+            </div>
+            <div class="yalidine-badge">
+              Livraison assurée par <strong style="margin-left:.25rem;">Yalidine</strong>
+            </div>
+            <small data-fr="Les frais de livraison varient selon la wilaya et le mode choisi." data-ar="تكاليف التوصيل تتغير حسب الولاية والنوع المختار.">Les frais de livraison varient selon la wilaya et le mode choisi.</small>
+          </div>
+
+          <div class="form-row">
+            <label data-fr="Notes (optionnel)" data-ar="ملاحظات (اختياري)">Notes (optionnel)</label>
+            <input type="text" name="notes" placeholder="Code porte, heure préférée, remarques...">
+          </div>
+
+          <button type="submit" class="btn-order" data-fr="Valider ma commande" data-ar="تأكيد طلبي">Valider ma commande</button>
+
+          <div class="secure-note" id="secureNote">
+            Paiement à la livraison — aucun risque
+          </div>
+
         </div>
-        <div class="form-row">
-          <label data-fr="Notes (optionnel)" data-ar="ملاحظات (اختياري)">Notes (optionnel)</label>
-          <input type="text" name="notes" placeholder="Ex: code porte, heure préférée...">
-        </div>
-        <button type="submit" class="btn-order" data-fr="Valider la commande" data-ar="تأكيد الطلب">Valider la commande</button>
       </form>
+
     </div>
   </div>
 </div>
 
 <script src="js/config.js"></script>
 <script>
-  // ══════════════════════════════════════════════════════
-  // 📱 METTEZ ICI VOTRE NUMÉRO WHATSAPP (format international sans +)
-  // Exemple : 213XXXXXXXXX pour un numéro algérien
+  // ── CONFIG ──────────────────────────────────────────
   const WHATSAPP_NUMBER = '213551901977';
-  // ══════════════════════════════════════════════════════
+  // ────────────────────────────────────────────────────
 
   let WILAYAS = [];
   let subtotal = 0;
   let shippingPrice = 0;
   let currentLang = localStorage.getItem('nidly_lang') || 'fr';
-  let lastOrderCustomerName = '';
-  let lastOrderTotal = 0;
-  let lastOrderItems = [];
 
+  // ── GREETING based on time of day ──────────────────
+  function getGreeting(lang) {
+    const h = new Date().getHours();
+    if (lang === 'ar') {
+      return h >= 18 ? 'مساء الخير' : 'صباح الخير';
+    }
+    return h >= 18 ? 'Bonsoir' : 'Bonjour';
+  }
+
+  // ── WA MESSAGE — no emojis, time-aware greeting ────
+  function buildWAMessage(name, items, total) {
+    const greeting = getGreeting(currentLang);
+    if (currentLang === 'ar') {
+      const itemsText = items.map(i => `- ${i.name} x${i.qty}`).join('\n');
+      return `${greeting}،\n\nلقد أتممت طلبي تحت الاسم: ${name}\n\nتفاصيل الطلب:\n${itemsText}\n\nالمجموع: ${total} DA\n\nأؤكد طلبي بنسبة 100% وسأكون متاحاً عند اتصال مندوب Yalidine.`;
+    }
+    const itemsText = items.map(i => `- ${i.name} x${i.qty}`).join('\n');
+    return `${greeting},\n\nJ'ai passé une commande sous le nom : ${name}\n\nDetail de la commande :\n${itemsText}\n\nTotal : ${total} DA\n\nJe confirme ma commande a 100% et serai disponible lors de l'appel du livreur Yalidine.`;
+  }
+
+  // ── TRANSLATIONS ────────────────────────────────────
   const T = {
     fr: {
       emptyCart: 'Votre panier est vide.',
+      emptyCartSub: 'Découvrez nos boîtes de rangement',
       seeProducts: 'Voir les produits',
-      subtotal: 'Sous-total produits',
+      subtotal: 'Sous-total',
       shipping: 'Livraison',
       total: 'Total',
       selectWilaya: 'Sélectionner une wilaya',
@@ -269,17 +725,24 @@ fbq('track', 'PageView');
       loading: 'Chargement...',
       noCommune: 'Aucune commune trouvée',
       errCommune: 'Erreur de chargement',
-      alertWilaya: 'Merci de sélectionner une wilaya et une commune.',
-      successTitle: 'Commande enregistrée ✓',
-      successMsg: 'Votre commande a été enregistrée avec succès.<br>Pour la <strong>confirmer définitivement</strong>, envoyez-nous le message WhatsApp ci-dessous :',
-      serverErr: 'Impossible de contacter le serveur.',
+      alertWilaya: 'Merci de sélectionner votre wilaya et commune.',
+      successTitle: 'Commande enregistrée',
+      successMsg: 'Votre commande a été enregistrée. Pour la <strong>confirmer definitivement</strong>, envoyez-nous le message WhatsApp ci-dessous :',
+      serverErr: 'Impossible de contacter le serveur. Réessayez.',
       cartLabel: 'Panier',
       continueBtn: 'Continuer sans WhatsApp',
-      waInstruction: '📲 Message à envoyer :',
-      orderWarning: '<strong>Commandez uniquement si vous êtes sûr(e) de vouloir le produit.</strong> Les retours ne sont pas acceptés — chaque commande est traitée et expédiée rapidement. Ne passez pas commande pour annuler ensuite, cela nous fait perdre du temps et du stock précieux.',
+      waInstruction: 'Message a envoyer',
+      waBtnLabel: 'Envoyer la confirmation',
+      orderWarning: '<strong>Commandez uniquement si vous etes certain(e) de vouloir le produit.</strong> Les retours ne sont pas acceptes — chaque commande est traitee et expediee rapidement.',
+      article: 'article',
+      articles: 'articles',
+      phoneCheckNote: 'Assurez-vous que ce numero est actif et recoit des appels — le livreur vous contactera dessus.',
+      secureNote: 'Paiement a la livraison — aucun risque',
+      removeTitle: 'Retirer',
     },
     ar: {
       emptyCart: 'سلة التسوق فارغة.',
+      emptyCartSub: 'اكتشف صناديق التنظيم',
       seeProducts: 'عرض المنتجات',
       subtotal: 'إجمالي المنتجات',
       shipping: 'التوصيل',
@@ -291,27 +754,24 @@ fbq('track', 'PageView');
       noCommune: 'لا توجد بلديات',
       errCommune: 'خطأ في التحميل',
       alertWilaya: 'يرجى اختيار الولاية والبلدية.',
-      successTitle: 'تم تسجيل طلبك ✓',
-      successMsg: 'تم تسجيل طلبك بنجاح.<br>لتأكيده نهائياً، أرسل لنا رسالة واتساب أدناه:',
-      serverErr: 'تعذر الاتصال بالخادم.',
+      successTitle: 'تم تسجيل طلبك',
+      successMsg: 'تم تسجيل طلبك بنجاح. لتأكيده نهائياً، أرسل رسالة واتساب أدناه:',
+      serverErr: 'تعذر الاتصال بالخادم. حاول مجدداً.',
       cartLabel: 'السلة',
       continueBtn: 'متابعة بدون واتساب',
-      waInstruction: '📲 الرسالة التي يجب إرسالها:',
-      orderWarning: '<strong>اطلب فقط إذا كنت متأكداً من رغبتك في المنتج.</strong> لا يتم قبول الإرجاع — كل طلب يُعالج ويُشحن بسرعة. لا تطلب ثم تتراجع، فذلك يُضيّع وقتنا ومخزوننا المحدود.',
+      waInstruction: 'الرسالة التي يجب إرسالها',
+      waBtnLabel: 'إرسال التأكيد',
+      orderWarning: '<strong>اطلب فقط إذا كنت متأكداً من رغبتك في المنتج.</strong> لا يُقبل الإرجاع — كل طلب يُعالج ويُشحن بسرعة.',
+      article: 'منتج',
+      articles: 'منتجات',
+      phoneCheckNote: 'تأكد أن هذا الرقم نشط ويستقبل المكالمات — سيتصل بك المندوب على هذا الرقم.',
+      secureNote: 'الدفع عند الاستلام — بدون أي مخاطرة',
+      removeTitle: 'حذف',
     }
   };
-
   function t(key) { return T[currentLang]?.[key] || T.fr[key]; }
 
-  function buildWAMessage(name, items, total) {
-    if (currentLang === 'ar') {
-      const itemsText = items.map(i => `• ${i.name} x${i.qty}`).join('\n');
-      return `السلام عليكم، لقد طلبت تحت الاسم *${name}* وأؤكد طلبي 100٪ ✅\n\n${itemsText}\n\nالمجموع: ${total} DA\n\nسأكون متاحاً لاستلام الطرد من مكتب Yalidine عند اتصال المندوب خلال 2-3 أيام.`;
-    }
-    const itemsText = items.map(i => `• ${i.name} x${i.qty}`).join('\n');
-    return `Bonjour, j'ai commandé sous le nom *${name}* et je confirme ma commande à 100% ✅\n\n${itemsText}\n\nTotal : ${total} DA\n\nLe livreur Yalidine m'appellera dans 2-3 jours et je serai disponible pour récupérer ma commande.`;
-  }
-
+  // ── LANG ─────────────────────────────────────────────
   function setLang(lang) {
     currentLang = lang;
     localStorage.setItem('nidly_lang', lang);
@@ -327,189 +787,240 @@ fbq('track', 'PageView');
     });
     const lbl = document.getElementById('cartLabel');
     if (lbl) lbl.textContent = t('cartLabel');
-    const warningText = document.getElementById('orderWarningText');
-    if (warningText) warningText.innerHTML = t('orderWarning');
+    const warnEl = document.getElementById('orderWarningText');
+    if (warnEl) warnEl.innerHTML = t('orderWarning');
+    const phoneNote = document.getElementById('phoneCheckNote');
+    if (phoneNote) phoneNote.textContent = t('phoneCheckNote');
+    const secureNote = document.getElementById('secureNote');
+    if (secureNote) secureNote.textContent = t('secureNote');
     renderCart();
   }
 
+  // ── CART HELPERS ─────────────────────────────────────
   function getCart() { return JSON.parse(localStorage.getItem('nidly_cart') || '[]'); }
 
-  function updateSummary() {
-    const summaryEl = document.getElementById('cartSummary');
-    const shippingText = shippingPrice > 0 ? shippingPrice + ' DA' : '—';
-    const total = subtotal + shippingPrice;
-    summaryEl.innerHTML = `
-      <div class="summary-line"><span>${t('subtotal')}</span><span>${subtotal} DA</span></div>
-      <div class="summary-line"><span>${t('shipping')}</span><span>${shippingText}</span></div>
-      <div class="summary-line total"><span>${t('total')}</span><span>${total} DA</span></div>
-    `;
+  function updateNavCount(n) {
+    const el = document.getElementById('cartCountNav');
+    if (el) el.textContent = n;
   }
 
+  function updateSummary() {
+    const el = document.getElementById('cartSummary');
+    if (!el) return;
+    const shipping = shippingPrice > 0 ? shippingPrice + ' DA' : '—';
+    const total = subtotal + shippingPrice;
+    el.innerHTML = `
+      <div class="summary-line"><span>${t('subtotal')}</span><span>${subtotal.toLocaleString('fr-DZ')} DA</span></div>
+      <div class="summary-line"><span>${t('shipping')}</span><span>${shipping}</span></div>
+      <div class="summary-line total"><span>${t('total')}</span><span>${total.toLocaleString('fr-DZ')} DA</span></div>`;
+  }
+
+  // ── WILAYAS / COMMUNES ───────────────────────────────
   async function loadWilayas() {
     try {
       const res = await fetch(`${API_URL}/api/wilayas`);
-      const data = await res.json();
-      WILAYAS = data || [];
-      const select = document.getElementById('wilayaSelect');
-      select.innerHTML = `<option value="">${t('selectWilaya')}</option>` +
+      WILAYAS = await res.json() || [];
+      const sel = document.getElementById('wilayaSelect');
+      sel.innerHTML = `<option value="">${t('selectWilaya')}</option>` +
         WILAYAS.map(w => {
           const code = String(w.id).padStart(2, '0');
           const ar = w.nom_arabe ? ` / ${w.nom_arabe}` : '';
           return `<option value="${w.id}">${code} — ${w.nom}${ar}</option>`;
         }).join('');
-    } catch (e) { console.error('Erreur wilayas', e); }
+    } catch (e) { console.error('Wilayas load error', e); }
   }
 
   async function loadCommunes(wilayaId) {
-    const communeSelect = document.getElementById('communeSelect');
-    communeSelect.disabled = true;
-    communeSelect.innerHTML = `<option value="">${t('loading')}</option>`;
+    const sel = document.getElementById('communeSelect');
+    sel.disabled = true;
+    sel.innerHTML = `<option value="">${t('loading')}</option>`;
     try {
       const res = await fetch(`${API_URL}/api/wilayas/${wilayaId}/communes`);
       const data = await res.json();
-      communeSelect.disabled = false;
-      if (!data || data.length === 0) {
-        communeSelect.innerHTML = `<option value="">${t('noCommune')}</option>`;
+      sel.disabled = false;
+      if (!data || !data.length) {
+        sel.innerHTML = `<option value="">${t('noCommune')}</option>`;
       } else {
-        communeSelect.innerHTML = `<option value="">${t('selectCommune')}</option>` +
+        sel.innerHTML = `<option value="">${t('selectCommune')}</option>` +
           data.map(c => {
             const ar = c.commune_name ? ` / ${c.commune_name}` : '';
             const fr = c.commune_name_ascii || c.nom || '';
             return `<option value="${c.id}">${fr}${ar}</option>`;
           }).join('');
       }
-    } catch (e) {
-      communeSelect.disabled = false;
-      communeSelect.innerHTML = `<option value="">${t('errCommune')}</option>`;
+    } catch {
+      sel.disabled = false;
+      sel.innerHTML = `<option value="">${t('errCommune')}</option>`;
     }
   }
 
   function recomputeShipping() {
-    const wilayaSelect = document.getElementById('wilayaSelect');
-    const shippingTypeInput = document.querySelector('input[name="shipping_type"]:checked');
-    if (!wilayaSelect || !shippingTypeInput) return;
-    const wilayaId = parseInt(wilayaSelect.value, 10);
-    const type = shippingTypeInput.value;
-    const w = WILAYAS.find(x => x.id === wilayaId);
-    if (!w || !wilayaId) { shippingPrice = 0; updateSummary(); return; }
-    shippingPrice = type === 'maison' ? Number(w.prix_maison || 0) : Number(w.prix_desk || 0);
+    const wSel = document.getElementById('wilayaSelect');
+    const typeInput = document.querySelector('input[name="shipping_type"]:checked');
+    if (!wSel || !typeInput) return;
+    const wId = parseInt(wSel.value, 10);
+    const type = typeInput.value;
+    const w = WILAYAS.find(x => x.id === wId);
+    shippingPrice = (!w || !wId) ? 0 : (type === 'maison' ? Number(w.prix_maison || 0) : Number(w.prix_desk || 0));
     updateSummary();
   }
 
+  // ── RENDER CART ──────────────────────────────────────
   function renderCart() {
     const cart = getCart();
     const container = document.getElementById('cartContent');
-    const checkoutSection = document.getElementById('checkoutSection');
-    const cartBtn = document.querySelector('.nav-cart');
+    const section = document.getElementById('checkoutSection');
     const count = cart.reduce((s, i) => s + i.qty, 0);
-    if (cartBtn) cartBtn.innerHTML = `🛍 <span id="cartLabel">${t('cartLabel')}</span> (${count})`;
+
+    updateNavCount(count);
+
+    const badge = document.getElementById('cartCountBadge');
+    if (badge) badge.textContent = `${count} ${count > 1 ? t('articles') : t('article')}`;
 
     if (cart.length === 0) {
-      container.innerHTML = `<div class="empty-cart">${t('emptyCart')} <a href="index.html#products">${t('seeProducts')}</a></div>`;
-      checkoutSection.style.display = 'none';
+      container.innerHTML = `
+        <div class="empty-cart">
+          <div class="empty-cart-icon">🛍</div>
+          <h3>${t('emptyCart')}</h3>
+          <p>${t('emptyCartSub')}</p>
+          <a href="index.html#products" class="btn-back">${t('seeProducts')}</a>
+        </div>`;
+      section.style.display = 'none';
       return;
     }
 
     fbq('track', 'InitiateCheckout');
-
     subtotal = 0;
-    container.innerHTML = cart.map(item => {
+
+    const itemsHTML = cart.map(item => {
       const lineTotal = item.price * item.qty;
       subtotal += lineTotal;
       return `
         <div class="cart-item">
-          ${item.img ? `<img src="${item.img}" style="width:130px;height:130px;object-fit:cover;border-radius:.6rem;flex-shrink:0;">` : ''}
-          <div style="flex:1;min-width:0;">
-            <span class="cart-item-name">${item.name}</span>
-            <span class="cart-item-qty"> x ${item.qty}</span>
+          ${item.img ? `<img src="${item.img}" class="cart-item-thumb" alt="${item.name}">` : ''}
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-qty">x ${item.qty}</div>
           </div>
-          <span class="cart-item-price">${lineTotal} DA</span>
-          <button onclick="removeFromCart('${item.id}')" style="background:none;border:none;cursor:pointer;color:var(--bark);opacity:.5;font-size:1.1rem;padding:.2rem .5rem;" title="Supprimer">✕</button>
+          <span class="cart-item-price">${lineTotal.toLocaleString('fr-DZ')} DA</span>
+          <button class="cart-item-remove" onclick="removeFromCart('${item.id}')" title="${t('removeTitle')}">✕</button>
         </div>`;
     }).join('');
 
-    checkoutSection.style.display = 'block';
+    const itemsList = document.getElementById('cartItemsList');
+    if (itemsList) itemsList.innerHTML = itemsHTML;
+
+    section.style.display = 'block';
     shippingPrice = 0;
     updateSummary();
   }
-
-  document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const cart = getCart();
-    if (cart.length === 0) return;
-    const form = e.target;
-    const wilayaId = form.wilaya.value;
-    const communeId = form.commune.value;
-    if (!wilayaId || !communeId) { alert(t('alertWilaya')); return; }
-    const customer = { name: form.name.value, phone: form.phone.value, address: form.address.value };
-    const items = cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
-    const shipping_type = form.shipping_type.value;
-    const notes = form.notes.value || null;
-    const totalAmount = subtotal + shippingPrice;
-
-    try {
-      const res = await fetch(`${API_URL}/api/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, customer, wilaya_id: parseInt(wilayaId,10), commune_id: parseInt(communeId,10), shipping_price: shippingPrice, shipping_type, notes })
-      });
-      if (res.ok) {
-        fbq('track', 'Purchase', { value: totalAmount, currency: 'DZD' });
-        localStorage.removeItem('nidly_cart');
-
-        // Build WA message
-        lastOrderCustomerName = customer.name;
-        lastOrderTotal = totalAmount;
-        lastOrderItems = items;
-        const waMsg = buildWAMessage(customer.name, items, totalAmount);
-        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
-
-        document.getElementById('successTitle').textContent = t('successTitle');
-        document.getElementById('successMsg').innerHTML = t('successMsg');
-        document.getElementById('waPreview').textContent = waMsg;
-        document.getElementById('btnWhatsapp').href = waUrl;
-        document.getElementById('closeSuccessBtn').textContent = t('continueBtn');
-
-        const modal = document.getElementById('orderSuccessModal');
-        modal.classList.add('active');
-        document.getElementById('closeSuccessBtn').onclick = () => {
-          modal.classList.remove('active');
-          window.location.href = 'index.html';
-        };
-        document.getElementById('btnWhatsapp').onclick = () => {
-          setTimeout(() => { modal.classList.remove('active'); window.location.href = 'index.html'; }, 800);
-        };
-      } else {
-        const err = await res.json();
-        alert(err.message || 'Erreur lors de la commande');
-      }
-    } catch (err) { alert(t('serverErr')); }
-  });
-
-  document.addEventListener('DOMContentLoaded', () => {
-    setLang(currentLang);
-    loadWilayas().then(() => {
-      const wilayaSelect = document.getElementById('wilayaSelect');
-      wilayaSelect?.addEventListener('change', (e) => {
-        const id = e.target.value;
-        if (id) { loadCommunes(id); recomputeShipping(); }
-        else {
-          const cs = document.getElementById('communeSelect');
-          cs.innerHTML = `<option value="">${t('firstWilaya')}</option>`;
-          cs.disabled = true;
-          shippingPrice = 0; updateSummary();
-        }
-      });
-      document.querySelectorAll('input[name="shipping_type"]').forEach(r => r.addEventListener('change', recomputeShipping));
-    });
-    renderCart();
-  });
 
   function removeFromCart(productId) {
     const cart = getCart().filter(p => String(p.id) !== String(productId));
     localStorage.setItem('nidly_cart', JSON.stringify(cart));
     renderCart();
   }
+
+  // ── FORM SUBMIT ─────────────────────────────────────
+  document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const cart = getCart();
+    if (!cart.length) return;
+
+    const form = e.target;
+    const wilayaId = form.wilaya.value;
+    const communeId = form.commune.value;
+    if (!wilayaId || !communeId) { alert(t('alertWilaya')); return; }
+
+    const customer = {
+      name: form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      address: form.address.value.trim()
+    };
+    const items = cart.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty }));
+    const shipping_type = form.shipping_type.value;
+    const notes = form.notes?.value || null;
+    const totalAmount = subtotal + shippingPrice;
+
+    const submitBtn = form.querySelector('.btn-order');
+    const origText = submitBtn.textContent;
+    submitBtn.textContent = currentLang === 'ar' ? 'جارٍ الإرسال...' : 'Envoi en cours...';
+    submitBtn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_URL}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items, customer,
+          wilaya_id: parseInt(wilayaId, 10),
+          commune_id: parseInt(communeId, 10),
+          shipping_price: shippingPrice,
+          shipping_type, notes
+        })
+      });
+
+      if (res.ok) {
+        fbq('track', 'Purchase', { value: totalAmount, currency: 'DZD' });
+        localStorage.removeItem('nidly_cart');
+
+        const waMsg = buildWAMessage(customer.name, items, totalAmount);
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+
+        document.getElementById('successTitle').textContent = t('successTitle');
+        document.getElementById('successMsg').innerHTML = t('successMsg');
+        document.getElementById('waInstLabel').textContent = t('waInstruction');
+        document.getElementById('waPreview').textContent = waMsg;
+        document.getElementById('btnWhatsapp').href = waUrl;
+        document.getElementById('waBtnLabel').textContent = t('waBtnLabel');
+        document.getElementById('closeSuccessBtn').textContent = t('continueBtn');
+
+        const modal = document.getElementById('orderSuccessModal');
+        modal.classList.add('active');
+
+        document.getElementById('closeSuccessBtn').onclick = () => {
+          modal.classList.remove('active');
+          window.location.href = 'index.html';
+        };
+        document.getElementById('btnWhatsapp').addEventListener('click', () => {
+          setTimeout(() => { modal.classList.remove('active'); window.location.href = 'index.html'; }, 900);
+        });
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert(err.message || 'Erreur lors de la commande.');
+        submitBtn.textContent = origText;
+        submitBtn.disabled = false;
+      }
+    } catch {
+      alert(t('serverErr'));
+      submitBtn.textContent = origText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ── INIT ─────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    setLang(currentLang);
+    loadWilayas().then(() => {
+      document.getElementById('wilayaSelect')?.addEventListener('change', (e) => {
+        const id = e.target.value;
+        if (id) {
+          loadCommunes(id);
+          recomputeShipping();
+        } else {
+          const cs = document.getElementById('communeSelect');
+          cs.innerHTML = `<option value="">${t('firstWilaya')}</option>`;
+          cs.disabled = true;
+          shippingPrice = 0;
+          updateSummary();
+        }
+      });
+      document.querySelectorAll('input[name="shipping_type"]').forEach(r =>
+        r.addEventListener('change', recomputeShipping)
+      );
+    });
+    renderCart();
+  });
 </script>
 </body>
 </html>
