@@ -41,6 +41,31 @@
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
 
+    /* ── BTN PHOTOS RÉELS ── */
+    .btn-photos-reels {
+      display: inline-flex; align-items: center; gap: .5rem;
+      margin-top: 1.3rem;
+      padding: .65rem 1.35rem;
+      background: white;
+      border: 1.5px solid var(--dusty);
+      border-radius: 3rem;
+      font-size: .8rem; font-weight: 500; letter-spacing: .04em;
+      color: var(--bark);
+      text-decoration: none;
+      transition: all .22s;
+      box-shadow: 0 2px 10px rgba(196,123,107,.1);
+    }
+    .btn-photos-reels:hover {
+      background: var(--blush);
+      border-color: var(--terra);
+      color: var(--terra);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(196,123,107,.18);
+    }
+    .btn-photos-reels .cam-icon { font-size: 1rem; }
+    .btn-photos-reels .arrow { font-size: .7rem; opacity: .6; transition: opacity .2s; }
+    .btn-photos-reels:hover .arrow { opacity: 1; }
+
     /* ── NAV ── */
     nav {
       position:fixed; top:0; left:0; right:0; z-index:100;
@@ -481,6 +506,13 @@
     <span class="badge">🔒 <span data-fr="Avec couvercles" data-ar="مع أغطية">Avec couvercles</span></span>
     <span class="badge">🚀 <span data-fr="48h en Algérie" data-ar="48 ساعة في الجزائر">48h en Algérie</span></span>
   </div>
+  <a href="#photos-reels" class="btn-photos-reels"
+     data-fr="📸 Voir les photos réelles du produit ↓"
+     data-ar="📸 شاهدي الصور الحقيقية للمنتج ↓">
+    <span class="cam-icon">📸</span>
+    <span data-fr="Voir les photos réelles du produit" data-ar="شاهدي الصور الحقيقية للمنتج">Voir les photos réelles du produit</span>
+    <span class="arrow">↓</span>
+  </a>
 </div>
 
 <!-- ── LOTS — EN PREMIER ── -->
@@ -584,7 +616,7 @@
 </section>
 
 <!-- ── PRODUCT PHOTOS ── -->
-<div class="product-photos">
+<div class="product-photos" id="photos-reels">
   <span class="sec-label" data-fr="Photos du produit" data-ar="صور المنتج">Photos du produit</span>
   <div class="product-photos-grid">
     <div class="pp-item">
