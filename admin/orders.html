@@ -234,6 +234,42 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
 }
 .btn-delete-order:hover { background: #FFEBEE; }
 
+/* ── Bulk action bar ── */
+.bulk-bar {
+  background: var(--charcoal); color: white;
+  border-radius: var(--radius); padding: .85rem 1.2rem;
+  margin-bottom: 1.1rem; display: flex; align-items: center;
+  gap: .8rem; flex-wrap: wrap;
+  box-shadow: 0 4px 20px rgba(44,36,32,.18);
+}
+.bulk-bar-label { font-size: .82rem; opacity: .75; flex: 1; min-width: 120px; }
+.btn-bulk {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .5rem 1.1rem; border: none; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 500;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.btn-bulk-confirm  { background: var(--sage);  color: white; }
+.btn-bulk-confirm:hover  { background: var(--sage2); }
+.btn-bulk-yalidine { background: #512DA8; color: white; }
+.btn-bulk-yalidine:hover { background: #4527A0; }
+.btn-bulk:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── Bulk progress modal ── */
+.bulk-modal { max-width: 520px; width: 95%; }
+.bulk-progress-wrap {
+  background: var(--cream2); border-radius: var(--radius-sm);
+  padding: .6rem .9rem; margin: .9rem 0;
+  font-size: .83rem; color: var(--bark); line-height: 1.9;
+  max-height: 240px; overflow-y: auto;
+}
+.bulk-progress-bar-bg {
+  background: var(--border); border-radius: 2rem; height: 7px;
+  margin: .6rem 0 .3rem; overflow: hidden;
+}
+.bulk-progress-bar { height: 100%; background: var(--sage); border-radius: 2rem; transition: width .3s; }
+.bulk-status-text { font-size: .78rem; color: var(--bark); text-align: center; }
+
 /* ── Empty / Loading ── */
 .empty-state { text-align: center; padding: 4rem 2rem; color: var(--bark); }
 .empty-state svg { width: 48px; opacity: 0.2; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto; }
@@ -470,6 +506,52 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
   </div>
 </div>
 
+<!-- ── BULK CONFIRM MODAL ── -->
+<div id="bulkConfirmOverlay" class="overlay">
+  <div class="dialog bulk-modal">
+    <h3>✓ Confirmation en masse</h3>
+    <p id="bulkConfirmDesc" style="margin-bottom:.5rem;"></p>
+    <div class="bulk-progress-wrap" id="bulkConfirmLog"></div>
+    <div class="bulk-progress-bar-bg"><div class="bulk-progress-bar" id="bulkConfirmBar" style="width:0%"></div></div>
+    <div class="bulk-status-text" id="bulkConfirmStatus"></div>
+    <div class="dialog-btns" style="margin-top:1.2rem;">
+      <button class="btn-dlg btn-dlg-cancel" id="bulkConfirmCancelBtn" onclick="closeOverlay('bulkConfirmOverlay')">Fermer</button>
+      <button class="btn-dlg" id="bulkConfirmStartBtn" style="background:var(--sage);color:white;border:none;" onclick="runBulkConfirm()">▶ Lancer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── BULK YALIDINE MODAL ── -->
+<div id="bulkYalOverlay" class="overlay">
+  <div class="dialog bulk-modal" style="max-width:560px;">
+    <h3>🚀 Bordereaux en masse</h3>
+    <p id="bulkYalDesc" style="margin-bottom:.8rem;font-size:.84rem;color:var(--bark);"></p>
+    <div style="background:var(--cream2);border-radius:var(--radius-sm);padding:.8rem 1rem;font-size:.82rem;color:var(--bark);margin-bottom:1rem;">
+      ⚙️ Ces paramètres s'appliquent à <strong>toutes</strong> les commandes. Le poids/dimensions sont indicatifs.
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Poids (kg)</label><input type="number" id="bulkWeight" value="0.5" min="0" step="0.1"></div>
+      <div class="form-group"><label>Valeur déclarée</label><small style="font-size:.7rem;color:var(--sage2);">auto = total produit</small></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Long. (cm)</label><input type="number" id="bulkLength" value="20" min="0"></div>
+      <div class="form-group"><label>Larg. (cm)</label><input type="number" id="bulkWidth"  value="15" min="0"></div>
+      <div class="form-group"><label>Haut. (cm)</label><input type="number" id="bulkHeight" value="10" min="0"></div>
+    </div>
+    <div class="checkbox-row" style="margin-bottom:.6rem;">
+      <input type="checkbox" id="bulkFreeshipping">
+      <label for="bulkFreeshipping" style="font-size:.84rem;">Livraison gratuite (freeshipping)</label>
+    </div>
+    <div class="bulk-progress-wrap" id="bulkYalLog" style="display:none;"></div>
+    <div class="bulk-progress-bar-bg" id="bulkYalBarBg" style="display:none;"><div class="bulk-progress-bar" id="bulkYalBar" style="width:0%;background:#512DA8;"></div></div>
+    <div class="bulk-status-text" id="bulkYalStatus"></div>
+    <div class="yal-actions" style="margin-top:1rem;">
+      <button class="btn-dlg btn-dlg-cancel" onclick="closeOverlay('bulkYalOverlay')">Fermer</button>
+      <button class="btn-dlg btn-dlg-yal" id="bulkYalStartBtn" onclick="runBulkYalidine()">🚀 Créer tous les bordereaux</button>
+    </div>
+  </div>
+</div>
+
 <!-- Main -->
 <div class="container">
 
@@ -516,6 +598,13 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
     </div>
     <button class="btn-reset" onclick="resetFilters()">✕ Reset</button>
     <span class="orders-count" id="ordersCount"></span>
+  </div>
+
+  <!-- Bulk bar -->
+  <div class="bulk-bar" id="bulkBar" style="display:none;">
+    <span class="bulk-bar-label" id="bulkBarLabel">Actions groupées</span>
+    <button class="btn-bulk btn-bulk-confirm"  id="btnBulkConfirm"  onclick="openBulkConfirm()">✓ Confirmer les commandes en attente</button>
+    <button class="btn-bulk btn-bulk-yalidine" id="btnBulkYalidine" onclick="openBulkYalidine()">🚀 Créer tous les bordereaux</button>
   </div>
 
   <!-- Orders list -->
@@ -895,6 +984,145 @@ async function refreshYalidineStatus(orderId, btn) {
   finally { btn.textContent = orig; }
 }
 
+// ── Bulk bar update ───────────────────────────────────────────────────────────
+function updateBulkBar() {
+  const pending   = allOrders.filter(o => o.status === 'pending');
+  const noTracking = allOrders.filter(o => o.status === 'confirmed' && !o.yalidine_tracking);
+  const bar = document.getElementById('bulkBar');
+  const btnC = document.getElementById('btnBulkConfirm');
+  const btnY = document.getElementById('btnBulkYalidine');
+
+  if (pending.length === 0 && noTracking.length === 0) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  document.getElementById('bulkBarLabel').textContent =
+    `${pending.length} en attente · ${noTracking.length} confirmée(s) sans bordereau`;
+  btnC.textContent  = `✓ Confirmer ${pending.length} commande${pending.length>1?'s':''} en attente`;
+  btnC.disabled     = pending.length === 0;
+  btnY.textContent  = `🚀 Créer ${noTracking.length} bordereau${noTracking.length>1?'x':''}`;
+  btnY.disabled     = noTracking.length === 0 || !yalidineConfigured;
+}
+
+// ── Bulk confirm ──────────────────────────────────────────────────────────────
+function openBulkConfirm() {
+  const orders = allOrders.filter(o => o.status === 'pending');
+  document.getElementById('bulkConfirmDesc').textContent =
+    `${orders.length} commande${orders.length>1?'s':''} vont passer en "Confirmée".`;
+  document.getElementById('bulkConfirmLog').innerHTML = '';
+  document.getElementById('bulkConfirmBar').style.width = '0%';
+  document.getElementById('bulkConfirmStatus').textContent = '';
+  document.getElementById('bulkConfirmStartBtn').style.display = 'inline-flex';
+  document.getElementById('bulkConfirmOverlay').classList.add('active');
+}
+
+async function runBulkConfirm() {
+  const orders = allOrders.filter(o => o.status === 'pending');
+  if (!orders.length) return;
+  const startBtn = document.getElementById('bulkConfirmStartBtn');
+  startBtn.style.display = 'none';
+  const log    = document.getElementById('bulkConfirmLog');
+  const bar    = document.getElementById('bulkConfirmBar');
+  const status = document.getElementById('bulkConfirmStatus');
+  let ok = 0, fail = 0;
+  for (let i = 0; i < orders.length; i++) {
+    const o = orders[i];
+    const name = o.customer?.name || o.id.slice(0,8).toUpperCase();
+    status.textContent = `${i+1}/${orders.length} — ${name}`;
+    bar.style.width = `${Math.round((i / orders.length) * 100)}%`;
+    try {
+      const res = await fetch(`${API_URL}/api/orders/${o.id}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ status: 'confirmed' })
+      });
+      if (res.ok) { ok++; log.innerHTML += `<span style="color:#2E7D32;">✓ ${name}</span><br>`; }
+      else         { fail++; log.innerHTML += `<span style="color:#C62828;">✗ ${name} (erreur)</span><br>`; }
+    } catch {
+      fail++;
+      log.innerHTML += `<span style="color:#C62828;">✗ ${name} (réseau)</span><br>`;
+    }
+    log.scrollTop = log.scrollHeight;
+  }
+  bar.style.width = '100%';
+  status.textContent = `Terminé — ✓ ${ok} confirmée${ok>1?'s':''}${fail ? ` · ✗ ${fail} erreur${fail>1?'s':''}` : ''}`;
+  showToast(`✅ ${ok} commande${ok>1?'s':''} confirmée${ok>1?'s':''}`);
+  loadOrders();
+}
+
+// ── Bulk Yalidine ─────────────────────────────────────────────────────────────
+function openBulkYalidine() {
+  const orders = allOrders.filter(o => o.status === 'confirmed' && !o.yalidine_tracking);
+  document.getElementById('bulkYalDesc').textContent =
+    `${orders.length} commande${orders.length>1?'s':''} confirmée${orders.length>1?'s':''} sans bordereau Yalidine.`;
+  document.getElementById('bulkYalLog').style.display = 'none';
+  document.getElementById('bulkYalLog').innerHTML = '';
+  document.getElementById('bulkYalBarBg').style.display = 'none';
+  document.getElementById('bulkYalBar').style.width = '0%';
+  document.getElementById('bulkYalStatus').textContent = '';
+  document.getElementById('bulkYalStartBtn').disabled = false;
+  document.getElementById('bulkYalStartBtn').textContent = '🚀 Créer tous les bordereaux';
+  document.getElementById('bulkYalOverlay').classList.add('active');
+}
+
+async function runBulkYalidine() {
+  const orders = allOrders.filter(o => o.status === 'confirmed' && !o.yalidine_tracking);
+  if (!orders.length) return;
+  const btn    = document.getElementById('bulkYalStartBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ En cours...';
+  const log    = document.getElementById('bulkYalLog');
+  const bar    = document.getElementById('bulkYalBar');
+  const barBg  = document.getElementById('bulkYalBarBg');
+  const status = document.getElementById('bulkYalStatus');
+  log.style.display = 'block'; barBg.style.display = 'block';
+  const weight = parseFloat(document.getElementById('bulkWeight').value) || 0.5;
+  const length = parseFloat(document.getElementById('bulkLength').value) || 20;
+  const width  = parseFloat(document.getElementById('bulkWidth').value)  || 15;
+  const height = parseFloat(document.getElementById('bulkHeight').value) || 10;
+  const free   = document.getElementById('bulkFreeshipping').checked;
+  let ok = 0, fail = 0;
+  for (let i = 0; i < orders.length; i++) {
+    const o = orders[i];
+    const name = o.customer?.name || o.id.slice(0,8).toUpperCase();
+    status.textContent = `${i+1}/${orders.length} — ${name}`;
+    bar.style.width = `${Math.round((i / orders.length) * 100)}%`;
+    const isDesk = o.shipping_type !== 'maison';
+    const payload = {
+      to_wilaya_name:  o.wilaya_name  || '',
+      to_commune_name: o.commune_name || '',
+      is_stopdesk:     isDesk,
+      stopdesk_id:     isDesk ? (o.stopdesk_id || null) : null,
+      weight, length, width, height,
+      declared_value:  (o.total_amount || 0) - (o.shipping_price || 0),
+      freeshipping:    free
+    };
+    try {
+      const res = await fetch(`${API_URL}/api/orders/${o.id}/yalidine`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        ok++;
+        log.innerHTML += `<span style="color:#2E7D32;">✓ ${name} — <strong>${data.tracking}</strong></span><br>`;
+      } else {
+        fail++;
+        log.innerHTML += `<span style="color:#C62828;">✗ ${name} — ${data.message || 'erreur'}</span><br>`;
+      }
+    } catch {
+      fail++;
+      log.innerHTML += `<span style="color:#C62828;">✗ ${name} (réseau)</span><br>`;
+    }
+    log.scrollTop = log.scrollHeight;
+  }
+  bar.style.width = '100%';
+  status.textContent = `Terminé — ✓ ${ok} bordereau${ok>1?'x':''}${fail ? ` · ✗ ${fail} erreur${fail>1?'s':''}` : ''}`;
+  btn.textContent = 'Fermer';
+  btn.disabled = false;
+  btn.onclick = () => { closeOverlay('bulkYalOverlay'); loadOrders(); };
+  showToast(`✅ ${ok} bordereau${ok>1?'x':''} créé${ok>1?'s':''}`);
+}
+
 // ── Filters ───────────────────────────────────────────────────────────────────
 function applyFilters() {
   const from   = document.getElementById('filterFrom').value;
@@ -927,7 +1155,7 @@ function applyFilters() {
   } else {
     el.innerHTML = filtered.map(o => renderOrder(o, search)).join('');
   }
-}
+  updateBulkBar();
 
 function resetFilters() {
   ['filterFrom','filterTo','filterStatus','filterSearch'].forEach(id => {
