@@ -462,6 +462,16 @@ html[dir="rtl"] .wa-preview { text-align: right; }
 }
 .btn-whatsapp:hover { background: var(--wa-dark); transform: translateY(-1px); }
 .btn-whatsapp svg { width: 18px; height: 18px; flex-shrink: 0; }
+.btn-viber {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  background: #7360f2; color: white; border: none; border-radius: 3rem;
+  padding: .9rem 1.5rem; font-size: .9rem; font-weight: 500;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  text-decoration: none; width: 100%; transition: all .25s;
+  margin-bottom: .65rem; box-shadow: 0 6px 18px rgba(115,96,242,.3);
+}
+.btn-viber:hover { background: #5a4bcc; transform: translateY(-1px); }
+.btn-viber svg { width: 18px; height: 18px; flex-shrink: 0; }
 .btn-continue-modal {
   background: none; color: var(--bark);
   border: 1.5px solid rgba(212,165,160,.35); border-radius: 3rem;
@@ -530,6 +540,10 @@ fbq('track', 'PageView');
     <a id="btnWhatsapp" href="#" target="_blank" rel="noopener" class="btn-whatsapp">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       <span id="waBtnLabel">Envoyer la confirmation</span>
+    </a>
+    <a id="btnViber" href="#" target="_blank" rel="noopener" class="btn-viber">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.985 0C8.89 0 3.39 1.273 1.124 8.192.307 10.87 0 13.944 0 16.507c0 3.863.957 6.636 2.847 8.248.578.498 1.32.785 2.085.801h.087c1.19 0 2.347-.617 3.188-1.693.388-.494.748-1.018 1.077-1.565l.14-.23c.234-.385.174-.887-.145-1.2l-2.01-1.962a.94.94 0 00-.664-.274.955.955 0 00-.616.226l-.302.254c-.264.222-.52.458-.765.707-.11.112-.222.224-.334.33-.097-.097-.163-.247-.175-.27a19.45 19.45 0 01-1.578-3.63 19.578 19.578 0 01-.68-3.957c.12-.12.24-.234.362-.35.243-.23.489-.46.722-.703l.264-.28a.93.93 0 00.23-.622.929.929 0 00-.263-.645L1.656 8.47a.94.94 0 00-1.323.017l-.198.205C-.57 9.902-.057 12.46.307 13.97c.033-.056.065-.112.097-.17V8.192C2.621 1.84 7.626.664 11.985.664c5.016 0 9.135 1.682 11.247 4.613C24.955 7.48 25 9.883 25 10.625c0 .627-.027 1.37-.09 2.212-.486 6.47-4.256 10.037-10.647 10.037-.81 0-1.62-.068-2.414-.203l-1.44-.25-1.15.88c-.494.38-1.014.724-1.553 1.03l-.19.107.133.18c.555.756 1.287 1.36 2.127 1.756.69.325 1.442.491 2.202.49.2 0 .4-.011.6-.034C20.074 25.831 24 20.94 24 13.96c0-.21.002-.42-.005-.63C23.872 6.51 19.2 0 11.985 0zm4.87 14.97c-.17.17-.4.265-.638.265s-.468-.095-.638-.265l-2.73-2.73c-.17-.17-.265-.4-.265-.637V7.2c0-.497.403-.9.9-.9s.9.403.9.9v4.197l2.47 2.47c.352.352.352.92.001 1.273v-.17z"/></svg>
+      <span id="viberBtnLabel">Confirmer via Viber</span>
     </a>
     <button class="btn-continue-modal" id="closeSuccessBtn">Continuer sans WhatsApp</button>
   </div>
@@ -743,6 +757,7 @@ fbq('track', 'PageView');
       continueBtn: 'Continuer sans WhatsApp',
       waInstruction: 'Message à envoyer',
       waBtnLabel: 'Envoyer la confirmation',
+      viberBtnLabel: 'Confirmer via Viber',
       orderWarning: '<strong>Commandez uniquement si vous êtes certain(e) de vouloir le produit.</strong> Les retours ne sont pas acceptés — chaque commande est traitée et expédiée rapidement.',
       article: 'article',
       articles: 'articles',
@@ -774,6 +789,7 @@ fbq('track', 'PageView');
       continueBtn: 'متابعة بدون واتساب',
       waInstruction: 'الرسالة التي يجب إرسالها',
       waBtnLabel: 'إرسال التأكيد',
+      viberBtnLabel: 'تأكيد عبر فايبر',
       orderWarning: '<strong>اطلب فقط إذا كنت متأكداً من رغبتك في المنتج.</strong> لا يُقبل الإرجاع — كل طلب يُعالج ويُشحن بسرعة.',
       article: 'منتج',
       articles: 'منتجات',
@@ -1139,6 +1155,7 @@ fbq('track', 'PageView');
 
         const waMsg = buildWAMessage(customer.name, items, totalAmount);
         const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+        const viberUrl = `viber://chat?number=%2B${WHATSAPP_NUMBER}&text=${encodeURIComponent(waMsg)}`;
 
         document.getElementById('successTitle').textContent  = t('successTitle');
         document.getElementById('successMsg').innerHTML      = t('successMsg');
@@ -1146,6 +1163,8 @@ fbq('track', 'PageView');
         document.getElementById('waPreview').textContent     = waMsg;
         document.getElementById('btnWhatsapp').href          = waUrl;
         document.getElementById('waBtnLabel').textContent    = t('waBtnLabel');
+        document.getElementById('btnViber').href             = viberUrl;
+        document.getElementById('viberBtnLabel').textContent = t('viberBtnLabel');
         document.getElementById('closeSuccessBtn').textContent = t('continueBtn');
 
         const modal = document.getElementById('orderSuccessModal');
@@ -1159,6 +1178,7 @@ fbq('track', 'PageView');
         document.getElementById('closeSuccessBtn').onclick = closeModal;
         document.getElementById('modalOverlay').onclick    = closeModal;
         document.getElementById('btnWhatsapp').onclick     = () => setTimeout(closeModal, 900);
+        document.getElementById('btnViber').onclick        = () => setTimeout(closeModal, 900);
 
       } else {
         const err = await res.json().catch(() => ({}));
