@@ -1156,6 +1156,7 @@ function applyFilters() {
     el.innerHTML = filtered.map(o => renderOrder(o, search)).join('');
   }
   updateBulkBar();
+}
 
 function resetFilters() {
   ['filterFrom','filterTo','filterStatus','filterSearch'].forEach(id => {
