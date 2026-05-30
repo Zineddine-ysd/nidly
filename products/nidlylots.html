@@ -135,7 +135,7 @@
       font-size:.68rem; color:var(--bark);
     }
 
-    /* ── LOTS (NOW FIRST) ── */
+    /* ── LOTS ── */
     .lots-section { padding:2rem 1.2rem 3rem; }
     .lot-card { background:white; border-radius:1.4rem; border:1.5px solid rgba(212,165,160,.2); overflow:hidden; margin-bottom:1.1rem; transition:box-shadow .3s; position:relative; }
     .lot-card:last-child { margin-bottom:0; }
@@ -174,128 +174,49 @@
     .btn-add:active { transform:scale(0.97); }
     .lot-card.featured .btn-add { background:var(--char); }
 
-    /* ── DIMENSIONS & DETAILS SECTION ── */
-    .dims-section {
-      padding:0 1.2rem 3rem;
-      max-width:760px; margin:0 auto;
-    }
+    /* ── DIMENSIONS ── */
+    .dims-section { padding:0 1.2rem 3rem; max-width:760px; margin:0 auto; }
     .dims-section .sec-label { font-size:.67rem; letter-spacing:.2em; text-transform:uppercase; color:var(--terra); margin-bottom:.7rem; display:block; }
     .dims-section .sec-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,6vw,2.8rem); font-weight:300; line-height:1.1; color:var(--char); margin-bottom:1.6rem; }
     .dims-section .sec-title em { color:var(--terra); font-style:italic; }
-
-    .dims-cards {
-      display:flex; flex-direction:column; gap:.85rem; margin-bottom:2rem;
-    }
-    .dim-card {
-      background:white; border-radius:1.1rem;
-      border:1.5px solid rgba(212,165,160,.18);
-      padding:1.15rem 1.25rem;
-      display:flex; align-items:flex-start; gap:1.1rem;
-      transition:border-color .2s, box-shadow .2s;
-    }
+    .dims-cards { display:flex; flex-direction:column; gap:.85rem; margin-bottom:2rem; }
+    .dim-card { background:white; border-radius:1.1rem; border:1.5px solid rgba(212,165,160,.18); padding:1.15rem 1.25rem; display:flex; align-items:flex-start; gap:1.1rem; transition:border-color .2s, box-shadow .2s; }
     .dim-card:hover { border-color:var(--dusty); box-shadow:0 6px 20px rgba(122,92,82,.07); }
     .dim-card-left { display:flex; flex-direction:column; align-items:center; gap:.45rem; flex-shrink:0; }
-    .dim-box {
-      border-radius:8px; display:flex; align-items:center; justify-content:center;
-      font-size:.65rem; font-weight:600; color:white; letter-spacing:.04em;
-    }
+    .dim-box { border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.65rem; font-weight:600; color:white; letter-spacing:.04em; }
     .dim-box.xl { width:54px; height:40px; background:var(--terra); }
     .dim-box.l  { width:42px; height:30px; background:var(--bark); }
     .dim-box.m  { width:28px; height:28px; background:var(--sage); }
-    .dim-pill {
-      background:var(--cream); border:1px solid rgba(196,123,107,.2);
-      border-radius:.5rem; padding:.22rem .5rem;
-      font-size:.6rem; color:var(--terra); font-weight:500;
-      white-space:nowrap; letter-spacing:.02em; text-align:center;
-    }
+    .dim-pill { background:var(--cream); border:1px solid rgba(196,123,107,.2); border-radius:.5rem; padding:.22rem .5rem; font-size:.6rem; color:var(--terra); font-weight:500; white-space:nowrap; letter-spacing:.02em; text-align:center; }
     .dim-info { flex:1; }
-    .dim-name {
-      font-family:'Cormorant Garamond',serif; font-size:1.1rem;
-      color:var(--char); margin-bottom:.2rem;
-    }
+    .dim-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--char); margin-bottom:.2rem; }
     .dim-details { font-size:.75rem; color:var(--bark); line-height:1.65; opacity:.85; }
     .dim-details strong { color:var(--char); opacity:1; }
-
-    /* Details badges row */
-    .details-badges {
-      display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2rem;
-    }
-    .detail-badge {
-      display:flex; align-items:center; gap:.4rem;
-      background:white; border:1.5px solid rgba(212,165,160,.22);
-      border-radius:.75rem; padding:.55rem .9rem;
-      font-size:.76rem; color:var(--bark); line-height:1.4;
-    }
+    .details-badges { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2rem; }
+    .detail-badge { display:flex; align-items:center; gap:.4rem; background:white; border:1.5px solid rgba(212,165,160,.22); border-radius:.75rem; padding:.55rem .9rem; font-size:.76rem; color:var(--bark); line-height:1.4; }
     .detail-badge-icon { font-size:1.1rem; flex-shrink:0; }
     .detail-badge strong { color:var(--char); display:block; font-size:.8rem; margin-bottom:.05rem; }
+    .demo-photo-wrap { border-radius:1.3rem; overflow:hidden; background:var(--blush); margin-bottom:2rem; position:relative; }
+    .demo-photo-wrap img { width:100%; display:block; object-fit:cover; }
+    .demo-photo-wrap .demo-caption { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(0deg, rgba(44,36,32,.6) 0%, transparent 100%); padding:1.5rem 1.1rem .9rem; display:flex; gap:.4rem; flex-wrap:wrap; }
+    .demo-caption span { background:rgba(250,247,242,.88); backdrop-filter:blur(8px); border-radius:2rem; padding:.28rem .75rem; font-size:.63rem; color:var(--bark); border:1px solid rgba(255,255,255,.6); }
 
-    /* Demo photo */
-    .demo-photo-wrap {
-      border-radius:1.3rem; overflow:hidden;
-      background:var(--blush);
-      margin-bottom:2rem;
-      position:relative;
-    }
-    .demo-photo-wrap img {
-      width:100%; display:block; object-fit:cover;
-    }
-    .demo-photo-wrap .demo-caption {
-      position:absolute; bottom:0; left:0; right:0;
-      background:linear-gradient(0deg, rgba(44,36,32,.6) 0%, transparent 100%);
-      padding:1.5rem 1.1rem .9rem;
-      display:flex; gap:.4rem; flex-wrap:wrap;
-    }
-    .demo-caption span {
-      background:rgba(250,247,242,.88); backdrop-filter:blur(8px);
-      border-radius:2rem; padding:.28rem .75rem;
-      font-size:.63rem; color:var(--bark);
-      border:1px solid rgba(255,255,255,.6);
-    }
-
-    /* ── PRODUCT PHOTO GALLERY ── */
-    .product-photos {
-      padding:0 1.2rem 3rem;
-      max-width:760px; margin:0 auto;
-    }
+    /* ── PRODUCT PHOTOS (4 photos) ── */
+    .product-photos { padding:0 1.2rem 3rem; max-width:760px; margin:0 auto; }
     .product-photos-grid {
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:.6rem;
     }
-    .pp-item {
-      border-radius:1.1rem; overflow:hidden;
-      background:var(--blush);
-      aspect-ratio:4/3;
-      position:relative;
-    }
-    .pp-item img {
-      width:100%; height:100%;
-      object-fit:cover; display:block;
-      transition:transform .45s ease;
-    }
+    .pp-item { border-radius:1.1rem; overflow:hidden; background:var(--blush); aspect-ratio:4/3; position:relative; }
+    .pp-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease; }
     .pp-item:hover img { transform:scale(1.04); }
-    .pp-item .pp-label {
-      position:absolute; bottom:.5rem; left:.5rem;
-      background:rgba(44,36,32,.5); backdrop-filter:blur(5px);
-      border-radius:1rem; padding:.22rem .65rem;
-      font-size:.62rem; letter-spacing:.06em; text-transform:uppercase;
-      color:rgba(255,255,255,.9);
-    }
+    .pp-item .pp-label { position:absolute; bottom:.5rem; left:.5rem; background:rgba(44,36,32,.5); backdrop-filter:blur(5px); border-radius:1rem; padding:.22rem .65rem; font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.9); }
 
     /* ── NOTICE ── */
     .notice-wrap { padding:0 1.2rem 2.5rem; max-width:760px; margin:0 auto; }
-    .notice-card {
-      background:linear-gradient(135deg,#fff9f7 0%,#fff3ee 100%);
-      border:1.5px solid rgba(196,123,107,.35);
-      border-radius:1.3rem; padding:1.3rem;
-      position:relative; overflow:hidden;
-    }
-    .notice-card::before {
-      content:''; position:absolute; top:0; left:0; right:0;
-      height:3px;
-      background:linear-gradient(90deg,var(--terra),var(--gold),var(--terra));
-      border-radius:1.3rem 1.3rem 0 0;
-    }
+    .notice-card { background:linear-gradient(135deg,#fff9f7 0%,#fff3ee 100%); border:1.5px solid rgba(196,123,107,.35); border-radius:1.3rem; padding:1.3rem; position:relative; overflow:hidden; }
+    .notice-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--terra),var(--gold),var(--terra)); border-radius:1.3rem 1.3rem 0 0; }
     .notice-header { display:flex; align-items:center; gap:.6rem; margin-bottom:.85rem; }
     .notice-icon { width:34px; height:34px; flex-shrink:0; background:var(--terra); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1rem; }
     .notice-title { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:600; color:var(--char); line-height:1.25; }
@@ -309,19 +230,13 @@
     .divider { display:flex; align-items:center; gap:1rem; padding:0 1.4rem; margin:1.5rem 0; }
     .divider::before,.divider::after { content:''; flex:1; height:1px; background:rgba(212,165,160,.3); }
     .divider span { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dusty); white-space:nowrap; }
-
     .sec-label { font-size:.67rem; letter-spacing:.2em; text-transform:uppercase; color:var(--terra); margin-bottom:.7rem; display:block; }
     .sec-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,6vw,2.8rem); font-weight:300; line-height:1.1; color:var(--char); margin-bottom:1.5rem; }
     .sec-title em { color:var(--terra); font-style:italic; }
 
     /* ── WA SECTION ── */
     .wa-section { padding:0 1.2rem 3rem; }
-    .wa-card {
-      background:linear-gradient(135deg,#f0faf4 0%,#e8f7ef 100%);
-      border:1.5px solid rgba(37,211,102,.25);
-      border-radius:1.4rem; padding:1.6rem 1.4rem;
-      position:relative; overflow:hidden;
-    }
+    .wa-card { background:linear-gradient(135deg,#f0faf4 0%,#e8f7ef 100%); border:1.5px solid rgba(37,211,102,.25); border-radius:1.4rem; padding:1.6rem 1.4rem; position:relative; overflow:hidden; }
     .wa-card::after { content:'💬'; position:absolute; right:-10px; bottom:-14px; font-size:5rem; opacity:.06; pointer-events:none; }
     .wa-card-header { display:flex; align-items:flex-start; gap:.85rem; margin-bottom:1rem; }
     .wa-logo { width:44px; height:44px; flex-shrink:0; background:var(--wa); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.35rem; box-shadow:0 4px 14px rgba(37,211,102,.3); }
@@ -443,7 +358,7 @@
       .demo-photo-wrap { border-radius:1.5rem; }
       .product-photos { padding:0 3rem 3.5rem; max-width:1200px; }
       .product-photos-grid { grid-template-columns:1fr 1fr; gap:.85rem; }
-      .pp-item { aspect-ratio:16/9; }
+      .pp-item { aspect-ratio:4/3; }
       .notice-wrap { padding:0 3rem 2.5rem; max-width:1200px; }
       .wa-section { padding:0 3rem 4rem; max-width:1200px; margin:0 auto; }
       .wa-card { display:flex; gap:2rem; align-items:center; }
@@ -463,7 +378,6 @@
       footer { padding:2.2rem 4rem; }
     }
   </style>
-  <!-- Meta Pixel Code -->
   <script>
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
     fbq('init','994276880442450');
@@ -473,11 +387,8 @@
 </head>
 <body>
 
-<!-- ── FLOATING WHATSAPP ── -->
 <div class="wa-float">
-  <div class="wa-float-bubble" data-fr="💬 Personnalisez votre lot !" data-ar="💬 خصّصي طردك!">
-    💬 Personnalisez votre lot !
-  </div>
+  <div class="wa-float-bubble" data-fr="💬 Personnalisez votre lot !" data-ar="💬 خصّصي طردك!">💬 Personnalisez votre lot !</div>
   <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="wa-float-btn" title="WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   </a>
@@ -506,16 +417,14 @@
     <span class="badge">🔒 <span data-fr="Avec couvercles" data-ar="مع أغطية">Avec couvercles</span></span>
     <span class="badge">🚀 <span data-fr="48h en Algérie" data-ar="48 ساعة في الجزائر">48h en Algérie</span></span>
   </div>
-  <a href="#photos-reels" class="btn-photos-reels"
-     data-fr="📸 Voir les photos réelles du produit ↓"
-     data-ar="📸 شاهدي الصور الحقيقية للمنتج ↓">
+  <a href="#photos-reels" class="btn-photos-reels">
     <span class="cam-icon">📸</span>
     <span data-fr="Voir les photos réelles du produit" data-ar="شاهدي الصور الحقيقية للمنتج">Voir les photos réelles du produit</span>
     <span class="arrow">↓</span>
   </a>
 </div>
 
-<!-- ── LOTS — EN PREMIER ── -->
+<!-- ── LOTS ── -->
 <section class="lots-section" id="lots">
   <span class="sec-label" data-fr="Formules & prix" data-ar="الباقات والأسعار">Formules & prix</span>
   <h2 class="sec-title" data-fr="Choisis ton<br><em>lot idéal</em>" data-ar="اختاري<br><em>طردك المثالي</em>">Choisis ton<br><em>lot idéal</em></h2>
@@ -529,14 +438,12 @@
 
 <div class="divider"><span data-fr="Dimensions & détails" data-ar="الأبعاد والتفاصيل">Dimensions & détails</span></div>
 
-<!-- ── DIMENSIONS & DETAILS ── -->
+<!-- ── DIMENSIONS ── -->
 <section class="dims-section">
   <span class="sec-label" data-fr="Spécifications produit" data-ar="مواصفات المنتج">Spécifications produit</span>
   <h2 class="sec-title" data-fr="La bonne taille pour<br><em>chaque usage</em>" data-ar="المقاس المناسب<br><em>لكل استخدام</em>">La bonne taille pour<br><em>chaque usage</em></h2>
 
-  <!-- 3 size cards -->
   <div class="dims-cards">
-
     <div class="dim-card">
       <div class="dim-card-left">
         <div class="dim-box xl">XL</div>
@@ -559,20 +466,19 @@
       </div>
     </div>
 
+    <!-- ✅ M : nouvelles dimensions 10×10×7 -->
     <div class="dim-card">
       <div class="dim-card-left">
         <div class="dim-box m">M</div>
-        <div class="dim-pill">7 × 7 × 6 cm</div>
+        <div class="dim-pill">10 × 10 × 7 cm</div>
       </div>
       <div class="dim-info">
         <div class="dim-name" data-fr="Medium" data-ar="ميديوم">Medium</div>
         <div class="dim-details" data-fr="Format <strong>compact et précis</strong> pour les petits objets. Idéale pour bijoux, comprimés, bagues et stylos. Facile à glisser dans un sac ou un tiroir." data-ar="مقاس <strong>صغير ودقيق</strong> للأغراض الصغيرة. مثالية للمجوهرات، الحبوب، الخواتم والأقلام. تنزلق بسهولة في حقيبة أو درج.">Format <strong>compact et précis</strong> pour les petits objets. Idéale pour bijoux, comprimés, bagues et stylos. Facile à glisser dans un sac ou un tiroir.</div>
       </div>
     </div>
-
   </div>
 
-  <!-- Quality badges -->
   <div class="details-badges">
     <div class="detail-badge">
       <span class="detail-badge-icon">💎</span>
@@ -604,7 +510,6 @@
     </div>
   </div>
 
-  <!-- demo.png photo -->
   <div class="demo-photo-wrap">
     <img src="../assets/demo.png" alt="Démonstration des boîtes Nidly — tailles et utilisation" loading="lazy">
     <div class="demo-caption">
@@ -612,20 +517,27 @@
       <span data-fr="🔒 Avec couvercles" data-ar="🔒 مع أغطية">🔒 Avec couvercles</span>
     </div>
   </div>
-
 </section>
 
-<!-- ── PRODUCT PHOTOS ── -->
+<!-- ── PRODUCT PHOTOS RÉELLES (4 photos) ── -->
 <div class="product-photos" id="photos-reels">
-  <span class="sec-label" data-fr="Photos du produit" data-ar="صور المنتج">Photos du produit</span>
+  <span class="sec-label" data-fr="Photos réelles du produit" data-ar="صور حقيقية للمنتج">Photos réelles du produit</span>
   <div class="product-photos-grid">
     <div class="pp-item">
-      <img src="../assets/demo1.jpg" alt="Boîtes Nidly — vue 1" loading="lazy">
+      <img src="../assets/phreel1.png" alt="Boîtes Nidly — photo réelle 1" loading="lazy">
       <span class="pp-label" data-fr="Vue d'ensemble" data-ar="نظرة عامة">Vue d'ensemble</span>
     </div>
     <div class="pp-item">
-      <img src="../assets/demo2.jpg" alt="Boîtes Nidly — vue 2" loading="lazy">
+      <img src="../assets/phreel2.png" alt="Boîtes Nidly — photo réelle 2" loading="lazy">
       <span class="pp-label" data-fr="En utilisation" data-ar="في الاستخدام">En utilisation</span>
+    </div>
+    <div class="pp-item">
+      <img src="../assets/phreel3.png" alt="Boîtes Nidly — photo réelle 3" loading="lazy">
+      <span class="pp-label" data-fr="Détail" data-ar="تفصيل">Détail</span>
+    </div>
+    <div class="pp-item">
+      <img src="../assets/phreel4.png" alt="Boîtes Nidly — photo réelle 4" loading="lazy">
+      <span class="pp-label" data-fr="Organisé" data-ar="منظّم">Organisé</span>
     </div>
   </div>
 </div>
@@ -644,18 +556,9 @@
     </div>
     <div class="notice-divider"></div>
     <ul class="notice-list">
-      <li>
-        <span class="notice-check">✓</span>
-        <span data-fr="<strong>Avec couvercles</strong> — pour protéger de la poussière" data-ar="<strong>مع أغطية</strong> — للحماية من الغبار"><strong>Avec couvercles</strong> — pour protéger de la poussière</span>
-      </li>
-      <li>
-        <span class="notice-check">✓</span>
-        <span data-fr="Idéal pour garder vos affaires <strong>propres et bien organisées</strong>" data-ar="مثالي للحفاظ على أغراضكم <strong>نظيفة ومنظمة</strong>">Idéal pour garder vos affaires <strong>propres et bien organisées</strong></span>
-      </li>
-      <li>
-        <span class="notice-check">✓</span>
-        <span data-fr="Plastique <strong>alimentaire certifié</strong> — adapté à la nourriture & aux médicaments" data-ar="بلاستيك <strong>غذائي معتمد</strong> — مناسب للطعام والأدوية">Plastique <strong>alimentaire certifié</strong> — adapté à la nourriture & aux médicaments</span>
-      </li>
+      <li><span class="notice-check">✓</span><span data-fr="<strong>Avec couvercles</strong> — pour protéger de la poussière" data-ar="<strong>مع أغطية</strong> — للحماية من الغبار"><strong>Avec couvercles</strong> — pour protéger de la poussière</span></li>
+      <li><span class="notice-check">✓</span><span data-fr="Idéal pour garder vos affaires <strong>propres et bien organisées</strong>" data-ar="مثالي للحفاظ على أغراضكم <strong>نظيفة ومنظمة</strong>">Idéal pour garder vos affaires <strong>propres et bien organisées</strong></span></li>
+      <li><span class="notice-check">✓</span><span data-fr="Plastique <strong>alimentaire certifié</strong> — adapté à la nourriture & aux médicaments" data-ar="بلاستيك <strong>غذائي معتمد</strong> — مناسب للطعام والأدوية">Plastique <strong>alimentaire certifié</strong> — adapté à la nourriture & aux médicaments</span></li>
     </ul>
     <div class="notice-highlight">
       <span>💡</span>
@@ -723,7 +626,7 @@
       <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>6</td><td class="hl">11</td><td>22</td></tr>
       <tr><td data-fr="Boîtes XL (19×14×8)" data-ar="صناديق XL (19×14×8)">Boîtes XL <small style="opacity:.5">19×14×8</small></td><td>1</td><td class="hl">2</td><td>4</td></tr>
       <tr><td data-fr="Boîtes L (19×8×7)" data-ar="صناديق L (19×8×7)">Boîtes L <small style="opacity:.5">19×8×7</small></td><td>2</td><td class="hl">4</td><td>8</td></tr>
-      <tr><td data-fr="Boîtes M (7×7×6)" data-ar="صناديق M (7×7×6)">Boîtes M <small style="opacity:.5">7×7×6</small></td><td>3</td><td class="hl">5</td><td>10</td></tr>
+      <tr><td data-fr="Boîtes M (10×10×7)" data-ar="صناديق M (10×10×7)">Boîtes M <small style="opacity:.5">10×10×7</small></td><td>3</td><td class="hl">5</td><td>10</td></tr>
       <tr><td data-fr="Idéal pour" data-ar="مثالي لـ">Idéal pour</td><td data-fr="1 tiroir" data-ar="درج واحد">1 tiroir</td><td class="hl" data-fr="1–2 tiroirs" data-ar="1-2 أدراج">1–2 tiroirs</td><td data-fr="3-4 tiroirs" data-ar="3-4 أدراج">3-4 tiroirs</td></tr>
       <tr>
         <td data-fr="Prix" data-ar="السعر">Prix</td>
@@ -743,34 +646,22 @@
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
       <p class="r-text" data-fr="Je range tous mes médicaments dans les boîtes XL — enfin tout est visible et bien classé !" data-ar="أضع جميع أدويتي في صناديق XL — أخيراً كل شيء ظاهر ومرتب!">Je range tous mes médicaments dans les boîtes XL — enfin tout est visible et bien classé !</p>
-      <div class="r-author">
-        <div class="r-avatar" style="background:#FFF0EC">🏥</div>
-        <div><div class="r-name">Amira M.</div><div class="r-loc">Alger</div></div>
-      </div>
+      <div class="r-author"><div class="r-avatar" style="background:#FFF0EC">🏥</div><div><div class="r-name">Amira M.</div><div class="r-loc">Alger</div></div></div>
     </div>
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
       <p class="r-text" data-fr="Mes épices et pâtes sont enfin organisées. Les boîtes XL s'empilent parfaitement dans mon placard cuisine." data-ar="توابلي ومعكرونتي منظمة أخيراً. صناديق XL تتكدس بشكل مثالي في خزانة مطبخي.">Mes épices et pâtes sont enfin organisées. Les boîtes XL s'empilent parfaitement dans mon placard cuisine.</p>
-      <div class="r-author">
-        <div class="r-avatar" style="background:var(--sage-l)">🍜</div>
-        <div><div class="r-name">Kenza B.</div><div class="r-loc">Alger</div></div>
-      </div>
+      <div class="r-author"><div class="r-avatar" style="background:var(--sage-l)">🍜</div><div><div class="r-name">Kenza B.</div><div class="r-loc">Alger</div></div></div>
     </div>
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
       <p class="r-text" data-fr="Les boîtes M sont parfaites pour mes bijoux — chaque bague a sa place, fini le désordre !" data-ar="صناديق M مثالية لمجوهراتي — لكل خاتم مكانه، انتهت الفوضى!">Les boîtes M sont parfaites pour mes bijoux — chaque bague a sa place, fini le désordre !</p>
-      <div class="r-author">
-        <div class="r-avatar" style="background:#FEFBE8">💍</div>
-        <div><div class="r-name">Maria L.</div><div class="r-loc">Béjaïa</div></div>
-      </div>
+      <div class="r-author"><div class="r-avatar" style="background:#FEFBE8">💍</div><div><div class="r-name">Maria L.</div><div class="r-loc">Béjaïa</div></div></div>
     </div>
     <div class="review-card">
       <div class="r-stars">★★★★★</div>
       <p class="r-text" data-fr="J'utilise les boîtes L pour les fournitures scolaires de mes enfants. Reçu en 2 jours, qualité top !" data-ar="أستخدم صناديق L للوازم المدرسية لأطفالي. وصلت خلال يومين، جودة ممتازة!">J'utilise les boîtes L pour les fournitures scolaires de mes enfants. Reçu en 2 jours, qualité top !</p>
-      <div class="r-author">
-        <div class="r-avatar" style="background:#EEF3FF">📚</div>
-        <div><div class="r-name">Yasmine R.</div><div class="r-loc">Constantine</div></div>
-      </div>
+      <div class="r-author"><div class="r-avatar" style="background:#EEF3FF">📚</div><div><div class="r-name">Yasmine R.</div><div class="r-loc">Constantine</div></div></div>
     </div>
   </div>
 </section>
@@ -823,11 +714,11 @@ const B = '../assets/';
 const META = {
   'lot-mini': {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
-    tagline_fr:'L\'essentiel pour s\'organiser.', tagline_ar:'الأساسيات للتنظيم.',
+    tagline_fr:"L'essentiel pour s'organiser.", tagline_ar:'الأساسيات للتنظيم.',
     compo:[
       {n:'1×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
       {n:'2×',s:'L', dim:'19×8×7', c:'var(--bark)'},
-      {n:'3×',s:'M', dim:'7×7×6',  c:'var(--sage)'}
+      {n:'3×',s:'M', dim:'10×10×7',c:'var(--sage)'}
     ],
     total:6, savings_fr:null, savings_ar:null,
     uses_fr:['🏥 Médicaments','💍 Bijoux','📚 Scolaire','💄 Maquillage'],
@@ -836,11 +727,11 @@ const META = {
   },
   'lot-standard': {
     tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true, pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
-    tagline_fr:'L\'équilibre parfait entre quantité et prix.', tagline_ar:'التوازن المثالي بين الكمية والسعر.',
+    tagline_fr:"L'équilibre parfait entre quantité et prix.", tagline_ar:'التوازن المثالي بين الكمية والسعر.',
     compo:[
       {n:'2×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
       {n:'4×',s:'L', dim:'19×8×7', c:'var(--bark)'},
-      {n:'5×',s:'M', dim:'7×7×6',  c:'var(--sage)'}
+      {n:'5×',s:'M', dim:'10×10×7',c:'var(--sage)'}
     ],
     total:11, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
     uses_fr:['🏥 Médicaments','💄 Maquillage','👙 Sous-vêtements','🍜 Nourriture','💍 Bijoux','📚 Scolaire'],
@@ -853,7 +744,7 @@ const META = {
     compo:[
       {n:'4×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
       {n:'8×',s:'L', dim:'19×8×7', c:'var(--bark)'},
-      {n:'10×',s:'M',dim:'7×7×6',  c:'var(--sage)'}
+      {n:'10×',s:'M',dim:'10×10×7',c:'var(--sage)'}
     ],
     total:22, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
     uses_fr:['🏠 Maison entière','🏥 Pharmacie maison','🍜 Cuisine & épices','💄 Vanity','👙 Sous-vêtements','📚 Bureau scolaire'],
@@ -947,7 +838,6 @@ async function render() {
   sorted.forEach(l=>initGallery(l.slug));
 }
 
-// ── AJOUTER AU PANIER + REDIRECTION VERS LE PANIER ──
 function addToCart(id, name, price, img='') {
   try {
     const cart = JSON.parse(localStorage.getItem('nidly_cart') || '[]');
@@ -957,17 +847,11 @@ function addToCart(id, name, price, img='') {
     localStorage.setItem('nidly_cart', JSON.stringify(cart));
     updateCartCount();
   } catch(e) {}
-
-  // Afficher le toast puis rediriger
   const t = document.getElementById('toast');
-  const msg = currentLang === 'ar' ? `✓ تمت الإضافة — جارٍ التوجيه…` : `✓ ${name} ajouté — Redirection…`;
+  const msg = currentLang === 'ar' ? `\u2713 \u062a\u0645\u062a \u0627\u0644\u0625\u0636\u0627\u0641\u0629 \u2014 \u062c\u0627\u0631\u064d \u0627\u0644\u062a\u0648\u062c\u064a\u0647\u2026` : `\u2713 ${name} ajout\u00e9 \u2014 Redirection\u2026`;
   t.textContent = msg;
   t.classList.add('show');
-
-  // Redirection vers le panier après 900ms
-  setTimeout(() => {
-    window.location.href = '../cart.html';
-  }, 900);
+  setTimeout(() => { window.location.href = '../cart.html'; }, 900);
 }
 
 setLang(currentLang);
