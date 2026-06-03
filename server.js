@@ -14,7 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'nidly-secret-change-en-prod';
 const YALIDINE_API_ID    = process.env.YALIDINE_API_ID    || '';
 const YALIDINE_API_TOKEN = process.env.YALIDINE_API_TOKEN || '';
 const YALIDINE_BASE_URL  = 'https://api.guepex.app/v1';
-const YALIDINE_FROM_WILAYA = process.env.YALIDINE_FROM_WILAYA || 'Sétif'; // Wilaya expéditeur
+const YALIDINE_FROM_WILAYA = process.env.YALIDINE_FROM_WILAYA || 'Béjaïa'; // Wilaya expéditeur
 
 let ordersFallback = [];
 let productsFallback = [];
@@ -95,7 +95,7 @@ async function getOrders() {
       .from('orders')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(40);
+      .limit(60);
 
     if (error) { console.error('Erreur getOrders:', error); return []; }
 
