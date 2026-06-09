@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bientôt disponible - Nidly</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --cream:#FAF7F2;
+    --blush:#F0E0D6;
+    --terra:#C47B6B;
+    --bark:#7A5C52;
+    --char:#2C2420;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:var(--cream);
+    font-family:'DM Sans',sans-serif;
+    padding:20px;
+}
+
+.card{
+    max-width:700px;
+    width:100%;
+    background:white;
+    border-radius:24px;
+    padding:60px 40px;
+    text-align:center;
+    border:1px solid rgba(196,123,107,.15);
+    box-shadow:0 20px 60px rgba(0,0,0,.05);
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 18px;
+    background:var(--blush);
+    color:var(--terra);
+    border-radius:999px;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:25px;
+}
+
+h1{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(3rem,8vw,5rem);
+    font-weight:300;
+    line-height:1.1;
+    color:var(--char);
+    margin-bottom:20px;
+}
+
+h1 span{
+    color:var(--terra);
+    font-style:italic;
+}
+
+p{
+    max-width:500px;
+    margin:auto;
+    color:var(--bark);
+    line-height:1.8;
+    font-size:1rem;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:35px;
+    padding:14px 32px;
+    background:var(--terra);
+    color:white;
+    text-decoration:none;
+    border-radius:999px;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.line{
+    width:80px;
+    height:2px;
+    background:var(--terra);
+    margin:30px auto;
+    opacity:.4;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    
+    <div class="badge">✨ Bientôt disponible</div>
+
+    <h1>
+        Ça arrive <span>bientôt</span>
+    </h1>
+
+    <div class="line"></div>
+
+    <p>
+        Nous préparons actuellement quelque chose de spécial.
+        Cette page sera disponible très prochainement.
+        Merci pour votre patience.
+    </p>
+
+    <a href="/" class="btn">
+        Retour à l'accueil
+    </a>
+
+</div>
+
+</body>
+</html>
