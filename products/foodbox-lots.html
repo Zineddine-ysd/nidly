@@ -416,7 +416,7 @@ let currentType = '2';
 /* ── META locale des lots (tag, compo, images, uses) ── */
 const B = '../assets/';
 const META = {
-  'fb2-10': {
+  'Lot 10 — 2 compartiments': {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
     tagline_fr:'10 boîtes 2 compartiments.', tagline_ar:'10 صناديق بقسمين.',
     type:'2',
@@ -426,28 +426,28 @@ const META = {
     uses_ar:['🍜 طبق + مرافق','🥗 قائمة بسيطة','🚀 أحجام صغيرة'],
     imgs:[B+'2compa.jpg', B+'2compa2.jpg', B+'2compa3.jpg']
   },
-  'fb2-20': {
+  'Lot 20 — 2 compartiments': {
     tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true,
     pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
     tagline_fr:'Meilleur rapport qualité/prix.', tagline_ar:'أفضل قيمة مقابل السعر.',
     type:'2',
     compo:[{n:'20×', s:'2 comp.', dim:'22×15×6', c:'var(--teal)'}],
-    total:20, savings_fr:'🌿 185 DA / boîte', savings_ar:'🌿 185 دج / صندوق',
+    total:20, savings_fr:'🌿 175 DA / boîte', savings_ar:'🌿 175 دج / صندوق',
     uses_fr:['🍜 Service quotidien','🥡 Dark kitchen','📦 Stock régulier'],
     uses_ar:['🍜 خدمة يومية','🥡 مطبخ سحابي','📦 مخزون منتظم'],
     imgs:[B+'2compa2.jpg', B+'2compa3.jpg', B+'2compa.jpg']
   },
-  'fb2-30': {
+  'Lot 30 — 2 compartiments': {
     tag_fr:'👑 Gros volumes', tag_ar:'👑 أحجام كبيرة', featured:false,
     tagline_fr:'Maximum d\'économies.', tagline_ar:'أقصى توفير.',
     type:'2',
     compo:[{n:'30×', s:'2 comp.', dim:'22×15×6', c:'var(--teal)'}],
-    total:30, savings_fr:'✨ 177 DA / boîte', savings_ar:'✨ 177 دج / صندوق',
+    total:30, savings_fr:'✨ 165 DA / boîte', savings_ar:'✨ 165 دج / صندوق',
     uses_fr:['🏪 Restaurant actif','📦 Stock longue durée','💰 Meilleur prix/boîte'],
     uses_ar:['🏪 مطعم نشط','📦 مخزون طويل الأمد','💰 أفضل سعر/صندوق'],
     imgs:[B+'2compa3.jpg', B+'2compa.jpg', B+'2compa2.jpg']
   },
-  'fb3-10': {
+  'Lot 10 — 3 compartiments': {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
     tagline_fr:'10 boîtes 3 compartiments.', tagline_ar:'10 صناديق بـ3 أقسام.',
     type:'3',
@@ -457,31 +457,31 @@ const META = {
     uses_ar:['🥘 قائمة كاملة','🥗 طبق + 2 مرافق','🚀 أحجام صغيرة'],
     imgs:[B+'3compa.jpg', B+'3compa2.jpg']
   },
-  'fb3-20': {
+  'Lot 20 — 3 compartiments': {
     tag_fr:'🔥 Le plus populaire', tag_ar:'🔥 الأكثر طلباً', featured:true,
     pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
     tagline_fr:'Meilleur rapport qualité/prix.', tagline_ar:'أفضل قيمة مقابل السعر.',
     type:'3',
     compo:[{n:'20×', s:'3 comp.', dim:'24×18×6', c:'var(--teal)'}],
-    total:20, savings_fr:'🌿 185 DA / boîte', savings_ar:'🌿 185 دج / صندوق',
+    total:20, savings_fr:'🌿 175 DA / boîte', savings_ar:'🌿 175 دج / صندوق',
     uses_fr:['🥘 Menus restaurants','🥡 Dark kitchen','📦 Service journalier'],
     uses_ar:['🥘 قوائم المطاعم','🥡 مطبخ سحابي','📦 خدمة يومية'],
     imgs:[B+'3compa2.jpg', B+'3compa.jpg']
   },
-  'fb3-30': {
+  'Lot 30 — 3 compartiments': {
     tag_fr:'👑 Gros volumes', tag_ar:'👑 أحجام كبيرة', featured:false,
     tagline_fr:'Maximum d\'économies.', tagline_ar:'أقصى توفير.',
     type:'3',
     compo:[{n:'30×', s:'3 comp.', dim:'24×18×6', c:'var(--teal)'}],
-    total:30, savings_fr:'✨ 177 DA / boîte', savings_ar:'✨ 177 دج / صندوق',
+    total:30, savings_fr:'✨ 165 DA / boîte', savings_ar:'✨ 165 دج / صندوق',
     uses_fr:['🏪 Restaurant actif','📦 Stock longue durée','💰 Meilleur prix/boîte'],
     uses_ar:['🏪 مطعم نشط','📦 مخزون طويل الأمد','💰 أفضل سعر/صندوق'],
     imgs:[B+'3compa.jpg', B+'3compa2.jpg']
   }
 };
 
-const ORDER_2 = ['fb2-10', 'fb2-20', 'fb2-30'];
-const ORDER_3 = ['fb3-10', 'fb3-20', 'fb3-30'];
+const ORDER_2 = ['Lot 10 — 2 compartiments', 'Lot 20 — 2 compartiments', 'Lot 30 — 2 compartiments'];
+const ORDER_3 = ['Lot 10 — 3 compartiments', 'Lot 20 — 3 compartiments', 'Lot 30 — 3 compartiments'];
 
 /* ── TOUS les lots chargés depuis l'API ── */
 let allLots = [];
