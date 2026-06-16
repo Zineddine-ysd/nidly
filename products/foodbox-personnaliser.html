@@ -116,6 +116,12 @@
 
     /* WA ORDER */
     .btn-wa-order{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;background:var(--wa);color:white;padding:1rem 1.5rem;border-radius:3rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;text-decoration:none;transition:all .25s;box-shadow:0 6px 20px rgba(37,211,102,.3);margin-bottom:.75rem;}
+    /* PANIER */
+    .btn-add-cart{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;background:var(--teal);color:white;padding:1rem 1.5rem;border-radius:3rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;text-decoration:none;transition:all .25s;box-shadow:0 6px 20px rgba(42,127,127,.28);margin-bottom:.75rem;}
+    .btn-add-cart:hover{background:var(--teal-d);transform:translateY(-2px);}
+    .btn-add-cart.added{background:#1a6b3a;}
+    .nav-cart-btn{background:var(--teal);color:white;padding:.4rem .95rem;border-radius:2rem;font-size:.7rem;letter-spacing:.06em;text-decoration:none;display:inline-block;transition:background .2s;}
+    .nav-cart-btn:hover{background:var(--teal-d);}
     .btn-wa-order:hover{background:var(--wa-dark);transform:translateY(-2px);}
     .btn-wa-order svg{width:20px;height:20px;fill:white;flex-shrink:0;}
     .btn-back-lots{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:white;color:var(--bark);padding:.85rem 1.5rem;border-radius:3rem;border:1.5px solid rgba(42,127,127,.25);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;text-decoration:none;transition:all .2s;}
@@ -163,6 +169,7 @@
       <button class="lang-btn active" onclick="setLang('fr')">FR</button>
       <button class="lang-btn" onclick="setLang('ar')">ع</button>
     </div>
+    <a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>
     <a href="foodbox-lots.html" class="nav-back" data-fr="← Retour" data-ar="← رجوع">← Retour</a>
   </div>
 </nav>
@@ -285,6 +292,11 @@
     <div class="recap-empty">—</div>
   </div>
 
+  <button id="btnAddCart" class="btn-add-cart" onclick="addCustomToCart()">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+    <span data-fr="Ajouter au panier" data-ar="أضف إلى السلة">Ajouter au panier</span>
+  </button>
+
   <a id="btnWaFinal" href="https://wa.me/213551901977" target="_blank" rel="noopener" class="btn-wa-order">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     <span data-fr="Commander sur WhatsApp" data-ar="الطلب عبر واتساب">Commander sur WhatsApp</span>
@@ -311,6 +323,60 @@ const PALIERS = [
 
 let currentLang = localStorage.getItem('fb_lang') || 'fr';
 let qty = { c2:0, c3:0 };
+
+/* ── CART ── */
+function getCart() {
+  try { return JSON.parse(localStorage.getItem('nidly_cart') || '[]'); } catch(e) { return []; }
+}
+function saveCart(cart) {
+  localStorage.setItem('nidly_cart', JSON.stringify(cart));
+  updateCartCount();
+}
+function updateCartCount() {
+  const cart = getCart();
+  const tot = cart.reduce((s,i) => s + (i.qty||1), 0);
+  const btn = document.getElementById('cartBtn');
+  const l = currentLang;
+  if(btn) btn.innerHTML = `🛍 <span>${l==='ar'?'السلة':'Panier'}</span> (${tot})`;
+}
+
+function addCustomToCart() {
+  const total = qty.c2 + qty.c3;
+  const pr = calcPrix(qty.c2, qty.c3);
+  if(!pr || total < 10) return;
+
+  const l = currentLang;
+  let nameParts = [];
+  if(qty.c2 > 0) nameParts.push(l==='ar' ? `${qty.c2}× 2 أقسام` : `${qty.c2}× 2 comp.`);
+  if(qty.c3 > 0) nameParts.push(l==='ar' ? `${qty.c3}× 3 أقسام` : `${qty.c3}× 3 comp.`);
+  const name = (l==='ar' ? 'فودبوكس مخصص — ' : 'FoodBox Personnalisé — ') + nameParts.join(' + ');
+
+  const cart = getCart();
+  // Utilise un id unique basé sur la composition
+  const id = `foodbox-custom-${qty.c2}x2-${qty.c3}x3`;
+  const existing = cart.find(i => i.id === id);
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({
+      id,
+      name,
+      price: pr.prixTotal,
+      qty: 1,
+      img: '../assets/2compa.jpg',
+      type: 'foodbox',
+      detail: { c2: qty.c2, c3: qty.c3, total, prixTotal: pr.prixTotal }
+    });
+  }
+  saveCart(cart);
+
+  // Feedback visuel
+  const btn = document.getElementById('btnAddCart');
+  btn.classList.add('added');
+  const addedMsg = l==='ar' ? '✓ تمت الإضافة — توجيه...' : '✓ Ajouté — Redirection…';
+  btn.querySelector('span').textContent = addedMsg;
+  setTimeout(() => { window.location.href = '../cart.html'; }, 900);
+}
 
 /* ── CALCUL PRIX ── */
 function getPalier(total) {
@@ -462,10 +528,12 @@ function setLang(lang) {
     if(txt) el.innerHTML = txt;
   });
   updateUI();
+  updateCartCount();
 }
 
 setLang(currentLang);
 updateUI();
+updateCartCount();
 </script>
 </body>
 </html>
