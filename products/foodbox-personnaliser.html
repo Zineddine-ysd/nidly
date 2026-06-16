@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
@@ -69,7 +68,9 @@
     .qty-ctrl{display:flex;align-items:center;gap:.65rem;justify-content:center;margin-bottom:.5rem;}
     .qty-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(42,127,127,.28);background:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--teal);transition:all .15s;}
     .qty-btn:hover{background:var(--teal-l);border-color:var(--teal);}
-    .qty-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--char);min-width:2rem;text-align:center;}
+    .qty-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--char);min-width:3.5rem;width:3.5rem;text-align:center;border:none;background:transparent;outline:none;-moz-appearance:textfield;}
+    .qty-num::-webkit-outer-spin-button,.qty-num::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+    .qty-num:focus{color:var(--teal);}
     .qty-price{font-size:.68rem;color:var(--bark);opacity:.7;}
 
     /* ALERTE MIN */
@@ -207,19 +208,19 @@
     <div class="palier-row active-palier" id="palier10">
       <div class="palier-dot"></div>
       <span class="palier-qty" data-fr="10 boîtes" data-ar="10 صناديق">10 boîtes</span>
-      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="185 DA/boîte" data-ar="185 دج/صندوق">185 DA/boîte</span>
+      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="200 DA/boîte" data-ar="185 دج/صندوق">185 DA/boîte</span>
       <span class="palier-price">1 850 DA</span>
     </div>
     <div class="palier-row" id="palier20">
       <div class="palier-dot"></div>
       <span class="palier-qty" data-fr="20 boîtes" data-ar="20 صندوقاً">20 boîtes</span>
-      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="175 DA/boîte" data-ar="175 دج/صندوق">175 DA/boîte</span>
+      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="185 DA/boîte" data-ar="175 دج/صندوق">175 DA/boîte</span>
       <span class="palier-price">3 500 DA</span>
     </div>
     <div class="palier-row" id="palier30">
       <div class="palier-dot"></div>
       <span class="palier-qty" data-fr="30 boîtes" data-ar="30 صندوقاً">30 boîtes</span>
-      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="165 DA/boîte" data-ar="165 دج/صندوق">165 DA/boîte</span>
+      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="177 DA/boîte" data-ar="165 دج/صندوق">165 DA/boîte</span>
       <span class="palier-price">4 950 DA</span>
     </div>
   </div>
@@ -232,7 +233,7 @@
       <div class="box-dims">22 × 15 × 6 cm</div>
       <div class="qty-ctrl">
         <button class="qty-btn" onclick="changeQty('c2',-1)">−</button>
-        <span class="qty-num" id="qtyC2">0</span>
+        <input class="qty-num" id="qtyC2" type="number" min="0" value="0" inputmode="numeric" oninput="setQty('c2',this.value)" onblur="fixQty('c2',this)">
         <button class="qty-btn" onclick="changeQty('c2',1)">+</button>
       </div>
       <div class="qty-price" id="priceC2">0 DA</div>
@@ -243,7 +244,7 @@
       <div class="box-dims">24 × 18 × 6 cm</div>
       <div class="qty-ctrl">
         <button class="qty-btn" onclick="changeQty('c3',-1)">−</button>
-        <span class="qty-num" id="qtyC3">0</span>
+        <input class="qty-num" id="qtyC3" type="number" min="0" value="0" inputmode="numeric" oninput="setQty('c3',this.value)" onblur="fixQty('c3',this)">
         <button class="qty-btn" onclick="changeQty('c3',1)">+</button>
       </div>
       <div class="qty-price" id="priceC3">0 DA</div>
@@ -401,8 +402,8 @@ function updateUI() {
   const l = currentLang;
 
   // Compteurs affichage
-  document.getElementById('qtyC2').textContent = qty.c2;
-  document.getElementById('qtyC3').textContent = qty.c3;
+  document.getElementById('qtyC2').value = qty.c2;
+  document.getElementById('qtyC3').value = qty.c3;
 
   // Prix unitaire par type (proportionnel au palier)
   const p = getPalier(total);
@@ -461,6 +462,20 @@ function updateUI() {
 
 function changeQty(type, delta) {
   qty[type] = Math.max(0, qty[type] + delta);
+  document.getElementById(type === 'c2' ? 'qtyC2' : 'qtyC3').value = qty[type];
+  updateUI();
+}
+
+function setQty(type, val) {
+  const n = parseInt(val);
+  qty[type] = isNaN(n) || n < 0 ? 0 : n;
+  updateUI();
+}
+
+function fixQty(type, input) {
+  const n = parseInt(input.value);
+  qty[type] = isNaN(n) || n < 0 ? 0 : n;
+  input.value = qty[type];
   updateUI();
 }
 
