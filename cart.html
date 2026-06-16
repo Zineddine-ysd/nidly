@@ -560,7 +560,7 @@ fbq('track', 'PageView');
   <!-- ── Bouton continuer les achats — toujours visible ── -->
   <div class="continue-shopping-bar">
     <a href="products/nidlylots.html" class="btn-continue-shop" id="continueShopBtn">
-      ← <span data-fr="Voir les boîtes de rangement" data-ar="← عرض صناديق التنظيم">Voir les boîtes de rangement</span>
+      ← <span id="continueShopLabel" data-fr="Voir les boîtes de rangement" data-ar="← عرض صناديق التنظيم">Voir les boîtes de rangement</span>
     </a>
   </div>
 
@@ -580,18 +580,18 @@ fbq('track', 'PageView');
       <!-- LEFT -->
       <div class="cart-panel">
 
-        <!-- Product strip: demo1, demo2, bl1 -->
-        <div class="product-strip">
+        <!-- Product strip: images dynamiques selon le type de produit -->
+        <div class="product-strip" id="productStrip">
           <div class="product-strip-img">
-            <img src="assets/demo1.jpg" alt="Boîtes Nidly" loading="eager">
+            <img src="assets/demo1.jpg" alt="Produit" loading="eager" id="stripImg1">
             <span class="strip-label" data-fr="Vue produit" data-ar="صورة المنتج">Vue produit</span>
           </div>
           <div class="product-strip-img">
-            <img src="assets/demo2.jpg" alt="Boîtes rangement" loading="lazy">
+            <img src="assets/demo2.jpg" alt="Produit" loading="lazy" id="stripImg2">
             <span class="strip-label" data-fr="En utilisation" data-ar="في الاستخدام">En utilisation</span>
           </div>
           <div class="product-strip-img">
-            <img src="assets/bl1.jpg" alt="Boîtes empilées" loading="lazy">
+            <img src="assets/bl1.jpg" alt="Produit" loading="lazy" id="stripImg3">
             <span class="strip-label" data-fr="Empilables" data-ar="قابلة للتكديس">Empilables</span>
           </div>
         </div>
@@ -712,6 +712,43 @@ fbq('track', 'PageView');
   const WHATSAPP_NUMBER = '213551901977';
   const PRODUCTS_URL    = 'products/nidlylots.html';
 
+  // Images par type de produit dans le panier
+  const STRIP_IMAGES = {
+    foodbox: ['assets/2compa.jpg','assets/3compa.jpg','assets/2compa2.jpg'],
+    nidly:   ['assets/demo1.jpg','assets/demo2.jpg','assets/bl1.jpg']
+  };
+
+  // Détecter le type dominant dans le panier
+  function detectCartType() {
+    try {
+      const cart = JSON.parse(localStorage.getItem('nidly_cart') || '[]');
+      const hasFoodbox = cart.some(i => i.type === 'foodbox' || (i.id && i.id.toString().includes('foodbox')));
+      if(hasFoodbox) return 'foodbox';
+    } catch(e){}
+    return 'nidly';
+  }
+
+  // Met à jour les images du product strip et le lien "continuer"
+  function updateStripByCartType() {
+    const type = detectCartType();
+    const imgs = STRIP_IMAGES[type];
+    const s1 = document.getElementById('stripImg1');
+    const s2 = document.getElementById('stripImg2');
+    const s3 = document.getElementById('stripImg3');
+    if(s1 && imgs[0]) s1.src = imgs[0];
+    if(s2 && imgs[1]) s2.src = imgs[1];
+    if(s3 && imgs[2]) s3.src = imgs[2];
+
+    const shopBtn = document.getElementById('continueShopBtn');
+    const shopLbl = document.getElementById('continueShopLabel');
+    if(shopBtn && type === 'foodbox') {
+      shopBtn.href = 'products/foodbox-lots.html';
+      if(shopLbl) shopLbl.setAttribute('data-fr','← Voir les FoodBox');
+    } else if(shopBtn) {
+      shopBtn.href = 'products/nidlylots.html';
+    }
+  }
+
   let WILAYAS      = [];
   let subtotal     = 0;
   let shippingPrice = 0;
@@ -823,9 +860,18 @@ fbq('track', 'PageView');
     document.getElementById('secureNote').textContent = t('secureNote');
     const csBtn = document.getElementById('continueShopBtn');
     if (csBtn) {
-      csBtn.innerHTML = lang === 'ar'
-        ? `<span>عرض صناديق التنظيم ←</span>`
-        : `<span>← Voir les boîtes de rangement</span>`;
+      const type = detectCartType();
+      if(type === 'foodbox') {
+        csBtn.href = 'products/foodbox-lots.html';
+        csBtn.innerHTML = lang === 'ar'
+          ? `<span>← عرض الفودبوكس</span>`
+          : `<span>← Voir les FoodBox</span>`;
+      } else {
+        csBtn.href = 'products/nidlylots.html';
+        csBtn.innerHTML = lang === 'ar'
+          ? `<span>عرض صناديق التنظيم ←</span>`
+          : `<span>← Voir les boîtes de rangement</span>`;
+      }
     }
     renderCart();
   }
@@ -1196,6 +1242,7 @@ fbq('track', 'PageView');
   // ── INIT ──
   document.addEventListener('DOMContentLoaded', () => {
     setLang(currentLang);
+    updateStripByCartType();
     loadWilayas().then(() => {
       document.getElementById('wilayaSelect')?.addEventListener('change', e => {
         const id = e.target.value;
