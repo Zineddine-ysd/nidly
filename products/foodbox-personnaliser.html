@@ -304,9 +304,9 @@
 <script>
 /* ── PALIERS DE PRIX ── */
 const PALIERS = [
-  { min:10, max:19, total:2000,  unitaire:200,  label:'10' },
-  { min:20, max:29, total:3700,  unitaire:185,  label:'20' },
-  { min:30, max:999,total:5300,  unitaire:176.7,label:'30' }
+  { min:10, max:19, total:1850,  unitaire:185,  label:'10' },
+  { min:20, max:29, total:3500,  unitaire:175,  label:'20' },
+  { min:30, max:999,total:4950,  unitaire:165,label:'30' }
 ];
 
 let currentLang = localStorage.getItem('fb_lang') || 'fr';
@@ -340,7 +340,7 @@ function updateUI() {
 
   // Prix unitaire par type (proportionnel au palier)
   const p = getPalier(total);
-  const pu = p ? p.unitaire : 200;
+  const pu = p ? p.unitaire : 185;
   document.getElementById('priceC2').textContent = qty.c2 > 0 ? `${Math.round(qty.c2*pu).toLocaleString('fr-DZ')} DA` : '0 DA';
   document.getElementById('priceC3').textContent = qty.c3 > 0 ? `${Math.round(qty.c3*pu).toLocaleString('fr-DZ')} DA` : '0 DA';
 
