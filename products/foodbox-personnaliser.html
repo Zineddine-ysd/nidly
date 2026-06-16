@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnaliser mon lot FoodBox</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --cream:#FAF7F2; --blush:#F0E0D6; --dusty:#D4A5A0;
+      --terra:#C47B6B; --bark:#7A5C52; --char:#2C2420;
+      --sage:#A8B5A0; --sage-l:#D6E0D2; --gold:#C9A96E;
+      --wa:#25D366; --wa-dark:#128C7E;
+      --teal:#2A7F7F; --teal-l:#E0F2F1; --teal-d:#1a5c5c;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--cream);color:var(--char);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+    [lang="ar"] body{font-family:'Cairo',sans-serif;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.45;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;background:rgba(250,247,242,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(42,127,127,.12);}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;letter-spacing:.08em;color:var(--char);text-decoration:none;}
+    .nav-logo span{color:var(--teal);font-style:italic;}
+    .nav-right{display:flex;gap:.7rem;align-items:center;}
+    .nav-back{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bark);text-decoration:none;padding:.4rem .85rem;border:1px solid rgba(42,127,127,.25);border-radius:2rem;transition:all .2s;}
+    .nav-back:hover{background:var(--teal-l);color:var(--teal);}
+    .lang-toggle{background:white;border:1.5px solid rgba(42,127,127,.3);border-radius:2rem;padding:.3rem .2rem;display:flex;gap:.1rem;}
+    .lang-btn{padding:.25rem .6rem;border-radius:2rem;border:none;background:transparent;font-size:.68rem;font-weight:500;color:var(--bark);cursor:pointer;transition:all .2s;}
+    .lang-btn.active{background:var(--teal);color:white;}
+
+    /* HERO */
+    .hero{padding:6.5rem 1.4rem 2.5rem;max-width:680px;margin:0 auto;text-align:center;}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.67rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;}
+    .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:16px;height:1px;background:var(--teal);}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,7vw,3.2rem);font-weight:300;line-height:1.1;color:var(--char);margin-bottom:.7rem;}
+    .hero h1 em{color:var(--teal);font-style:italic;}
+    .hero p{font-size:.88rem;color:var(--bark);line-height:1.75;}
+
+    /* STEPPER */
+    .stepper{display:flex;justify-content:center;gap:0;padding:0 1.4rem;margin:2rem auto 2.5rem;max-width:440px;}
+    .step-item{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+    .step-item:not(:last-child)::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:1.5px;background:rgba(42,127,127,.2);z-index:0;}
+    .step-item.done:not(:last-child)::after{background:var(--teal);}
+    .step-dot{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(42,127,127,.3);background:white;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:500;color:var(--bark);position:relative;z-index:1;transition:all .3s;}
+    .step-item.active .step-dot{background:var(--teal);color:white;border-color:var(--teal);box-shadow:0 0 0 4px rgba(42,127,127,.15);}
+    .step-item.done .step-dot{background:var(--teal-d);color:white;border-color:var(--teal-d);}
+    .step-label{font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:var(--bark);margin-top:.4rem;opacity:.6;text-align:center;}
+    .step-item.active .step-label{opacity:1;color:var(--teal);}
+    .step-item.done .step-label{opacity:.8;}
+
+    /* PANELS */
+    .panel{display:none;padding:0 1.2rem 5rem;max-width:760px;margin:0 auto;}
+    .panel.active{display:block;animation:fadeUp .4s ease both;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .panel-title{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:300;color:var(--char);margin-bottom:.4rem;}
+    .panel-title em{color:var(--teal);font-style:italic;}
+    .panel-sub{font-size:.82rem;color:var(--bark);line-height:1.65;margin-bottom:1.6rem;opacity:.85;}
+
+    /* COMPTEURS */
+    .boxes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+    .box-select-card{background:white;border-radius:1.2rem;border:1.5px solid rgba(42,127,127,.18);padding:1.3rem;text-align:center;transition:border-color .2s,box-shadow .2s;}
+    .box-select-card:hover{border-color:rgba(42,127,127,.4);box-shadow:0 4px 16px rgba(42,127,127,.1);}
+    .box-icon{font-size:2.4rem;margin-bottom:.5rem;display:block;}
+    .box-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--char);margin-bottom:.2rem;}
+    .box-dims{font-size:.65rem;color:var(--teal);background:var(--teal-l);border-radius:2rem;padding:.18rem .6rem;display:inline-block;margin-bottom:.75rem;}
+    .qty-ctrl{display:flex;align-items:center;gap:.65rem;justify-content:center;margin-bottom:.5rem;}
+    .qty-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(42,127,127,.28);background:white;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--teal);transition:all .15s;}
+    .qty-btn:hover{background:var(--teal-l);border-color:var(--teal);}
+    .qty-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--char);min-width:2rem;text-align:center;}
+    .qty-price{font-size:.68rem;color:var(--bark);opacity:.7;}
+
+    /* ALERTE MIN */
+    .min-alert{background:rgba(196,123,107,.08);border:1.5px solid rgba(196,123,107,.35);border-radius:.9rem;padding:.75rem 1rem;font-size:.78rem;color:var(--terra);display:flex;align-items:center;gap:.5rem;margin-bottom:1.2rem;transition:all .3s;}
+    .min-alert.ok{background:rgba(42,127,127,.07);border-color:rgba(42,127,127,.3);color:var(--teal-d);}
+
+    /* RÉCAP PRICING */
+    .pricing-card{background:white;border-radius:1.3rem;border:1.5px solid rgba(42,127,127,.18);padding:1.3rem 1.4rem;margin-bottom:1.5rem;}
+    .pricing-title{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:1rem;display:block;}
+    .pricing-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;font-size:.8rem;color:var(--bark);}
+    .pricing-row .pr-label{color:var(--char);}
+    .pricing-row .pr-val{font-weight:500;}
+    .pricing-row.total{border-top:1.5px solid rgba(42,127,127,.15);margin-top:.5rem;padding-top:.9rem;}
+    .pricing-row.total .pr-label{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--char);}
+    .pricing-row.total .pr-val{font-family:'Cormorant Garamond',serif;font-size:1.55rem;color:var(--teal);}
+    .pricing-row.discount .pr-val{color:#1a6b3a;}
+    .pricing-empty{text-align:center;padding:1.2rem;color:var(--bark);font-size:.82rem;opacity:.6;font-style:italic;}
+
+    /* PALIERS */
+    .paliers{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem;}
+    .palier-row{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border-radius:.75rem;border:1.5px solid transparent;background:white;font-size:.78rem;color:var(--bark);transition:all .2s;cursor:default;}
+    .palier-row.active-palier{border-color:var(--teal);background:var(--teal-l);color:var(--teal-d);}
+    .palier-dot{width:8px;height:8px;border-radius:50%;background:rgba(42,127,127,.25);flex-shrink:0;}
+    .palier-row.active-palier .palier-dot{background:var(--teal);}
+    .palier-qty{font-weight:500;color:var(--char);min-width:4rem;}
+    .palier-price{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--teal);margin-left:auto;}
+
+    /* RÉCAP FINAL */
+    .recap-card{background:white;border-radius:1.3rem;border:1.5px solid rgba(42,127,127,.18);padding:1.3rem 1.4rem;margin-bottom:1.4rem;}
+    .recap-empty{text-align:center;padding:1.5rem;color:var(--bark);font-size:.82rem;opacity:.6;font-style:italic;}
+    .recap-compo{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+    .recap-chip{display:flex;align-items:center;gap:.35rem;background:var(--teal-l);border-radius:.5rem;padding:.32rem .7rem;font-size:.75rem;color:var(--teal-d);}
+    .recap-chip .rch-icon{font-size:.9rem;}
+    .recap-total-boxes{font-size:.78rem;color:var(--bark);margin-bottom:.8rem;}
+    .recap-total-boxes strong{color:var(--char);}
+
+    /* BOUTONS NAV */
+    .nav-btns{display:flex;gap:.75rem;margin-top:2rem;}
+    .btn-prev{flex:1;padding:.82rem 1.2rem;border-radius:3rem;border:1.5px solid rgba(42,127,127,.25);background:white;color:var(--bark);font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s;}
+    .btn-prev:hover{background:var(--teal-l);}
+    .btn-next{flex:2;padding:.82rem 1.4rem;border-radius:3rem;border:none;background:var(--teal);color:white;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;transition:all .22s;box-shadow:0 4px 16px rgba(42,127,127,.3);letter-spacing:.04em;}
+    .btn-next:hover{background:var(--teal-d);transform:translateY(-1px);}
+    .btn-next:disabled{opacity:.45;cursor:not-allowed;transform:none;}
+
+    /* WA ORDER */
+    .btn-wa-order{display:flex;align-items:center;justify-content:center;gap:.65rem;width:100%;background:var(--wa);color:white;padding:1rem 1.5rem;border-radius:3rem;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.92rem;font-weight:500;text-decoration:none;transition:all .25s;box-shadow:0 6px 20px rgba(37,211,102,.3);margin-bottom:.75rem;}
+    .btn-wa-order:hover{background:var(--wa-dark);transform:translateY(-2px);}
+    .btn-wa-order svg{width:20px;height:20px;fill:white;flex-shrink:0;}
+    .btn-back-lots{display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;background:white;color:var(--bark);padding:.85rem 1.5rem;border-radius:3rem;border:1.5px solid rgba(42,127,127,.25);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;text-decoration:none;transition:all .2s;}
+    .btn-back-lots:hover{background:var(--teal-l);border-color:var(--teal);color:var(--teal);}
+
+    /* FLOAT WA */
+    .wa-float{position:fixed;bottom:1.4rem;right:1.2rem;z-index:200;}
+    .wa-float-btn{width:50px;height:50px;border-radius:50%;background:var(--wa);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(37,211,102,.45);text-decoration:none;transition:transform .2s;}
+    .wa-float-btn:hover{transform:scale(1.1);}
+    .wa-float-btn svg{width:24px;height:24px;fill:white;}
+
+    footer{background:var(--char);padding:1.6rem 1.4rem;display:flex;align-items:center;justify-content:space-between;}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:white;letter-spacing:.08em;text-decoration:none;}
+    .footer-logo span{color:rgba(42,180,180,.8);font-style:italic;}
+    .footer-copy{font-size:.63rem;color:rgba(255,255,255,.28);}
+
+    /* RTL */
+    html[dir="rtl"] .nav-right{flex-direction:row-reverse;}
+    html[dir="rtl"] .hero-eyebrow::before,html[dir="rtl"] .hero-eyebrow::after{display:none;}
+    html[dir="rtl"] .wa-float{right:auto;left:1.2rem;}
+    html[dir="rtl"] .panel-title{font-family:'Cairo',sans-serif;}
+
+    @media(min-width:768px){
+      nav{padding:1.1rem 3rem;}
+      .panel{padding:0 3rem 5rem;max-width:960px;}
+      .boxes-grid{grid-template-columns:1fr 1fr;gap:1.3rem;}
+      .paliers{flex-direction:row;gap:.7rem;}
+      .palier-row{flex:1;flex-direction:column;align-items:flex-start;gap:.3rem;}
+      .palier-price{margin-left:0;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="wa-float">
+  <a href="https://wa.me/213551901977" target="_blank" rel="noopener" class="wa-float-btn" title="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Food<span>Box</span></a>
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('ar')">ع</button>
+    </div>
+    <a href="foodbox-lots.html" class="nav-back" data-fr="← Retour" data-ar="← رجوع">← Retour</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow" data-fr="Composition sur mesure" data-ar="تركيبة مخصصة">Composition sur mesure</div>
+  <h1 data-fr="Crée ton lot<br><em>à ta façon</em>" data-ar="أنشئ طردك<br><em>كما تريد</em>">Crée ton lot<br><em>à ta façon</em></h1>
+  <p data-fr="Mélange les boîtes 2 et 3 compartiments comme tu veux. Minimum 10 boîtes au total — le prix s'adapte automatiquement." data-ar="امزج صناديق 2 و3 أقسام كما تشاء. الحد الأدنى 10 صناديق — السعر يتكيف تلقائياً.">Mélange les boîtes 2 et 3 compartiments comme tu veux. Minimum 10 boîtes au total — le prix s'adapte automatiquement.</p>
+</div>
+
+<!-- STEPPER -->
+<div class="stepper">
+  <div class="step-item active" id="step1">
+    <div class="step-dot">1</div>
+    <div class="step-label" data-fr="Choix" data-ar="الاختيار">Choix</div>
+  </div>
+  <div class="step-item" id="step2">
+    <div class="step-dot">2</div>
+    <div class="step-label" data-fr="Résumé" data-ar="الملخص">Résumé</div>
+  </div>
+  <div class="step-item" id="step3">
+    <div class="step-dot">3</div>
+    <div class="step-label" data-fr="Commander" data-ar="الطلب">Commander</div>
+  </div>
+</div>
+
+<!-- ══ PANEL 1 — CHOIX QUANTITÉS ══ -->
+<div class="panel active" id="panel1">
+  <div class="panel-title" data-fr="Combien de boîtes <em>de chaque type ?</em>" data-ar="كم صندوقاً <em>من كل نوع؟</em>">Combien de boîtes <em>de chaque type ?</em></div>
+  <p class="panel-sub" data-fr="Choisis tes quantités librement. Le prix final dépend du total (paliers : 10 / 20 / 30+)." data-ar="اختر كمياتك بحرية. السعر النهائي يعتمد على الإجمالي (مستويات: 10 / 20 / 30+).">Choisis tes quantités librement. Le prix final dépend du total (paliers : 10 / 20 / 30+).</p>
+
+  <!-- PALIERS -->
+  <div class="paliers" id="paliersRow">
+    <div class="palier-row active-palier" id="palier10">
+      <div class="palier-dot"></div>
+      <span class="palier-qty" data-fr="10 boîtes" data-ar="10 صناديق">10 boîtes</span>
+      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="200 DA/boîte" data-ar="200 دج/صندوق">200 DA/boîte</span>
+      <span class="palier-price">2 000 DA</span>
+    </div>
+    <div class="palier-row" id="palier20">
+      <div class="palier-dot"></div>
+      <span class="palier-qty" data-fr="20 boîtes" data-ar="20 صندوقاً">20 boîtes</span>
+      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="185 DA/boîte" data-ar="185 دج/صندوق">185 DA/boîte</span>
+      <span class="palier-price">3 700 DA</span>
+    </div>
+    <div class="palier-row" id="palier30">
+      <div class="palier-dot"></div>
+      <span class="palier-qty" data-fr="30 boîtes" data-ar="30 صندوقاً">30 boîtes</span>
+      <span style="font-size:.72rem;color:inherit;opacity:.8" data-fr="177 DA/boîte" data-ar="177 دج/صندوق">177 DA/boîte</span>
+      <span class="palier-price">5 300 DA</span>
+    </div>
+  </div>
+
+  <!-- SÉLECTEURS -->
+  <div class="boxes-grid">
+    <div class="box-select-card">
+      <span class="box-icon">🍱</span>
+      <div class="box-title" data-fr="2 compartiments" data-ar="2 أقسام">2 compartiments</div>
+      <div class="box-dims">22 × 15 × 6 cm</div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('c2',-1)">−</button>
+        <span class="qty-num" id="qtyC2">0</span>
+        <button class="qty-btn" onclick="changeQty('c2',1)">+</button>
+      </div>
+      <div class="qty-price" id="priceC2">0 DA</div>
+    </div>
+    <div class="box-select-card">
+      <span class="box-icon">🥘</span>
+      <div class="box-title" data-fr="3 compartiments" data-ar="3 أقسام">3 compartiments</div>
+      <div class="box-dims">24 × 18 × 6 cm</div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('c3',-1)">−</button>
+        <span class="qty-num" id="qtyC3">0</span>
+        <button class="qty-btn" onclick="changeQty('c3',1)">+</button>
+      </div>
+      <div class="qty-price" id="priceC3">0 DA</div>
+    </div>
+  </div>
+
+  <!-- ALERTE MIN -->
+  <div class="min-alert" id="minAlert">
+    <span>⚠</span>
+    <span id="minAlertText" data-fr="Minimum 10 boîtes au total — ajoutez encore 10" data-ar="الحد الأدنى 10 صناديق — أضف 10 أخرى">Minimum 10 boîtes au total — ajoutez encore 10</span>
+  </div>
+
+  <!-- PRICING LIVE -->
+  <div class="pricing-card">
+    <span class="pricing-title" data-fr="Estimation en temps réel" data-ar="تقدير في الوقت الفعلي">Estimation en temps réel</span>
+    <div id="pricingRows"><div class="pricing-empty" data-fr="Ajoutez des boîtes pour voir le prix" data-ar="أضف صناديق لرؤية السعر">Ajoutez des boîtes pour voir le prix</div></div>
+  </div>
+
+  <div class="nav-btns">
+    <a href="foodbox-lots.html" class="btn-prev" data-fr="← Lots standards" data-ar="← الطرود القياسية">← Lots standards</a>
+    <button class="btn-next" id="btnNext1" onclick="goPanel(2)" disabled data-fr="Voir le résumé →" data-ar="عرض الملخص →">Voir le résumé →</button>
+  </div>
+</div>
+
+<!-- ══ PANEL 2 — RÉSUMÉ ══ -->
+<div class="panel" id="panel2">
+  <div class="panel-title" data-fr="Ton <em>résumé</em>" data-ar="<em>ملخصك</em>">Ton <em>résumé</em></div>
+  <p class="panel-sub" data-fr="Vérifie ta composition avant de commander." data-ar="تحقق من تركيبتك قبل الطلب.">Vérifie ta composition avant de commander.</p>
+
+  <div class="recap-card" id="recapCard2">
+    <div class="recap-empty">—</div>
+  </div>
+
+  <div class="nav-btns">
+    <button class="btn-prev" onclick="goPanel(1)" data-fr="← Modifier" data-ar="← تعديل">← Modifier</button>
+    <button class="btn-next" onclick="goPanel(3)" data-fr="Commander →" data-ar="الطلب →">Commander →</button>
+  </div>
+</div>
+
+<!-- ══ PANEL 3 — COMMANDER ══ -->
+<div class="panel" id="panel3">
+  <div class="panel-title" data-fr="Prêt à <em>commander ?</em>" data-ar="جاهز لـ<em>الطلب؟</em>">Prêt à <em>commander ?</em></div>
+  <p class="panel-sub" data-fr="Clique sur WhatsApp — ton récap sera envoyé automatiquement." data-ar="انقر على واتساب — سيُرسل ملخصك تلقائياً.">Clique sur WhatsApp — ton récap sera envoyé automatiquement.</p>
+
+  <div class="recap-card" id="recapCard3">
+    <div class="recap-empty">—</div>
+  </div>
+
+  <a id="btnWaFinal" href="https://wa.me/213551901977" target="_blank" rel="noopener" class="btn-wa-order">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span data-fr="Commander sur WhatsApp" data-ar="الطلب عبر واتساب">Commander sur WhatsApp</span>
+  </a>
+  <a href="foodbox-lots.html" class="btn-back-lots" data-fr="← Voir les lots standards" data-ar="← مشاهدة الطرود القياسية">← Voir les lots standards</a>
+
+  <div class="nav-btns">
+    <button class="btn-prev" onclick="goPanel(2)" data-fr="← Modifier" data-ar="← تعديل">← Modifier</button>
+  </div>
+</div>
+
+<footer>
+  <a href="../index.html" class="footer-logo">Food<span>Box</span></a>
+  <p class="footer-copy">© 2026 FoodBox — HMPLAST</p>
+</footer>
+
+<script>
+/* ── PALIERS DE PRIX ── */
+const PALIERS = [
+  { min:10, max:19, total:2000,  unitaire:200,  label:'10' },
+  { min:20, max:29, total:3700,  unitaire:185,  label:'20' },
+  { min:30, max:999,total:5300,  unitaire:176.7,label:'30' }
+];
+
+let currentLang = localStorage.getItem('fb_lang') || 'fr';
+let qty = { c2:0, c3:0 };
+
+/* ── CALCUL PRIX ── */
+function getPalier(total) {
+  if(total < 10) return null;
+  if(total < 20) return PALIERS[0];
+  if(total < 30) return PALIERS[1];
+  return PALIERS[2];
+}
+
+function calcPrix(q2, q3) {
+  const total = q2 + q3;
+  const p = getPalier(total);
+  if(!p) return null;
+  // Prix proportionnel par type
+  const prixTotal = p.total + Math.max(0, total - p.min) * p.unitaire;
+  return { total, prixTotal: Math.round(prixTotal/50)*50, palier: p };
+}
+
+/* ── UPDATE UI ── */
+function updateUI() {
+  const total = qty.c2 + qty.c3;
+  const l = currentLang;
+
+  // Compteurs affichage
+  document.getElementById('qtyC2').textContent = qty.c2;
+  document.getElementById('qtyC3').textContent = qty.c3;
+
+  // Prix unitaire par type (proportionnel au palier)
+  const p = getPalier(total);
+  const pu = p ? p.unitaire : 200;
+  document.getElementById('priceC2').textContent = qty.c2 > 0 ? `${Math.round(qty.c2*pu).toLocaleString('fr-DZ')} DA` : '0 DA';
+  document.getElementById('priceC3').textContent = qty.c3 > 0 ? `${Math.round(qty.c3*pu).toLocaleString('fr-DZ')} DA` : '0 DA';
+
+  // Paliers highlight
+  ['palier10','palier20','palier30'].forEach(id => document.getElementById(id).classList.remove('active-palier'));
+  if(total >= 30) document.getElementById('palier30').classList.add('active-palier');
+  else if(total >= 20) document.getElementById('palier20').classList.add('active-palier');
+  else if(total >= 10) document.getElementById('palier10').classList.add('active-palier');
+
+  // Alerte min
+  const alert = document.getElementById('minAlert');
+  const alertTxt = document.getElementById('minAlertText');
+  if(total === 0) {
+    alert.classList.remove('ok');
+    alertTxt.textContent = l==='ar' ? 'الحد الأدنى 10 صناديق' : 'Minimum 10 boîtes au total';
+  } else if(total < 10) {
+    alert.classList.remove('ok');
+    const reste = 10 - total;
+    alertTxt.textContent = l==='ar'
+      ? `الحد الأدنى 10 — أضف ${reste} أخرى`
+      : `Minimum 10 boîtes — ajoutez encore ${reste}`;
+  } else {
+    alert.classList.add('ok');
+    alertTxt.textContent = l==='ar'
+      ? `✓ ${total} صناديق — معقول!`
+      : `✓ ${total} boîtes — c'est bon !`;
+  }
+
+  // Pricing live
+  const pricingEl = document.getElementById('pricingRows');
+  if(total === 0) {
+    pricingEl.innerHTML = `<div class="pricing-empty">${l==='ar'?'أضف صناديق لرؤية السعر':'Ajoutez des boîtes pour voir le prix'}</div>`;
+  } else {
+    const pr = calcPrix(qty.c2, qty.c3);
+    const prixAff = pr ? pr.prixTotal : '—';
+    const livrL = l==='ar' ? 'التوصيل' : 'Livraison';
+    const livrV = l==='ar' ? 'حسب الولاية' : 'Selon la wilaya';
+    const totalL = l==='ar' ? 'المجموع' : 'Total estimé';
+    let rows = '';
+    if(qty.c2 > 0) rows += `<div class="pricing-row"><span class="pr-label">🍱 ${qty.c2} × ${l==='ar'?'2 أقسام':'2 comp.'}</span><span class="pr-val">${Math.round(qty.c2*pu).toLocaleString('fr-DZ')} DA</span></div>`;
+    if(qty.c3 > 0) rows += `<div class="pricing-row"><span class="pr-label">🥘 ${qty.c3} × ${l==='ar'?'3 أقسام':'3 comp.'}</span><span class="pr-val">${Math.round(qty.c3*pu).toLocaleString('fr-DZ')} DA</span></div>`;
+    if(total >= 20) rows += `<div class="pricing-row discount"><span class="pr-label">🌿 ${l==='ar'?'تخفيض الحجم':'Réduction volume'}</span><span class="pr-val green" style="color:#1a6b3a">✓</span></div>`;
+    rows += `<div class="pricing-row"><span class="pr-label">${livrL}</span><span class="pr-val" style="font-size:.75rem;opacity:.7">${livrV}</span></div>`;
+    if(pr) rows += `<div class="pricing-row total"><span class="pr-label">${totalL}</span><span class="pr-val">${pr.prixTotal.toLocaleString('fr-DZ')} DA</span></div>`;
+    else rows += `<div class="pricing-row total"><span class="pr-label">${totalL}</span><span class="pr-val" style="font-size:.9rem;opacity:.7">${l==='ar'?'أضف صناديق كافية':'Min. 10 boîtes'}</span></div>`;
+    pricingEl.innerHTML = rows;
+  }
+
+  // Bouton next
+  document.getElementById('btnNext1').disabled = total < 10;
+}
+
+function changeQty(type, delta) {
+  qty[type] = Math.max(0, qty[type] + delta);
+  updateUI();
+}
+
+/* ── STEPPER ── */
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById(`step${i}`);
+    el.classList.remove('active','done');
+    if(i < n) el.classList.add('done');
+    else if(i === n) el.classList.add('active');
+  });
+}
+
+/* ── PANELS ── */
+function goPanel(n) {
+  if(n === 2 || n === 3) buildRecap(n);
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`panel${n}`).classList.add('active');
+  setStep(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function buildRecap(n) {
+  const l = currentLang;
+  const total = qty.c2 + qty.c3;
+  const pr = calcPrix(qty.c2, qty.c3);
+  const id = n === 2 ? 'recapCard2' : 'recapCard3';
+  const card = document.getElementById(id);
+
+  if(total === 0 || !pr) { card.innerHTML = `<div class="recap-empty">—</div>`; return; }
+
+  let chips = '';
+  if(qty.c2 > 0) chips += `<div class="recap-chip"><span class="rch-icon">🍱</span>${qty.c2} × ${l==='ar'?'2 أقسام':'2 comp.'}</div>`;
+  if(qty.c3 > 0) chips += `<div class="recap-chip"><span class="rch-icon">🥘</span>${qty.c3} × ${l==='ar'?'3 أقسام':'3 comp.'}</div>`;
+  const totalBoxesL = l==='ar' ? `إجمالي <strong>${total}</strong> صندوق` : `Total <strong>${total}</strong> boîte${total>1?'s':''}`;
+  const prixL = l==='ar' ? 'السعر' : 'Prix';
+  const livrL = l==='ar' ? 'التوصيل' : 'Livraison';
+  const livrV = l==='ar' ? 'حسب الولاية' : 'Selon wilaya';
+
+  card.innerHTML = `
+    <div class="recap-compo">${chips}</div>
+    <div class="recap-total-boxes">${totalBoxesL}</div>
+    <div class="pricing-row" style="padding:.35rem 0"><span class="pr-label">${prixL}</span><span class="pr-val" style="font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--teal)">${pr.prixTotal.toLocaleString('fr-DZ')} DA</span></div>
+    <div class="pricing-row" style="padding:.25rem 0"><span class="pr-label">${livrL}</span><span class="pr-val" style="font-size:.75rem;opacity:.65">${livrV}</span></div>`;
+
+  // Lien WA avec message pré-rempli
+  if(n === 3) {
+    const msg = `Bonjour ! Je voudrais commander un lot FoodBox personnalisé :\n\n${qty.c2>0?`🍱 ${qty.c2} boîtes 2 compartiments\n`:''}${qty.c3>0?`🥘 ${qty.c3} boîtes 3 compartiments\n`:''}\nTotal : ${total} boîtes — ${pr.prixTotal.toLocaleString('fr-DZ')} DA\n\nMerci !`;
+    document.getElementById('btnWaFinal').href = `https://wa.me/213551901977?text=${encodeURIComponent(msg)}`;
+  }
+}
+
+/* ── LANG ── */
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('fb_lang', lang);
+  const html = document.documentElement;
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang==='ar'?'rtl':'ltr');
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    b.classList.toggle('active', b.textContent.trim()===(lang==='fr'?'FR':'ع'));
+  });
+  document.querySelectorAll('[data-fr]').forEach(el=>{
+    const txt = el.getAttribute(`data-${lang}`);
+    if(txt) el.innerHTML = txt;
+  });
+  updateUI();
+}
+
+setLang(currentLang);
+updateUI();
+</script>
+</body>
+</html>
