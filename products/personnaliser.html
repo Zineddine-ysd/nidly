@@ -1,543 +1,68 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
 <head>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-67J6Z9L6D7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-67J6Z9L6D7');
-  </script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personnaliser mon lot — Nidly</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --cream: #FAF7F2;
-      --blush: #F0E0D6;
-      --dusty: #D4A5A0;
-      --terra: #C47B6B;
-      --bark: #7A5C52;
-      --char: #2C2420;
-      --sage: #A8B5A0;
-      --sage-l: #D6E0D2;
-      --gold: #C9A96E;
-      --wa: #25D366;
-      --wa-dark: #128C7E;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { background:var(--cream); color:var(--char); font-family:'DM Sans',sans-serif; font-weight:300; overflow-x:hidden; }
-    [lang="ar"] body, body.ar { font-family:'Cairo',sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nidly - Bientôt disponible</title>
 
-    /* ── NAV (identique à boites.html) ── */
-    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:.9rem 1.2rem; background:rgba(250,247,242,.92); backdrop-filter:blur(18px); border-bottom:1px solid rgba(196,123,107,.1); }
-    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; letter-spacing:.08em; color:var(--char); text-decoration:none; }
-    .nav-logo span { color:var(--terra); font-style:italic; }
-    .nav-right { display:flex; gap:.7rem; align-items:center; }
-    .nav-back { font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--bark); text-decoration:none; padding:.4rem .85rem; border:1px solid rgba(196,123,107,.25); border-radius:2rem; transition:all .2s; }
-    .nav-back:hover { background:var(--blush); color:var(--terra); }
-    .nav-cart-btn { background:var(--terra); color:white; padding:.4rem .95rem; border-radius:2rem; font-size:.7rem; letter-spacing:.06em; text-decoration:none; display:inline-block; transition:background .2s; }
-    .nav-cart-btn:hover { background:var(--bark); }
-    .lang-toggle { background:white; border:1.5px solid rgba(196,123,107,.3); border-radius:2rem; padding:.3rem .2rem; display:flex; gap:.1rem; }
-    .lang-btn { padding:.25rem .6rem; border-radius:2rem; border:none; background:transparent; font-size:.68rem; font-weight:500; color:var(--bark); cursor:pointer; transition:all .2s; letter-spacing:.05em; }
-    .lang-btn.active { background:var(--terra); color:white; }
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-family:Arial, sans-serif;
+    background:#faf7f2;
+    color:#2c2420;
+}
 
-    /* ── INTRO ── */
-    .intro { padding:6rem 1.4rem 1.5rem; text-align:center; max-width:560px; margin:0 auto; }
-    .intro-eyebrow { display:inline-flex; align-items:center; gap:.5rem; font-size:.67rem; letter-spacing:.22em; text-transform:uppercase; color:var(--terra); margin-bottom:1rem; }
-    .intro-eyebrow::before,.intro-eyebrow::after { content:''; display:block; width:16px; height:1px; background:var(--terra); }
-    .intro h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.1rem,7.5vw,3.2rem); font-weight:300; line-height:1.1; color:var(--char); margin-bottom:.7rem; }
-    .intro h1 em { color:var(--terra); font-style:italic; }
-    .intro p { font-size:.85rem; color:var(--bark); line-height:1.7; }
+.container{
+    max-width:600px;
+    padding:30px;
+}
 
-    /* ── BUILDER LAYOUT ── */
-    .builder { padding:1rem 1.2rem 3rem; max-width:560px; margin:0 auto; }
+h1{
+    font-size:3rem;
+    margin-bottom:20px;
+}
 
-    /* Dimension reference strip */
-    .dims-ref { display:flex; gap:.5rem; margin-bottom:1.6rem; }
-    .dim-ref-card { flex:1; background:white; border:1.5px solid rgba(212,165,160,.22); border-radius:.9rem; padding:.75rem .5rem; text-align:center; }
-    .dim-ref-box { margin:0 auto .4rem; border-radius:6px; }
-    .dim-ref-box.xl { width:34px; height:26px; background:var(--terra); }
-    .dim-ref-box.l { width:30px; height:18px; background:var(--bark); }
-    .dim-ref-box.m { width:20px; height:20px; background:var(--sage); }
-    .dim-ref-label { font-size:.72rem; font-weight:600; color:var(--char); }
-    .dim-ref-size { font-size:.62rem; color:var(--bark); opacity:.75; margin-top:.1rem; }
-    .dim-ref-price { font-size:.66rem; color:var(--terra); margin-top:.25rem; font-weight:500; }
+span{
+    color:#c47b6b;
+}
 
-    /* Quantity selector cards */
-    .qty-section { background:white; border-radius:1.2rem; border:1.5px solid rgba(212,165,160,.2); padding:1.2rem; margin-bottom:1rem; }
-    .qty-row { display:flex; align-items:center; gap:.9rem; padding:.85rem 0; border-bottom:1px solid rgba(212,165,160,.14); }
-    .qty-row:last-child { border-bottom:none; }
-    .qty-box-visual { width:46px; height:46px; border-radius:.6rem; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:600; color:white; letter-spacing:.03em; }
-    .qty-box-visual.xl { background:var(--terra); }
-    .qty-box-visual.l { background:var(--bark); }
-    .qty-box-visual.m { background:var(--sage); }
-    .qty-info { flex:1; min-width:0; }
-    .qty-name { font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--char); line-height:1.2; }
-    .qty-dim { font-size:.68rem; color:var(--bark); opacity:.7; margin-top:.1rem; }
-    .qty-unit-price { font-size:.7rem; color:var(--terra); margin-top:.15rem; font-weight:500; }
-    .qty-controls { display:flex; align-items:center; gap:.6rem; flex-shrink:0; }
-    .qty-btn { width:30px; height:30px; border-radius:50%; border:1.5px solid rgba(196,123,107,.3); background:var(--cream); color:var(--terra); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; font-family:'DM Sans',sans-serif; }
-    .qty-btn:hover { background:var(--terra); color:white; border-color:var(--terra); }
-    .qty-btn:active { transform:scale(.92); }
-    .qty-num { font-size:1rem; font-weight:600; min-width:24px; text-align:center; color:var(--char); }
+p{
+    font-size:1.1rem;
+    line-height:1.8;
+    color:#7a5c52;
+}
 
-    /* Live summary */
-    .summary-card { background:linear-gradient(135deg,var(--char) 0%,#3d2e29 100%); border-radius:1.2rem; padding:1.4rem; color:white; margin-bottom:1.2rem; position:relative; overflow:hidden; }
-    .summary-card::before { content:''; position:absolute; width:180px; height:180px; border-radius:50%; border:1px solid rgba(255,255,255,.08); top:-60px; right:-60px; }
-    .summary-title { font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--dusty); margin-bottom:.7rem; position:relative; }
-    .summary-compo { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1rem; position:relative; }
-    .summary-chip { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); border-radius:.5rem; padding:.3rem .6rem; font-size:.74rem; color:rgba(255,255,255,.85); }
-    .summary-empty { font-size:.8rem; color:rgba(255,255,255,.4); font-style:italic; position:relative; }
-    .summary-divider { height:1px; background:rgba(255,255,255,.1); margin:.9rem 0; position:relative; }
-    .summary-row { display:flex; justify-content:space-between; align-items:baseline; font-size:.82rem; color:rgba(255,255,255,.65); margin-bottom:.4rem; position:relative; }
-    .summary-total { display:flex; justify-content:space-between; align-items:baseline; position:relative; }
-    .summary-total-label { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:white; }
-    .summary-total-price { font-family:'Cormorant Garamond',serif; font-size:2.1rem; color:var(--dusty); line-height:1; }
-    .summary-hint { font-size:.7rem; color:rgba(255,255,255,.35); margin-top:.6rem; position:relative; }
-
-    /* Presets quick-select */
-    .presets-row { display:flex; gap:.5rem; margin-bottom:1.4rem; overflow-x:auto; padding-bottom:.2rem; }
-    .preset-chip { flex-shrink:0; background:white; border:1.5px solid rgba(212,165,160,.25); border-radius:2rem; padding:.45rem 1rem; font-size:.74rem; color:var(--bark); cursor:pointer; transition:all .2s; white-space:nowrap; }
-    .preset-chip:hover, .preset-chip.active { background:var(--terra); color:white; border-color:var(--terra); }
-
-    /* CTA */
-    .btn-add-custom { width:100%; background:var(--terra); color:white; padding:1rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.9rem; font-weight:500; letter-spacing:.04em; transition:all .25s; display:flex; align-items:center; justify-content:center; gap:.5rem; box-shadow:0 8px 24px rgba(196,123,107,.3); }
-    .btn-add-custom:hover { background:var(--bark); transform:translateY(-2px); }
-    .btn-add-custom:disabled { background:#cfc4be; box-shadow:none; cursor:not-allowed; transform:none; }
-    .btn-add-custom:disabled:hover { transform:none; }
-
-    .min-warning { display:flex; align-items:center; gap:.5rem; background:rgba(196,123,107,.08); border:1px solid rgba(196,123,107,.2); border-radius:.7rem; padding:.65rem .85rem; font-size:.73rem; color:var(--terra); margin-bottom:1rem; }
-
-    /* Why custom */
-    .why-custom { display:flex; flex-direction:column; gap:.6rem; margin-top:2rem; }
-    .why-custom-item { display:flex; align-items:flex-start; gap:.65rem; font-size:.78rem; color:var(--bark); line-height:1.5; }
-    .why-custom-dot { width:22px; height:22px; flex-shrink:0; background:var(--sage-l); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.65rem; margin-top:.05rem; }
-
-    /* ── DRAWER CALCULATOR ── */
-    .drawer-calc-section { margin-top:2.6rem; }
-    .drawer-calc-divider { display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
-    .drawer-calc-divider::before,.drawer-calc-divider::after { content:''; flex:1; height:1px; background:rgba(212,165,160,.3); }
-    .drawer-calc-divider span { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dusty); white-space:nowrap; }
-
-    .drawer-calc-card { background:white; border-radius:1.2rem; border:1.5px solid rgba(212,165,160,.2); padding:1.3rem; }
-    .drawer-calc-header { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:1.2rem; }
-    .drawer-calc-icon { width:38px; height:38px; flex-shrink:0; background:var(--blush); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
-    .drawer-calc-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--char); line-height:1.2; }
-    .drawer-calc-sub { font-size:.74rem; color:var(--bark); opacity:.75; margin-top:.15rem; line-height:1.5; }
-
-    .drawer-inputs { display:flex; gap:.7rem; margin-bottom:1.1rem; }
-    .drawer-input-group { flex:1; }
-    .drawer-input-group label { display:block; font-size:.68rem; font-weight:600; color:var(--bark); letter-spacing:.04em; margin-bottom:.4rem; }
-    .drawer-input-wrap { position:relative; }
-    .drawer-input-wrap input { width:100%; border:1.5px solid rgba(196,123,107,.25); border-radius:.65rem; padding:.65rem .9rem; padding-right:2.3rem; font-family:'DM Sans',sans-serif; font-size:.95rem; color:var(--char); background:var(--cream); outline:none; transition:border-color .2s; }
-    .drawer-input-wrap input:focus { border-color:var(--terra); }
-    .drawer-input-wrap .unit-suffix { position:absolute; right:.85rem; top:50%; transform:translateY(-50%); font-size:.7rem; color:var(--bark); opacity:.6; pointer-events:none; }
-    html[dir="rtl"] .drawer-input-wrap input { padding-right:.9rem; padding-left:2.3rem; }
-    html[dir="rtl"] .drawer-input-wrap .unit-suffix { right:auto; left:.85rem; }
-
-    .btn-calc-drawer { width:100%; background:var(--char); color:white; padding:.85rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.86rem; font-weight:500; letter-spacing:.04em; transition:all .25s; display:flex; align-items:center; justify-content:center; gap:.5rem; margin-bottom:1rem; }
-    .btn-calc-drawer:hover { background:var(--terra); transform:translateY(-1px); }
-
-    .drawer-result { display:none; animation:fadeUp .45s ease both; }
-    .drawer-result.show { display:block; }
-    .drawer-result-banner { background:var(--sage-l); border-radius:.8rem; padding:.8rem 1rem; display:flex; align-items:center; gap:.6rem; font-size:.78rem; color:var(--bark); margin-bottom:1rem; }
-    .drawer-result-banner.warn { background:rgba(196,123,107,.1); color:var(--terra); }
-    .drawer-result-grid { display:flex; gap:.6rem; margin-bottom:1rem; }
-    .drawer-result-item { flex:1; background:var(--cream); border:1.5px solid rgba(212,165,160,.18); border-radius:.8rem; padding:.8rem .5rem; text-align:center; }
-    .drawer-result-item .dr-icon { width:34px; height:34px; margin:0 auto .4rem; border-radius:.5rem; display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:700; color:white; }
-    .drawer-result-item .dr-icon.xl { background:var(--terra); }
-    .drawer-result-item .dr-icon.l { background:var(--bark); }
-    .drawer-result-item .dr-icon.m { background:var(--sage); }
-    .drawer-result-item .dr-count { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--char); line-height:1; }
-    .drawer-result-item .dr-label { font-size:.64rem; color:var(--bark); opacity:.7; margin-top:.15rem; }
-    .drawer-result-occupancy { font-size:.7rem; color:var(--bark); opacity:.65; text-align:center; margin-bottom:1rem; }
-    .btn-apply-drawer { width:100%; background:var(--terra); color:white; padding:.85rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.86rem; font-weight:500; letter-spacing:.04em; transition:all .25s; display:flex; align-items:center; justify-content:center; gap:.5rem; }
-    .btn-apply-drawer:hover { background:var(--bark); transform:translateY(-1px); }
-
-    html[dir="rtl"] .drawer-calc-header { flex-direction:row-reverse; text-align:right; }
-    html[dir="rtl"] .drawer-result-banner { flex-direction:row-reverse; text-align:right; }
-
-    footer { background:var(--char); padding:1.8rem 1.4rem; display:flex; align-items:center; justify-content:space-between; }
-    .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:white; letter-spacing:.08em; text-decoration:none; }
-    .footer-logo span { color:var(--terra); font-style:italic; }
-    .footer-copy { font-size:.63rem; color:rgba(255,255,255,.28); }
-    .toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(120px); background:var(--char); color:white; padding:.75rem 1.5rem; border-radius:3rem; font-size:.8rem; z-index:1000; transition:transform .4s cubic-bezier(.34,1.56,.64,1); pointer-events:none; white-space:nowrap; border:1px solid rgba(255,255,255,.08); }
-    .toast.show { transform:translateX(-50%) translateY(0); }
-
-    /* RTL */
-    html[dir="rtl"] .nav-right { flex-direction:row-reverse; }
-    html[dir="rtl"] .intro-eyebrow::before,html[dir="rtl"] .intro-eyebrow::after { display:none; }
-    html[dir="rtl"] .qty-row { flex-direction:row-reverse; }
-    html[dir="rtl"] .summary-row,html[dir="rtl"] .summary-total { flex-direction:row-reverse; }
-    html[dir="rtl"] .why-custom-item { flex-direction:row-reverse; text-align:right; }
-    html[dir="rtl"] .sec-title,html[dir="rtl"] .qty-name { font-family:'Cairo',sans-serif; }
-
-    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
-    .builder > * { animation:fadeUp .55s ease both; }
-
-    @media (min-width:768px) {
-      nav { padding:1.1rem 3rem; }
-      .nav-logo { font-size:1.8rem; }
-      .intro { padding:8rem 3rem 2rem; max-width:680px; }
-      .intro h1 { font-size:3.6rem; }
-      .intro p { font-size:.95rem; }
-      .builder { max-width:680px; padding:1.5rem 3rem 5rem; }
-      .qty-section { padding:1.6rem; }
-      footer { padding:2.2rem 4rem; }
-    }
-  </style>
-  <script>
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','994276880442450');
-    fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=994276880442450&ev=PageView&noscript=1"/></noscript>
+.btn{
+    display:inline-block;
+    margin-top:25px;
+    padding:14px 30px;
+    background:#c47b6b;
+    color:white;
+    text-decoration:none;
+    border-radius:999px;
+}
+</style>
 </head>
 <body>
 
-<nav>
-  <a href="../index.html" class="nav-logo">Ni<span>dly</span></a>
-  <div class="nav-right">
-    <div class="lang-toggle" title="Changer la langue">
-      <button class="lang-btn active" onclick="setLang('fr')">FR</button>
-      <button class="lang-btn" onclick="setLang('ar')">ع</button>
-    </div>
-    <a href="boites.html" class="nav-back" data-fr="← Lots" data-ar="الطرود →">← Lots</a>
-    <a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>
-  </div>
-</nav>
+<div class="container">
+    <h1>Revenez <span>plus tard</span></h1>
 
-<!-- INTRO -->
-<div class="intro">
-  <div class="intro-eyebrow" data-fr="Lot sur mesure" data-ar="طرد مخصص">Lot sur mesure</div>
-  <h1 data-fr="Compose<br><em>ton propre lot</em>" data-ar="كوّني<br><em>طردك الخاص</em>">Compose<br><em>ton propre lot</em></h1>
-  <p data-fr="Choisis exactement le nombre de boîtes XL, L et M dont tu as besoin. Le prix se calcule automatiquement." data-ar="اختاري بالضبط عدد صناديق XL و L و M التي تحتاجينها. السعر يُحسب تلقائياً.">Choisis exactement le nombre de boîtes XL, L et M dont tu as besoin. Le prix se calcule automatiquement.</p>
+    <p>
+        Le site est actuellement en cours de configuration.
+        Nous finalisons les derniers détails et serons bientôt en ligne.
+    </p>
+
+    <a href="javascript:location.reload()" class="btn">
+        Réessayer
+    </a>
 </div>
 
-<div class="builder">
-
-  <!-- Dimension reference -->
-  <div class="dims-ref">
-    <div class="dim-ref-card">
-      <div class="dim-ref-box xl"></div>
-      <div class="dim-ref-label">XL</div>
-      <div class="dim-ref-size">19×14×8 cm</div>
-      <div class="dim-ref-price" id="priceRefXL">320 DA</div>
-    </div>
-    <div class="dim-ref-card">
-      <div class="dim-ref-box l"></div>
-      <div class="dim-ref-label">L</div>
-      <div class="dim-ref-size">19×8×7 cm</div>
-      <div class="dim-ref-price" id="priceRefL">250 DA</div>
-    </div>
-    <div class="dim-ref-card">
-      <div class="dim-ref-box m"></div>
-      <div class="dim-ref-label">M</div>
-      <div class="dim-ref-size">10×10×7 cm</div>
-      <div class="dim-ref-price" id="priceRefM">110 DA</div>
-    </div>
-  </div>
-
-  <!-- Quick presets -->
-  <div class="presets-row" id="presetsRow"></div>
-
-  <!-- Quantity selectors -->
-  <div class="qty-section">
-    <div class="qty-row" data-size="xl">
-      <div class="qty-box-visual xl">XL</div>
-      <div class="qty-info">
-        <div class="qty-name" data-fr="Boîte Extra Large" data-ar="صندوق إكسترا لارج">Boîte Extra Large</div>
-        <div class="qty-dim">19 × 14 × 8 cm</div>
-        <div class="qty-unit-price" id="unitPriceXL">320 DA / unité</div>
-      </div>
-      <div class="qty-controls">
-        <button class="qty-btn" onclick="changeQty('xl',-1)">−</button>
-        <span class="qty-num" id="qtyXL">0</span>
-        <button class="qty-btn" onclick="changeQty('xl',1)">+</button>
-      </div>
-    </div>
-    <div class="qty-row" data-size="l">
-      <div class="qty-box-visual l">L</div>
-      <div class="qty-info">
-        <div class="qty-name" data-fr="Boîte Large" data-ar="صندوق لارج">Boîte Large</div>
-        <div class="qty-dim">19 × 8 × 7 cm</div>
-        <div class="qty-unit-price" id="unitPriceL">250 DA / unité</div>
-      </div>
-      <div class="qty-controls">
-        <button class="qty-btn" onclick="changeQty('l',-1)">−</button>
-        <span class="qty-num" id="qtyL">0</span>
-        <button class="qty-btn" onclick="changeQty('l',1)">+</button>
-      </div>
-    </div>
-    <div class="qty-row" data-size="m">
-      <div class="qty-box-visual m">M</div>
-      <div class="qty-info">
-        <div class="qty-name" data-fr="Boîte Medium" data-ar="صندوق ميديوم">Boîte Medium</div>
-        <div class="qty-dim">10 × 10 × 7 cm</div>
-        <div class="qty-unit-price" id="unitPriceM">110 DA / unité</div>
-      </div>
-      <div class="qty-controls">
-        <button class="qty-btn" onclick="changeQty('m',-1)">−</button>
-        <span class="qty-num" id="qtyM">0</span>
-        <button class="qty-btn" onclick="changeQty('m',1)">+</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Minimum order warning -->
-  <div class="min-warning" id="minWarning" style="display:none">
-    <span>ℹ️</span>
-    <span data-fr="Minimum 3 boîtes pour passer une commande personnalisée." data-ar="الحد الأدنى 3 صناديق لطلب مخصص.">Minimum 3 boîtes pour passer une commande personnalisée.</span>
-  </div>
-
-  <!-- Live summary -->
-  <div class="summary-card">
-    <div class="summary-title" data-fr="Ton lot personnalisé" data-ar="طردك المخصص">Ton lot personnalisé</div>
-    <div class="summary-compo" id="summaryCompo">
-      <span class="summary-empty" data-fr="Choisis tes quantités ci-dessus…" data-ar="اختاري الكميات أعلاه…">Choisis tes quantités ci-dessus…</span>
-    </div>
-    <div class="summary-divider"></div>
-    <div class="summary-row">
-      <span data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</span>
-      <span id="summaryTotalBoxes">0</span>
-    </div>
-    <div class="summary-total">
-      <span class="summary-total-label" data-fr="Prix total" data-ar="السعر الإجمالي">Prix total</span>
-      <span class="summary-total-price" id="summaryTotalPrice">0 DA</span>
-    </div>
-    <div class="summary-hint" data-fr="Hors frais de livraison · Yalidine" data-ar="غير شامل التوصيل · Yalidine">Hors frais de livraison · Yalidine</div>
-  </div>
-
-  <button class="btn-add-custom" id="addCustomBtn" onclick="addCustomToCart()" disabled>
-    🛍 <span data-fr="Ajouter au panier" data-ar="أضف إلى السلة">Ajouter au panier</span>
-  </button>
-
-  <!-- Why custom -->
-  <div class="why-custom">
-    <div class="why-custom-item"><div class="why-custom-dot">✓</div><span data-fr="Tu choisis exactement ce dont tu as besoin, sans gaspillage." data-ar="تختارين بالضبط ما تحتاجينه، دون أي هدر.">Tu choisis exactement ce dont tu as besoin, sans gaspillage.</span></div>
-    <div class="why-custom-item"><div class="why-custom-dot">✓</div><span data-fr="Le prix se met à jour en temps réel selon tes choix." data-ar="السعر يتحدث فورياً حسب اختياراتك.">Le prix se met à jour en temps réel selon tes choix.</span></div>
-    <div class="why-custom-item"><div class="why-custom-dot">✓</div><span data-fr="Besoin d'aide ? Contacte-nous sur WhatsApp." data-ar="تحتاجين مساعدة؟ تواصلي معنا على واتساب.">Besoin d'aide ? Contacte-nous sur WhatsApp.</span></div>
-  </div>
-
-  <!-- ── DRAWER SIZE CALCULATOR ── -->
-  <div class="drawer-calc-section">
-    <div class="drawer-calc-divider"><span data-fr="Pas sûre de quoi choisir ?" data-ar="لست متأكدة من اختيارك؟">Pas sûre de quoi choisir ?</span></div>
-
-    <div class="drawer-calc-card">
-      <div class="drawer-calc-header">
-        <div class="drawer-calc-icon">📐</div>
-        <div>
-          <div class="drawer-calc-title" data-fr="Calcule selon ton tiroir" data-ar="احسبي حسب درجك">Calcule selon ton tiroir</div>
-          <div class="drawer-calc-sub" data-fr="Indique les dimensions intérieures de ton tiroir, on te propose la meilleure combinaison de boîtes." data-ar="أدخلي القياسات الداخلية لدرجك، سنقترح عليك أفضل تركيبة من الصناديق.">Indique les dimensions intérieures de ton tiroir, on te propose la meilleure combinaison de boîtes.</div>
-        </div>
-      </div>
-
-      <div class="drawer-inputs">
-        <div class="drawer-input-group">
-          <label data-fr="Largeur" data-ar="العرض">Largeur</label>
-          <div class="drawer-input-wrap">
-            <input type="number" id="drawerWidth" placeholder="58" min="1" max="500" inputmode="decimal">
-            <span class="unit-suffix">cm</span>
-          </div>
-        </div>
-        <div class="drawer-input-group">
-          <label data-fr="Profondeur" data-ar="العمق">Profondeur</label>
-          <div class="drawer-input-wrap">
-            <input type="number" id="drawerDepth" placeholder="31" min="1" max="500" inputmode="decimal">
-            <span class="unit-suffix">cm</span>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn-calc-drawer" onclick="calculateDrawerFit()">
-        🔍 <span data-fr="Trouver le bon lot" data-ar="ابحثي عن الطرد المناسب">Trouver le bon lot</span>
-      </button>
-
-      <div class="drawer-result" id="drawerResult">
-        <div class="drawer-result-banner" id="drawerResultBanner"></div>
-        <div class="drawer-result-grid" id="drawerResultGrid"></div>
-        <div class="drawer-result-occupancy" id="drawerResultOccupancy"></div>
-        <button class="btn-apply-drawer" onclick="applyDrawerResult()">
-          ✓ <span data-fr="Utiliser cette combinaison" data-ar="استخدام هذه التركيبة">Utiliser cette combinaison</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  <a href="../index.html" class="footer-logo">Ni<span>dly</span></a>
-  <p class="footer-copy">© 2026 Nidly</p>
-</footer>
-
-<div class="toast" id="toast"></div>
-
-<script src="../js/config.js"></script>
-<script>
-const API = API_URL;
-let currentLang = localStorage.getItem('nidly_lang') || 'fr';
-
-// ── Prix unitaires fixes (vente à la carte, marge ~x1.8 sur le coût d'achat) ─
-const UNIT_PRICES = { xl: 450, l: 340, m: 135 };
-const DIMS = { xl: '19×14×8 cm', l: '19×8×7 cm', m: '10×10×7 cm' };
-const MIN_BOXES = 3;
-
-let qty = { xl: 0, l: 0, m: 0 };
-
-function computePricing() {
-  const n = qty.xl + qty.l + qty.m;
-  const total = qty.xl * UNIT_PRICES.xl + qty.l * UNIT_PRICES.l + qty.m * UNIT_PRICES.m;
-  return {
-    unit: { xl: UNIT_PRICES.xl, l: UNIT_PRICES.l, m: UNIT_PRICES.m },
-    total,
-    totalBoxes: n
-  };
-}
-
-const PRESETS = [
-  { label_fr: '🌱 Comme Mini',     label_ar: '🌱 مثل ميني',     xl:1, l:2, m:3 },
-  { label_fr: '🔥 Comme Standard', label_ar: '🔥 مثل ستاندار',  xl:2, l:4, m:5 },
-  { label_fr: '👑 Comme Méga',     label_ar: '👑 مثل ميغا',     xl:4, l:8, m:10 },
-];
-
-function setLang(lang) {
-  currentLang = lang;
-  localStorage.setItem('nidly_lang', lang);
-  const html = document.documentElement;
-  html.setAttribute('lang', lang);
-  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-  document.querySelectorAll('.lang-btn').forEach(b => {
-    b.classList.toggle('active', b.textContent.trim() === (lang === 'fr' ? 'FR' : 'ع'));
-  });
-  document.querySelectorAll('[data-fr]').forEach(el => {
-    const txt = el.getAttribute(`data-${lang}`);
-    if (txt) el.innerHTML = txt;
-  });
-  renderPresets();
-  updateCartCount();
-  updateSummary();
-}
-
-function updateCartCount() {
-  try {
-    const cart = JSON.parse(localStorage.getItem('nidly_cart') || '[]');
-    const tot = cart.reduce((s, i) => s + i.qty, 0);
-    const btn = document.getElementById('cartBtn');
-    if (btn) btn.innerHTML = `🛍 <span>${currentLang === 'ar' ? 'السلة' : 'Panier'}</span> (${tot})`;
-  } catch(e) {}
-}
-
-function renderPresets() {
-  const row = document.getElementById('presetsRow');
-  row.innerHTML = PRESETS.map((p, i) => {
-    const label = currentLang === 'ar' ? p.label_ar : p.label_fr;
-    return `<button class="preset-chip" onclick="applyPreset(${i})">${label}</button>`;
-  }).join('');
-}
-
-function applyPreset(i) {
-  const p = PRESETS[i];
-  qty.xl = p.xl; qty.l = p.l; qty.m = p.m;
-  syncQtyDisplay();
-  updateSummary();
-}
-
-function changeQty(size, delta) {
-  qty[size] = Math.max(0, qty[size] + delta);
-  syncQtyDisplay();
-  updateSummary();
-}
-
-function syncQtyDisplay() {
-  document.getElementById('qtyXL').textContent = qty.xl;
-  document.getElementById('qtyL').textContent = qty.l;
-  document.getElementById('qtyM').textContent = qty.m;
-}
-
-function updateSummary() {
-  const pricing = computePricing();
-  const totalBoxes = pricing.totalBoxes;
-  const totalPrice = pricing.total;
-
-  const compoEl = document.getElementById('summaryCompo');
-
-  if (totalBoxes === 0) {
-    const emptyTxt = currentLang === 'ar' ? 'اختاري الكميات أعلاه…' : 'Choisis tes quantités ci-dessus…';
-    compoEl.innerHTML = `<span class="summary-empty">${emptyTxt}</span>`;
-  } else {
-    const chips = [];
-    if (qty.xl > 0) chips.push(`<span class="summary-chip">${qty.xl}× XL <small style="opacity:.6">(${DIMS.xl})</small></span>`);
-    if (qty.l > 0)  chips.push(`<span class="summary-chip">${qty.l}× L <small style="opacity:.6">(${DIMS.l})</small></span>`);
-    if (qty.m > 0)  chips.push(`<span class="summary-chip">${qty.m}× M <small style="opacity:.6">(${DIMS.m})</small></span>`);
-    compoEl.innerHTML = chips.join('');
-  }
-
-  document.getElementById('summaryTotalBoxes').textContent = totalBoxes;
-  document.getElementById('summaryTotalPrice').textContent = `${totalPrice.toLocaleString('fr-DZ')} DA`;
-
-  const warningEl = document.getElementById('minWarning');
-  const btn = document.getElementById('addCustomBtn');
-  if (totalBoxes > 0 && totalBoxes < MIN_BOXES) {
-    warningEl.style.display = 'flex';
-    btn.disabled = true;
-  } else if (totalBoxes === 0) {
-    warningEl.style.display = 'none';
-    btn.disabled = true;
-  } else {
-    warningEl.style.display = 'none';
-    btn.disabled = false;
-  }
-}
-
-function addCustomToCart() {
-  const pricing = computePricing();
-  if (pricing.totalBoxes < MIN_BOXES) return;
-  const totalPrice = pricing.total;
-
-  const parts = [];
-  if (qty.xl > 0) parts.push(`${qty.xl}XL`);
-  if (qty.l > 0)  parts.push(`${qty.l}L`);
-  if (qty.m > 0)  parts.push(`${qty.m}M`);
-  const name = currentLang === 'ar'
-    ? `طرد مخصص (${parts.join('+')})`
-    : `Lot Personnalisé (${parts.join('+')})`;
-
-  try {
-    const cart = JSON.parse(localStorage.getItem('nidly_cart') || '[]');
-    cart.push({
-      id: 'custom-' + Date.now(),
-      name,
-      price: totalPrice,
-      qty: 1,
-      img: '',
-      custom: { xl: qty.xl, l: qty.l, m: qty.m }
-    });
-    localStorage.setItem('nidly_cart', JSON.stringify(cart));
-    updateCartCount();
-  } catch(e) {}
-
-  const t = document.getElementById('toast');
-  t.textContent = currentLang === 'ar' ? '✓ تمت الإضافة — جارٍ التوجيه…' : '✓ Lot ajouté — Redirection…';
-  t.classList.add('show');
-  setTimeout(() => { window.location.href = '../cart.html'; }, 900);
-}
-
-function setInitialLabels() {
-  const suffix = currentLang === 'ar' ? ' / للوحدة' : ' / unité';
-  document.getElementById('unitPriceXL').textContent = `${UNIT_PRICES.xl} DA${suffix}`;
-  document.getElementById('unitPriceL').textContent  = `${UNIT_PRICES.l} DA${suffix}`;
-  document.getElementById('unitPriceM').textContent  = `${UNIT_PRICES.m} DA${suffix}`;
-  document.getElementById('priceRefXL').textContent = `${UNIT_PRICES.xl} DA`;
-  document.getElementById('priceRefL').textContent  = `${UNIT_PRICES.l} DA`;
-  document.getElementById('priceRefM').textContent  = `${UNIT_PRICES.m} DA`;
-}
-
-setInitialLabels();
-setLang(currentLang);
-</script>
 </body>
 </html>
