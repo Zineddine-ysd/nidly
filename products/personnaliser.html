@@ -116,6 +116,50 @@
     .why-custom-item { display:flex; align-items:flex-start; gap:.65rem; font-size:.78rem; color:var(--bark); line-height:1.5; }
     .why-custom-dot { width:22px; height:22px; flex-shrink:0; background:var(--sage-l); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.65rem; margin-top:.05rem; }
 
+    /* ── DRAWER CALCULATOR ── */
+    .drawer-calc-section { margin-top:2.6rem; }
+    .drawer-calc-divider { display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+    .drawer-calc-divider::before,.drawer-calc-divider::after { content:''; flex:1; height:1px; background:rgba(212,165,160,.3); }
+    .drawer-calc-divider span { font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--dusty); white-space:nowrap; }
+
+    .drawer-calc-card { background:white; border-radius:1.2rem; border:1.5px solid rgba(212,165,160,.2); padding:1.3rem; }
+    .drawer-calc-header { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:1.2rem; }
+    .drawer-calc-icon { width:38px; height:38px; flex-shrink:0; background:var(--blush); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+    .drawer-calc-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--char); line-height:1.2; }
+    .drawer-calc-sub { font-size:.74rem; color:var(--bark); opacity:.75; margin-top:.15rem; line-height:1.5; }
+
+    .drawer-inputs { display:flex; gap:.7rem; margin-bottom:1.1rem; }
+    .drawer-input-group { flex:1; }
+    .drawer-input-group label { display:block; font-size:.68rem; font-weight:600; color:var(--bark); letter-spacing:.04em; margin-bottom:.4rem; }
+    .drawer-input-wrap { position:relative; }
+    .drawer-input-wrap input { width:100%; border:1.5px solid rgba(196,123,107,.25); border-radius:.65rem; padding:.65rem .9rem; padding-right:2.3rem; font-family:'DM Sans',sans-serif; font-size:.95rem; color:var(--char); background:var(--cream); outline:none; transition:border-color .2s; }
+    .drawer-input-wrap input:focus { border-color:var(--terra); }
+    .drawer-input-wrap .unit-suffix { position:absolute; right:.85rem; top:50%; transform:translateY(-50%); font-size:.7rem; color:var(--bark); opacity:.6; pointer-events:none; }
+    html[dir="rtl"] .drawer-input-wrap input { padding-right:.9rem; padding-left:2.3rem; }
+    html[dir="rtl"] .drawer-input-wrap .unit-suffix { right:auto; left:.85rem; }
+
+    .btn-calc-drawer { width:100%; background:var(--char); color:white; padding:.85rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.86rem; font-weight:500; letter-spacing:.04em; transition:all .25s; display:flex; align-items:center; justify-content:center; gap:.5rem; margin-bottom:1rem; }
+    .btn-calc-drawer:hover { background:var(--terra); transform:translateY(-1px); }
+
+    .drawer-result { display:none; animation:fadeUp .45s ease both; }
+    .drawer-result.show { display:block; }
+    .drawer-result-banner { background:var(--sage-l); border-radius:.8rem; padding:.8rem 1rem; display:flex; align-items:center; gap:.6rem; font-size:.78rem; color:var(--bark); margin-bottom:1rem; }
+    .drawer-result-banner.warn { background:rgba(196,123,107,.1); color:var(--terra); }
+    .drawer-result-grid { display:flex; gap:.6rem; margin-bottom:1rem; }
+    .drawer-result-item { flex:1; background:var(--cream); border:1.5px solid rgba(212,165,160,.18); border-radius:.8rem; padding:.8rem .5rem; text-align:center; }
+    .drawer-result-item .dr-icon { width:34px; height:34px; margin:0 auto .4rem; border-radius:.5rem; display:flex; align-items:center; justify-content:center; font-size:.62rem; font-weight:700; color:white; }
+    .drawer-result-item .dr-icon.xl { background:var(--terra); }
+    .drawer-result-item .dr-icon.l { background:var(--bark); }
+    .drawer-result-item .dr-icon.m { background:var(--sage); }
+    .drawer-result-item .dr-count { font-family:'Cormorant Garamond',serif; font-size:1.6rem; color:var(--char); line-height:1; }
+    .drawer-result-item .dr-label { font-size:.64rem; color:var(--bark); opacity:.7; margin-top:.15rem; }
+    .drawer-result-occupancy { font-size:.7rem; color:var(--bark); opacity:.65; text-align:center; margin-bottom:1rem; }
+    .btn-apply-drawer { width:100%; background:var(--terra); color:white; padding:.85rem; border-radius:3rem; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.86rem; font-weight:500; letter-spacing:.04em; transition:all .25s; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+    .btn-apply-drawer:hover { background:var(--bark); transform:translateY(-1px); }
+
+    html[dir="rtl"] .drawer-calc-header { flex-direction:row-reverse; text-align:right; }
+    html[dir="rtl"] .drawer-result-banner { flex-direction:row-reverse; text-align:right; }
+
     footer { background:var(--char); padding:1.8rem 1.4rem; display:flex; align-items:center; justify-content:space-between; }
     .footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.35rem; color:white; letter-spacing:.08em; text-decoration:none; }
     .footer-logo span { color:var(--terra); font-style:italic; }
@@ -161,7 +205,7 @@
       <button class="lang-btn active" onclick="setLang('fr')">FR</button>
       <button class="lang-btn" onclick="setLang('ar')">ع</button>
     </div>
-    <a href="nidlylots.html" class="nav-back" data-fr="← Lots" data-ar="الطرود →">← Lots</a>
+    <a href="boites.html" class="nav-back" data-fr="← Lots" data-ar="الطرود →">← Lots</a>
     <a href="../cart.html" class="nav-cart-btn" id="cartBtn">🛍 <span data-fr="Panier" data-ar="السلة">Panier</span> (0)</a>
   </div>
 </nav>
@@ -276,6 +320,51 @@
     <div class="why-custom-item"><div class="why-custom-dot">✓</div><span data-fr="Tu choisis exactement ce dont tu as besoin, sans gaspillage." data-ar="تختارين بالضبط ما تحتاجينه، دون أي هدر.">Tu choisis exactement ce dont tu as besoin, sans gaspillage.</span></div>
     <div class="why-custom-item"><div class="why-custom-dot">✓</div><span data-fr="Le prix se met à jour en temps réel selon tes choix." data-ar="السعر يتحدث فورياً حسب اختياراتك.">Le prix se met à jour en temps réel selon tes choix.</span></div>
     <div class="why-custom-item"><div class="why-custom-dot">✓</div><span data-fr="Besoin d'aide ? Contacte-nous sur WhatsApp." data-ar="تحتاجين مساعدة؟ تواصلي معنا على واتساب.">Besoin d'aide ? Contacte-nous sur WhatsApp.</span></div>
+  </div>
+
+  <!-- ── DRAWER SIZE CALCULATOR ── -->
+  <div class="drawer-calc-section">
+    <div class="drawer-calc-divider"><span data-fr="Pas sûre de quoi choisir ?" data-ar="لست متأكدة من اختيارك؟">Pas sûre de quoi choisir ?</span></div>
+
+    <div class="drawer-calc-card">
+      <div class="drawer-calc-header">
+        <div class="drawer-calc-icon">📐</div>
+        <div>
+          <div class="drawer-calc-title" data-fr="Calcule selon ton tiroir" data-ar="احسبي حسب درجك">Calcule selon ton tiroir</div>
+          <div class="drawer-calc-sub" data-fr="Indique les dimensions intérieures de ton tiroir, on te propose la meilleure combinaison de boîtes." data-ar="أدخلي القياسات الداخلية لدرجك، سنقترح عليك أفضل تركيبة من الصناديق.">Indique les dimensions intérieures de ton tiroir, on te propose la meilleure combinaison de boîtes.</div>
+        </div>
+      </div>
+
+      <div class="drawer-inputs">
+        <div class="drawer-input-group">
+          <label data-fr="Largeur" data-ar="العرض">Largeur</label>
+          <div class="drawer-input-wrap">
+            <input type="number" id="drawerWidth" placeholder="58" min="1" max="500" inputmode="decimal">
+            <span class="unit-suffix">cm</span>
+          </div>
+        </div>
+        <div class="drawer-input-group">
+          <label data-fr="Profondeur" data-ar="العمق">Profondeur</label>
+          <div class="drawer-input-wrap">
+            <input type="number" id="drawerDepth" placeholder="31" min="1" max="500" inputmode="decimal">
+            <span class="unit-suffix">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-calc-drawer" onclick="calculateDrawerFit()">
+        🔍 <span data-fr="Trouver le bon lot" data-ar="ابحثي عن الطرد المناسب">Trouver le bon lot</span>
+      </button>
+
+      <div class="drawer-result" id="drawerResult">
+        <div class="drawer-result-banner" id="drawerResultBanner"></div>
+        <div class="drawer-result-grid" id="drawerResultGrid"></div>
+        <div class="drawer-result-occupancy" id="drawerResultOccupancy"></div>
+        <button class="btn-apply-drawer" onclick="applyDrawerResult()">
+          ✓ <span data-fr="Utiliser cette combinaison" data-ar="استخدام هذه التركيبة">Utiliser cette combinaison</span>
+        </button>
+      </div>
+    </div>
   </div>
 
 </div>
