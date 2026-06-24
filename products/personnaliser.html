@@ -292,51 +292,21 @@
 const API = API_URL;
 let currentLang = localStorage.getItem('nidly_lang') || 'fr';
 
-// ── Modèle de prix : interpolation calée sur les 3 lots de référence ───────
-// Mini (6 boîtes = 1XL+2L+3M) = 2000 DA
-// Standard (11 boîtes = 2XL+4L+5M) = 3600 DA
-// Mega (22 boîtes = 4XL+8L+10M) = 5800 DA
-// Le prix moyen/boîte diminue avec le volume total (remise progressive),
-// puis se répartit entre XL/L/M selon leur coût d'achat relatif (250/190/70 DA).
-const COST = { xl: 250, l: 190, m: 70 };
-const REF_POINTS = [ [6, 2000], [11, 3600], [22, 5800] ]; // [total_boites, prix_total]
-
+// ── Prix unitaires fixes (vente à la carte, marge ~x1.8 sur le coût d'achat) ─
+const UNIT_PRICES = { xl: 450, l: 340, m: 135 };
 const DIMS = { xl: '19×14×8 cm', l: '19×8×7 cm', m: '10×10×7 cm' };
 const MIN_BOXES = 3;
 
 let qty = { xl: 0, l: 0, m: 0 };
 
-function avgPricePerBox(n) {
-  if (n <= 0) return REF_POINTS[0][1] / REF_POINTS[0][0];
-  if (n <= REF_POINTS[0][0]) return REF_POINTS[0][1] / REF_POINTS[0][0];
-  if (n >= REF_POINTS[REF_POINTS.length-1][0]) {
-    const last = REF_POINTS[REF_POINTS.length-1];
-    return last[1] / last[0];
-  }
-  for (let i = 0; i < REF_POINTS.length - 1; i++) {
-    const [n1, p1] = REF_POINTS[i];
-    const [n2, p2] = REF_POINTS[i+1];
-    if (n >= n1 && n <= n2) {
-      const ppb1 = p1 / n1, ppb2 = p2 / n2;
-      return ppb1 + (ppb2 - ppb1) * (n - n1) / (n2 - n1);
-    }
-  }
-  return REF_POINTS[0][1] / REF_POINTS[0][0];
-}
-
 function computePricing() {
   const n = qty.xl + qty.l + qty.m;
-  if (n === 0) return { unit: { xl:0, l:0, m:0 }, total: 0, totalBoxes: 0 };
-  const total = Math.round(avgPricePerBox(n) * n);
-  const wXl = qty.xl * COST.xl, wL = qty.l * COST.l, wM = qty.m * COST.m;
-  const wTotal = wXl + wL + wM;
-  if (wTotal === 0) return { unit: { xl:0, l:0, m:0 }, total: 0, totalBoxes: n };
-  const unit = {
-    xl: qty.xl ? (total * wXl / wTotal) / qty.xl : 0,
-    l:  qty.l  ? (total * wL  / wTotal) / qty.l  : 0,
-    m:  qty.m  ? (total * wM  / wTotal) / qty.m  : 0
+  const total = qty.xl * UNIT_PRICES.xl + qty.l * UNIT_PRICES.l + qty.m * UNIT_PRICES.m;
+  return {
+    unit: { xl: UNIT_PRICES.xl, l: UNIT_PRICES.l, m: UNIT_PRICES.m },
+    total,
+    totalBoxes: n
   };
-  return { unit, total, totalBoxes: n };
 }
 
 const PRESETS = [
@@ -420,13 +390,6 @@ function updateSummary() {
   document.getElementById('summaryTotalBoxes').textContent = totalBoxes;
   document.getElementById('summaryTotalPrice').textContent = `${totalPrice.toLocaleString('fr-DZ')} DA`;
 
-  // Mise à jour des prix unitaires affichés (changent selon le volume total)
-  const suffix = currentLang === 'ar' ? ' / للوحدة' : ' / unité';
-  if (qty.xl > 0) document.getElementById('unitPriceXL').textContent = `${Math.round(pricing.unit.xl)} DA${suffix}`;
-  if (qty.l > 0)  document.getElementById('unitPriceL').textContent  = `${Math.round(pricing.unit.l)} DA${suffix}`;
-  if (qty.m > 0)  document.getElementById('unitPriceM').textContent  = `${Math.round(pricing.unit.m)} DA${suffix}`;
-  if (totalBoxes === 0) setInitialLabels();
-
   const warningEl = document.getElementById('minWarning');
   const btn = document.getElementById('addCustomBtn');
   if (totalBoxes > 0 && totalBoxes < MIN_BOXES) {
@@ -475,29 +438,13 @@ function addCustomToCart() {
 }
 
 function setInitialLabels() {
-  // Au repos (0 boîte choisie), on affiche le prix de départ (palier Mini) à titre de repère
-  const refPricing = { unit: priceBreakdownAtN(REF_POINTS[0][0]) };
   const suffix = currentLang === 'ar' ? ' / للوحدة' : ' / unité';
-  document.getElementById('unitPriceXL').textContent = `~${Math.round(refPricing.unit.xl)} DA${suffix}`;
-  document.getElementById('unitPriceL').textContent  = `~${Math.round(refPricing.unit.l)} DA${suffix}`;
-  document.getElementById('unitPriceM').textContent  = `~${Math.round(refPricing.unit.m)} DA${suffix}`;
-  document.getElementById('priceRefXL').textContent = `~${Math.round(refPricing.unit.xl)} DA`;
-  document.getElementById('priceRefL').textContent  = `~${Math.round(refPricing.unit.l)} DA`;
-  document.getElementById('priceRefM').textContent  = `~${Math.round(refPricing.unit.m)} DA`;
-}
-
-// Calcule la répartition XL/L/M pour une composition de référence (utilisé au repos)
-function priceBreakdownAtN(n) {
-  // Utilise la composition du lot Mini (1XL+2L+3M) comme répartition type
-  const refQty = { xl: 1, l: 2, m: 3 };
-  const total = avgPricePerBox(n) * n;
-  const wXl = refQty.xl * COST.xl, wL = refQty.l * COST.l, wM = refQty.m * COST.m;
-  const wTotal = wXl + wL + wM;
-  return {
-    xl: (total * wXl / wTotal) / refQty.xl,
-    l:  (total * wL  / wTotal) / refQty.l,
-    m:  (total * wM  / wTotal) / refQty.m
-  };
+  document.getElementById('unitPriceXL').textContent = `${UNIT_PRICES.xl} DA${suffix}`;
+  document.getElementById('unitPriceL').textContent  = `${UNIT_PRICES.l} DA${suffix}`;
+  document.getElementById('unitPriceM').textContent  = `${UNIT_PRICES.m} DA${suffix}`;
+  document.getElementById('priceRefXL').textContent = `${UNIT_PRICES.xl} DA`;
+  document.getElementById('priceRefL').textContent  = `${UNIT_PRICES.l} DA`;
+  document.getElementById('priceRefM').textContent  = `${UNIT_PRICES.m} DA`;
 }
 
 setInitialLabels();
