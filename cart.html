@@ -1195,6 +1195,9 @@ fbq('track', 'PageView');
       });
 
       if (res.ok) {
+        const createdOrder = await res.json();
+        const createdOrderId = createdOrder.id;
+
         try { fbq('track', 'Purchase', { value: totalAmount, currency: 'DZD' }); } catch(e) {}
         localStorage.removeItem('nidly_cart');
         updateNavCount();
@@ -1221,10 +1224,15 @@ fbq('track', 'PageView');
           window.location.href = 'index.html';
         }
 
+        function confirmOrderStatus() {
+          fetch(`${API_URL}/api/orders/${createdOrderId}/confirm`, { method: 'POST' })
+            .catch(() => {});
+        }
+
         document.getElementById('closeSuccessBtn').onclick = closeModal;
         document.getElementById('modalOverlay').onclick    = closeModal;
-        document.getElementById('btnWhatsapp').onclick     = () => setTimeout(closeModal, 900);
-        document.getElementById('btnViber').onclick        = () => setTimeout(closeModal, 900);
+        document.getElementById('btnWhatsapp').onclick     = () => { confirmOrderStatus(); setTimeout(closeModal, 900); };
+        document.getElementById('btnViber').onclick        = () => { confirmOrderStatus(); setTimeout(closeModal, 900); };
 
       } else {
         const err = await res.json().catch(() => ({}));
