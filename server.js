@@ -253,6 +253,39 @@ app.patch('/api/orders/:id/status', authMiddleware, async (req, res) => {
   } catch { res.status(500).json({ message: 'Erreur serveur' }); }
 });
 
+// ─── API Confirmation client (PUBLIQUE, sans auth) ───────────────────────────
+// Déclenchée quand le client clique sur "Envoyer la confirmation" WhatsApp/Viber
+// dans cart.html. Volontairement limitée : ne fait QUE pending → confirmed,
+// rien d'autre (pas de suppression, pas de changement de prix, pas de Yalidine).
+app.post('/api/orders/:id/confirm', async (req, res) => {
+  try {
+    let currentOrder = null;
+
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('orders').select('id, status').eq('id', req.params.id).single();
+      if (error || !data) return res.status(404).json({ message: 'Commande introuvable' });
+      currentOrder = data;
+    } else {
+      currentOrder = ordersFallback.find(o => o.id === req.params.id);
+      if (!currentOrder) return res.status(404).json({ message: 'Commande introuvable' });
+    }
+
+    // On ne confirme que si la commande est encore "pending" — on n'écrase jamais
+    // un statut déjà avancé (confirmed/shipped/delivered) ou annulé.
+    if (currentOrder.status !== 'pending') {
+      return res.json({ ok: true, alreadyHandled: true, status: currentOrder.status });
+    }
+
+    const order = await updateOrderStatus(req.params.id, 'confirmed');
+    if (!order) return res.status(404).json({ message: 'Commande introuvable' });
+    res.json({ ok: true, status: order.status });
+  } catch (err) {
+    console.error('Erreur confirm order:', err);
+    res.status(500).json({ message: 'Erreur serveur' });
+  }
+});
+
 app.delete('/api/orders/:id', authMiddleware, async (req, res) => {
   if (supabase) {
     const { error } = await supabase.from('orders').delete().eq('id', req.params.id);
