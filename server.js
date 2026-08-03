@@ -2,8 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const fs = require('fs');
 const bcrypt = require('bcrypt');
 const https = require('https');
+const multer = require('multer');
 const supabase = require('./config/supabase');
 
 const app = express();
@@ -17,12 +19,42 @@ const YALIDINE_BASE_URL  = 'https://api.guepex.app/v1';
 const YALIDINE_FROM_WILAYA = process.env.YALIDINE_FROM_WILAYA || 'Béjaïa'; // Wilaya expéditeur
 
 let ordersFallback = [];
-let productsFallback = [];
-let lotsFallback = [];
+let productsFallback = [
+  { id: 'demo-1', name: 'Kit Douche Zen', price: 1500, desc: '2 Porte-savonnettes + rangements muraux pour la salle de bain.', image_url: null, badge: null }
+];
+let lotsFallback = [
+  { id: 'demo-lot-1', name: 'Lot Standard', price: 3600, tagline: "L'équilibre parfait entre quantité et prix.", slug: 'lot-standard' }
+];
+// Admin de démo utilisable uniquement quand Supabase n'est pas configuré (dev local)
+let adminsFallback = [
+  { email: 'admin@nidly.dz', password_hash: bcrypt.hashSync('admin123', 10), created_at: new Date().toISOString() }
+];
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
+
+// ─── Upload images produits (multer) ────────────────────────────────────────
+const UPLOAD_DIR = path.join(__dirname, 'assets', 'products');
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, UPLOAD_DIR),
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase();
+      cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`);
+    }
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (/^image\//.test(file.mimetype)) cb(null, true);
+    else cb(new Error('Fichier non supporté — image uniquement'));
+  }
+});
+function deleteUploadedFile(imageUrl) {
+  if (!imageUrl || !imageUrl.startsWith('/assets/products/')) return;
+  fs.unlink(path.join(__dirname, imageUrl), () => {});
+}
 
 // ─── Helper Yalidine (fetch via https natif) ────────────────────────────────
 function yalidineRequest(method, endpoint, body = null) {
@@ -86,6 +118,158 @@ async function getProductById(id) {
     }
   }
   return productsFallback.find(p => p.id === id);
+}
+
+async function createProduct({ name, price, description, badge, image_url }) {
+  if (supabase) {
+    const { data, error } = await supabase.from('products').insert({
+      name, price, description: description || null, badge: badge || null, image_url: image_url || null
+    }).select().single();
+    if (error) throw error;
+    return { id: data.id, name: data.name, price: data.price, desc: data.description, image_url: data.image_url, badge: data.badge };
+  }
+  const product = { id: 'prod-' + Date.now(), name, price, desc: description || null, image_url: image_url || null, badge: badge || null };
+  productsFallback.push(product);
+  return product;
+}
+
+async function updateProduct(id, fields) {
+  if (supabase) {
+    const payload = {};
+    if (fields.name !== undefined) payload.name = fields.name;
+    if (fields.price !== undefined) payload.price = fields.price;
+    if (fields.description !== undefined) payload.description = fields.description;
+    if (fields.badge !== undefined) payload.badge = fields.badge;
+    if (fields.image_url !== undefined) payload.image_url = fields.image_url;
+    const { data, error } = await supabase.from('products').update(payload).eq('id', id).select().single();
+    if (error) throw error;
+    return { id: data.id, name: data.name, price: data.price, desc: data.description, image_url: data.image_url, badge: data.badge };
+  }
+  const product = productsFallback.find(p => String(p.id) === String(id));
+  if (!product) return null;
+  if (fields.name !== undefined) product.name = fields.name;
+  if (fields.price !== undefined) product.price = fields.price;
+  if (fields.description !== undefined) product.desc = fields.description;
+  if (fields.badge !== undefined) product.badge = fields.badge;
+  if (fields.image_url !== undefined) product.image_url = fields.image_url;
+  return product;
+}
+
+async function deleteProduct(id) {
+  if (supabase) {
+    const { data } = await supabase.from('products').select('image_url').eq('id', id).single();
+    const { error } = await supabase.from('products').delete().eq('id', id);
+    if (error) throw error;
+    if (data?.image_url) deleteUploadedFile(data.image_url);
+    return true;
+  }
+  const idx = productsFallback.findIndex(p => String(p.id) === String(id));
+  if (idx === -1) return false;
+  if (productsFallback[idx].image_url) deleteUploadedFile(productsFallback[idx].image_url);
+  productsFallback.splice(idx, 1);
+  return true;
+}
+
+async function createLot({ name, price, tagline, slug }) {
+  if (supabase) {
+    const { data, error } = await supabase.from('product_lots').insert({ name, price, tagline: tagline || null, slug: slug || null }).select().single();
+    if (error) throw error;
+    return { id: data.id, name: data.name, price: data.price, tagline: data.tagline, slug: data.slug };
+  }
+  const lot = { id: 'lot-' + Date.now(), name, price, tagline: tagline || null, slug: slug || null };
+  lotsFallback.push(lot);
+  return lot;
+}
+
+async function updateLot(id, fields) {
+  if (supabase) {
+    const payload = {};
+    ['name', 'price', 'tagline', 'slug'].forEach(k => { if (fields[k] !== undefined) payload[k] = fields[k]; });
+    const { data, error } = await supabase.from('product_lots').update(payload).eq('id', id).select().single();
+    if (error) throw error;
+    return { id: data.id, name: data.name, price: data.price, tagline: data.tagline, slug: data.slug };
+  }
+  const lot = lotsFallback.find(l => String(l.id) === String(id));
+  if (!lot) return null;
+  ['name', 'price', 'tagline', 'slug'].forEach(k => { if (fields[k] !== undefined) lot[k] = fields[k]; });
+  return lot;
+}
+
+async function deleteLot(id) {
+  if (supabase) {
+    const { error } = await supabase.from('product_lots').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+  }
+  const idx = lotsFallback.findIndex(l => String(l.id) === String(id));
+  if (idx === -1) return false;
+  lotsFallback.splice(idx, 1);
+  return true;
+}
+
+function computeStats(orders) {
+  const REVENUE_STATUSES = new Set(['confirmed', 'shipped', 'delivered']);
+  const ordersByStatus = { pending: 0, confirmed: 0, shipped: 0, delivered: 0, cancelled: 0 };
+  let totalRevenue = 0;
+  let revenueCount = 0;
+  let yalidineShippedCount = 0;
+  const byDay = {};
+  const productTotals = {};
+  const wilayaTotals = {};
+
+  for (const o of orders) {
+    const status = o.status || 'pending';
+    if (ordersByStatus[status] !== undefined) ordersByStatus[status]++;
+    const items = Array.isArray(o.items) ? o.items : [];
+    const subtotal = items.reduce((s, i) => s + (Number(i.price) || 0) * (Number(i.qty) || 0), 0);
+    const total = o.total_amount != null ? Number(o.total_amount) : subtotal + Number(o.shipping_price || 0);
+
+    if (REVENUE_STATUSES.has(status)) { totalRevenue += total; revenueCount++; }
+    if (o.yalidine_tracking) yalidineShippedCount++;
+
+    const createdAt = o.created_at || o.createdAt;
+    if (createdAt) {
+      const day = new Date(createdAt).toISOString().slice(0, 10);
+      if (!byDay[day]) byDay[day] = { date: day, orders: 0, revenue: 0 };
+      byDay[day].orders++;
+      if (REVENUE_STATUSES.has(status)) byDay[day].revenue += total;
+    }
+
+    items.forEach(i => {
+      const name = i.name || 'Article';
+      if (!productTotals[name]) productTotals[name] = { name, qty: 0, revenue: 0 };
+      productTotals[name].qty += Number(i.qty) || 0;
+      productTotals[name].revenue += (Number(i.price) || 0) * (Number(i.qty) || 0);
+    });
+
+    if (o.wilaya_name) wilayaTotals[o.wilaya_name] = (wilayaTotals[o.wilaya_name] || 0) + 1;
+  }
+
+  const last30Days = [];
+  const today = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const day = d.toISOString().slice(0, 10);
+    last30Days.push(byDay[day] || { date: day, orders: 0, revenue: 0 });
+  }
+
+  const topProducts = Object.values(productTotals).sort((a, b) => b.qty - a.qty).slice(0, 10);
+  const topWilayas = Object.entries(wilayaTotals)
+    .map(([wilaya, count]) => ({ wilaya, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+
+  return {
+    totalOrders: orders.length,
+    ordersByStatus,
+    totalRevenue,
+    avgOrderValue: revenueCount ? Math.round(totalRevenue / revenueCount) : 0,
+    yalidineShippedCount,
+    last30Days,
+    topProducts,
+    topWilayas
+  };
 }
 
 async function getOrders() {
@@ -209,6 +393,91 @@ app.get('/api/products/:id', async (req, res) => {
   }
 });
 
+// ─── API Produits (Admin — CRUD) ─────────────────────────────────────────────
+app.post('/api/products', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const { name, price, description, badge } = req.body || {};
+    if (!name || price === undefined || price === '') return res.status(400).json({ message: 'Nom et prix requis' });
+    const image_url = req.file ? `/assets/products/${req.file.filename}` : (req.body.image_url || null);
+    const product = await createProduct({ name, price: parseFloat(price), description, badge, image_url });
+    res.status(201).json(product);
+  } catch (err) {
+    console.error('Erreur createProduct:', err);
+    res.status(500).json({ message: 'Erreur lors de la création du produit' });
+  }
+});
+
+app.put('/api/products/:id', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    const body = req.body || {};
+    const fields = {};
+    if (body.name !== undefined) fields.name = body.name;
+    if (body.price !== undefined && body.price !== '') fields.price = parseFloat(body.price);
+    if (body.description !== undefined) fields.description = body.description;
+    if (body.badge !== undefined) fields.badge = body.badge;
+    if (req.file) fields.image_url = `/assets/products/${req.file.filename}`;
+    else if (body.image_url !== undefined) fields.image_url = body.image_url;
+    const product = await updateProduct(req.params.id, fields);
+    if (!product) return res.status(404).json({ message: 'Produit introuvable' });
+    res.json(product);
+  } catch (err) {
+    console.error('Erreur updateProduct:', err);
+    res.status(500).json({ message: 'Erreur lors de la mise à jour du produit' });
+  }
+});
+
+app.delete('/api/products/:id', authMiddleware, async (req, res) => {
+  try {
+    const deleted = await deleteProduct(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Produit introuvable' });
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error('Erreur deleteProduct:', err);
+    res.status(500).json({ message: 'Erreur lors de la suppression du produit' });
+  }
+});
+
+// ─── API Lots (Admin — CRUD) ──────────────────────────────────────────────────
+app.post('/api/lots', authMiddleware, async (req, res) => {
+  try {
+    const { name, price, tagline, slug } = req.body || {};
+    if (!name || price === undefined) return res.status(400).json({ message: 'Nom et prix requis' });
+    const lot = await createLot({ name, price: parseFloat(price), tagline, slug });
+    res.status(201).json(lot);
+  } catch (err) {
+    console.error('Erreur createLot:', err);
+    res.status(500).json({ message: 'Erreur lors de la création du lot' });
+  }
+});
+
+app.put('/api/lots/:id', authMiddleware, async (req, res) => {
+  try {
+    const body = req.body || {};
+    const fields = {};
+    if (body.name !== undefined) fields.name = body.name;
+    if (body.price !== undefined) fields.price = parseFloat(body.price);
+    if (body.tagline !== undefined) fields.tagline = body.tagline;
+    if (body.slug !== undefined) fields.slug = body.slug;
+    const lot = await updateLot(req.params.id, fields);
+    if (!lot) return res.status(404).json({ message: 'Lot introuvable' });
+    res.json(lot);
+  } catch (err) {
+    console.error('Erreur updateLot:', err);
+    res.status(500).json({ message: 'Erreur lors de la mise à jour du lot' });
+  }
+});
+
+app.delete('/api/lots/:id', authMiddleware, async (req, res) => {
+  try {
+    const deleted = await deleteLot(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Lot introuvable' });
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error('Erreur deleteLot:', err);
+    res.status(500).json({ message: 'Erreur lors de la suppression du lot' });
+  }
+});
+
 // ─── API Auth Admin ─────────────────────────────────────────────────────────
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body || {};
@@ -226,6 +495,12 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ message: 'Identifiants incorrects' });
     } catch { return res.status(500).json({ message: 'Erreur serveur' }); }
   }
+  // Mode fallback (dev sans Supabase) — admin de démo : admin@nidly.dz / admin123
+  const fallbackAdmin = adminsFallback.find(a => a.email === email);
+  if (fallbackAdmin && await bcrypt.compare(password, fallbackAdmin.password_hash)) {
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ token });
+  }
   res.status(401).json({ message: 'Identifiants incorrects' });
 });
 
@@ -235,6 +510,87 @@ function authMiddleware(req, res, next) {
   try { req.user = jwt.verify(auth.slice(7), JWT_SECRET); next(); }
   catch { res.status(401).json({ message: 'Token invalide' }); }
 }
+
+// ─── API Admins ─────────────────────────────────────────────────────────────
+app.get('/api/admins', authMiddleware, async (req, res) => {
+  try {
+    if (supabase) {
+      const { data, error } = await supabase.from('admins').select('*').order('created_at', { ascending: true });
+      if (error) throw error;
+      res.json((data || []).map(({ password_hash, ...rest }) => rest));
+    } else {
+      res.json(adminsFallback.map(({ password_hash, ...rest }) => rest));
+    }
+  } catch (err) {
+    console.error('Erreur getAdmins:', err);
+    res.status(500).json({ message: 'Erreur lors du chargement des admins' });
+  }
+});
+
+app.post('/api/admins', authMiddleware, async (req, res) => {
+  const { email, password } = req.body || {};
+  if (!email || !password) return res.status(400).json({ message: 'Email et mot de passe requis' });
+  if (password.length < 6) return res.status(400).json({ message: 'Mot de passe trop court (6 caractères min.)' });
+  try {
+    const password_hash = await bcrypt.hash(password, 10);
+    if (supabase) {
+      const { data: existing } = await supabase.from('admins').select('email').eq('email', email).single();
+      if (existing) return res.status(409).json({ message: 'Cet email est déjà utilisé' });
+      const { data, error } = await supabase.from('admins').insert({ email, password_hash }).select().single();
+      if (error) throw error;
+      const { password_hash: _drop, ...safe } = data;
+      return res.status(201).json(safe);
+    }
+    if (adminsFallback.find(a => a.email === email)) return res.status(409).json({ message: 'Cet email est déjà utilisé' });
+    adminsFallback.push({ email, password_hash, created_at: new Date().toISOString() });
+    res.status(201).json({ email });
+  } catch (err) {
+    console.error('Erreur createAdmin:', err);
+    res.status(500).json({ message: "Erreur lors de la création de l'admin" });
+  }
+});
+
+app.delete('/api/admins/:email', authMiddleware, async (req, res) => {
+  const email = decodeURIComponent(req.params.email);
+  try {
+    if (supabase) {
+      const { count } = await supabase.from('admins').select('*', { count: 'exact', head: true });
+      if ((count || 0) <= 1) return res.status(400).json({ message: 'Impossible de supprimer le dernier admin' });
+      const { error } = await supabase.from('admins').delete().eq('email', email);
+      if (error) throw error;
+      return res.json({ deleted: true });
+    }
+    if (adminsFallback.length <= 1) return res.status(400).json({ message: 'Impossible de supprimer le dernier admin' });
+    const idx = adminsFallback.findIndex(a => a.email === email);
+    if (idx === -1) return res.status(404).json({ message: 'Admin introuvable' });
+    adminsFallback.splice(idx, 1);
+    res.json({ deleted: true });
+  } catch (err) {
+    console.error('Erreur deleteAdmin:', err);
+    res.status(500).json({ message: "Erreur lors de la suppression de l'admin" });
+  }
+});
+
+// ─── API Statistiques ────────────────────────────────────────────────────────
+app.get('/api/stats', authMiddleware, async (req, res) => {
+  try {
+    let orders = [];
+    if (supabase) {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('status, total_amount, shipping_price, items, wilaya_name, created_at, yalidine_tracking')
+        .limit(5000);
+      if (error) throw error;
+      orders = data || [];
+    } else {
+      orders = ordersFallback;
+    }
+    res.json(computeStats(orders));
+  } catch (err) {
+    console.error('Erreur stats:', err);
+    res.status(500).json({ message: 'Erreur lors du calcul des statistiques' });
+  }
+});
 
 // ─── API Commandes (Admin) ──────────────────────────────────────────────────
 app.get('/api/orders', authMiddleware, async (req, res) => {
@@ -251,39 +607,6 @@ app.patch('/api/orders/:id/status', authMiddleware, async (req, res) => {
     if (!order) return res.status(404).json({ message: 'Commande introuvable' });
     res.json(order);
   } catch { res.status(500).json({ message: 'Erreur serveur' }); }
-});
-
-// ─── API Confirmation client (PUBLIQUE, sans auth) ───────────────────────────
-// Déclenchée quand le client clique sur "Envoyer la confirmation" WhatsApp/Viber
-// dans cart.html. Volontairement limitée : ne fait QUE pending → confirmed,
-// rien d'autre (pas de suppression, pas de changement de prix, pas de Yalidine).
-app.post('/api/orders/:id/confirm', async (req, res) => {
-  try {
-    let currentOrder = null;
-
-    if (supabase) {
-      const { data, error } = await supabase
-        .from('orders').select('id, status').eq('id', req.params.id).single();
-      if (error || !data) return res.status(404).json({ message: 'Commande introuvable' });
-      currentOrder = data;
-    } else {
-      currentOrder = ordersFallback.find(o => o.id === req.params.id);
-      if (!currentOrder) return res.status(404).json({ message: 'Commande introuvable' });
-    }
-
-    // On ne confirme que si la commande est encore "pending" — on n'écrase jamais
-    // un statut déjà avancé (confirmed/shipped/delivered) ou annulé.
-    if (currentOrder.status !== 'pending') {
-      return res.json({ ok: true, alreadyHandled: true, status: currentOrder.status });
-    }
-
-    const order = await updateOrderStatus(req.params.id, 'confirmed');
-    if (!order) return res.status(404).json({ message: 'Commande introuvable' });
-    res.json({ ok: true, status: order.status });
-  } catch (err) {
-    console.error('Erreur confirm order:', err);
-    res.status(500).json({ message: 'Erreur serveur' });
-  }
 });
 
 app.delete('/api/orders/:id', authMiddleware, async (req, res) => {

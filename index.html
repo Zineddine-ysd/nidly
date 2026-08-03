@@ -330,26 +330,25 @@ function updateCartCount() {
 // ── Produits ──
 const A = 'assets/';
 const CARD_META = {
-  'Kit Douche Zen':  { href: 'products/kit-douche-zen.html',       img: A + 'sav.jpg',         badge_fr: null,       badge_ar: null,         badgeClass: '' },
-  'Vanity Organisé': { href: 'products/nidlylots.html',            img: A + 'boiteslot11.jpg', badge_fr: 'Coup ❤️', badge_ar: 'الأفضل ❤️', badgeClass: 'new' },
-  'FoodBox2':         { href: 'products/foodbox-lots.html',         img: A + '2compa3.jpg',     badge_fr: 'Nouveau', badge_ar: 'جديد',       badgeClass: 'new' },
-  'FoodBox3':         { href: 'products/foodbox-lots.html',         img: A + '3compa2.jpg',     badge_fr: 'Nouveau', badge_ar: 'جديد',       badgeClass: 'new' },
-
+  'Kit Douche Zen':  { href: 'products/kit-douche-zen.html', img: A + 'sav.jpg',         badge_fr: null,       badge_ar: null,       badgeClass: '' },
+  'Vanity Organisé': { href: 'products/nidlylots.html',      img: A + 'boiteslot11.jpg', badge_fr: 'Coup ❤️', badge_ar: 'الأفضل ❤️', badgeClass: 'new' },
 };
-const metaValues = Object.values(CARD_META);
-
 async function loadProducts() {
   const grid = document.getElementById('productsGrid');
   try {
     const res = await fetch(`${API_URL}/api/products`);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const products = await res.json();
-    grid.innerHTML = products.map((p, i) => {
-      const meta = CARD_META[p.name] || metaValues[i] || { href:'#', img:'', badge_fr:null, badgeClass:'' };
-      const badgeTxt = currentLang === 'ar' ? meta.badge_ar : meta.badge_fr;
+    grid.innerHTML = products.map((p) => {
+      const meta = CARD_META[p.name] || { href: null, img: null, badge_fr: null, badge_ar: null, badgeClass: 'new' };
+      // La vraie photo/le vrai badge du produit (ajouté depuis le panel admin) passent
+      // toujours avant le mapping figé — celui-ci ne sert plus que de filet de sécurité
+      // pour les 2 fiches historiques tant qu'elles n'ont pas d'image_url en base.
+      const img = p.image_url || meta.img || (A + 'demo.png');
+      const badgeTxt = p.badge || (currentLang === 'ar' ? meta.badge_ar : meta.badge_fr);
       const badge = badgeTxt ? `<span class="product-badge ${meta.badgeClass}">${badgeTxt}</span>` : '';
-      return `<a href="${meta.href}" class="product-card" style="text-decoration:none;color:inherit;">
-        <div class="product-img">${badge}<img src="${meta.img}" alt="${p.name}" loading="lazy"></div>
+      const inner = `
+        <div class="product-img">${badge}<img src="${img}" alt="${p.name}" loading="lazy"></div>
         <div class="product-info">
           <div class="product-name">${p.name}</div>
           <p class="product-desc">${p.desc || ''}</p>
@@ -357,8 +356,12 @@ async function loadProducts() {
             <span class="product-price">${(p.price||0).toLocaleString('fr-DZ')} DA</span>
             <button class="product-add" type="button">+</button>
           </div>
-        </div>
-      </a>`;
+        </div>`;
+      // Pas de fiche dédiée pour ce produit → carte non cliquable (plus de lien mort vers "#"),
+      // seul le bouton "+" reste actif pour l'ajout direct au panier.
+      return meta.href
+        ? `<a href="${meta.href}" class="product-card" style="text-decoration:none;color:inherit;">${inner}</a>`
+        : `<div class="product-card" style="cursor:default;">${inner}</div>`;
     }).join('');
   } catch (err) {
     console.warn('API indisponible', err.message);

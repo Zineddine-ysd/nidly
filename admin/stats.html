@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statistiques — Admin Nidly</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FAF7F2;
+  --cream2: #F3EDE3;
+  --terracotta: #C47B6B;
+  --terracotta2: #A85E50;
+  --bark: #7A5C52;
+  --charcoal: #2C2420;
+  --sage: #A8B5A0;
+  --sage2: #728B68;
+  --white: #FFFFFF;
+  --border: rgba(196,123,107,0.18);
+  --shadow: 0 4px 24px rgba(44,36,32,0.07);
+  --shadow-lg: 0 12px 40px rgba(44,36,32,0.12);
+  --radius: 0.9rem;
+  --radius-sm: 0.5rem;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--charcoal); min-height: 100vh; }
+
+/* ── Nav ── */
+.admin-nav {
+  background: var(--charcoal); color: white;
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; letter-spacing: 0.04em; color: var(--cream); flex-shrink: 0; }
+.nav-brand span { color: var(--terracotta); }
+.admin-nav { flex-wrap: wrap; height: auto; min-height: 56px; gap: 0.6rem 1.2rem; padding: 0.7rem 2rem; }
+.nav-links-admin { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+.nav-link { color: rgba(255,255,255,0.62); text-decoration: none; font-size: 0.82rem; transition: color .2s; padding-bottom: 0.2rem; border-bottom: 2px solid transparent; white-space: nowrap; }
+.nav-link:hover { color: white; }
+.nav-link.active { color: white; font-weight: 600; border-bottom-color: var(--terracotta); }
+.nav-right { display: flex; align-items: center; gap: 1.2rem; margin-left: auto; }
+.nav-right a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.82rem; transition: color .2s; white-space: nowrap; }
+.nav-right a:hover { color: white; }
+.nav-logout { color: #D4A5A0 !important; cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; }
+.nav-logout:hover { color: #EFA5A0 !important; }
+@media (max-width: 760px) { .nav-links-admin { order: 3; width: 100%; justify-content: flex-start; gap: 1rem; } }
+
+/* ── Layout ── */
+.container { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.4rem; flex-wrap: wrap; gap: 0.8rem; }
+.page-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--charcoal); }
+.page-sub { font-size: 0.85rem; color: var(--bark); margin-top: 0.15rem; }
+
+/* ── Stats tiles ── */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+@media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.stat-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 1.1rem 1.3rem; border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.stat-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--bark); font-weight: 500; margin-bottom: 0.35rem; }
+.stat-value { font-size: 1.9rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--charcoal); line-height: 1; }
+.stat-value.terracotta { color: var(--terracotta); }
+
+/* ── Panels ── */
+.panel {
+  background: var(--white); border-radius: var(--radius);
+  padding: 1.4rem 1.5rem; margin-bottom: 1.2rem;
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+}
+.panel-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--charcoal); margin-bottom: 0.2rem; }
+.panel-sub { font-size: 0.78rem; color: var(--bark); margin-bottom: 1.1rem; }
+
+.panel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+@media (max-width: 860px) { .panel-row { grid-template-columns: 1fr; } }
+
+/* ── Status bars ── */
+.status-bars { display: flex; flex-direction: column; gap: 0.8rem; }
+.status-bar-row { display: grid; grid-template-columns: 100px 1fr 42px; align-items: center; gap: 0.7rem; }
+.status-bar-label { font-size: 0.8rem; color: var(--charcoal); font-weight: 500; }
+.status-bar-track { position: relative; height: 20px; background: var(--cream2); border-radius: 6px; overflow: hidden; }
+.status-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; transition: width .5s ease; min-width: 2px; }
+.status-bar-count { font-size: 0.82rem; color: var(--bark); font-weight: 600; text-align: right; }
+
+/* ── Charts ── */
+.chart-wrap { position: relative; }
+.chart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart-hover-target { fill: transparent; cursor: pointer; }
+.chart-tooltip {
+  position: absolute; pointer-events: none; z-index: 20;
+  background: var(--charcoal); color: white; padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm); font-size: 0.78rem; line-height: 1.4;
+  box-shadow: var(--shadow-lg); opacity: 0; transition: opacity .12s;
+  white-space: nowrap; transform: translate(-50%, -100%);
+}
+.chart-tooltip.show { opacity: 1; }
+.chart-tooltip .tt-value { font-size: 1rem; font-weight: 600; }
+.chart-tooltip .tt-label { color: rgba(255,255,255,0.65); font-size: 0.72rem; margin-top: 0.1rem; }
+.chart-axis-label { font-family: 'DM Sans', sans-serif; font-size: 9px; fill: var(--bark); }
+.crosshair-line { stroke: var(--bark); stroke-width: 1; stroke-dasharray: none; opacity: 0; pointer-events: none; }
+.crosshair-dot { opacity: 0; pointer-events: none; }
+
+/* ── Horizontal bar charts (top products / wilayas) ── */
+.hbar-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.hbar-row { display: flex; flex-direction: column; gap: 0.3rem; }
+.hbar-name { font-size: 0.8rem; color: var(--charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hbar-track { position: relative; height: 18px; background: var(--cream2); border-radius: 5px; overflow: visible; }
+.hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; cursor: pointer; }
+.hbar-fill:hover { filter: brightness(0.92); }
+.hbar-val { position: absolute; top: 50%; transform: translateY(-50%); font-size: 0.76rem; font-weight: 600; color: var(--charcoal); }
+
+/* ── Empty / Loading ── */
+.empty-state { text-align: center; padding: 4rem 2rem; color: var(--bark); }
+.empty-state .ico { font-size: 2.4rem; opacity: 0.4; margin-bottom: 0.8rem; }
+.empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--charcoal); margin-bottom: 0.4rem; }
+.loading { display: flex; align-items: center; justify-content: center; gap: 0.7rem; padding: 3rem; color: var(--bark); }
+.spinner { width: 22px; height: 22px; border: 2px solid var(--border); border-top-color: var(--terracotta); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  background: var(--charcoal); color: white;
+  padding: 0.65rem 1.3rem; border-radius: 2rem;
+  font-size: 0.83rem; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 9999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="admin-nav">
+  <div class="nav-brand">Nidly <span>Admin</span></div>
+  <div class="nav-links-admin">
+    <a href="orders.html" class="nav-link">Commandes</a>
+    <a href="products.html" class="nav-link">Produits</a>
+    <a href="admins.html" class="nav-link">Admins</a>
+    <a href="stats.html" class="nav-link active">Statistiques</a>
+    <a href="deliveries.html" class="nav-link">Livraisons</a>
+  </div>
+  <div class="nav-right">
+    <a href="../index.html" target="_blank">Voir la boutique ↗</a>
+    <button class="nav-logout" onclick="logout()">Déconnexion</button>
+  </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<div class="container">
+
+  <div class="top-bar">
+    <div>
+      <h1 class="page-title">Statistiques</h1>
+      <div class="page-sub">Vue d'ensemble de l'activité de la boutique</div>
+    </div>
+  </div>
+
+  <div id="statsContent">
+    <div class="loading"><div class="spinner"></div> Chargement des statistiques...</div>
+  </div>
+
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────────
+const API_URL = (() => {
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    return 'http://localhost:3000';
+  return 'https://www.everglint.store';
+})();
+
+const token = localStorage.getItem('nidly_admin_token');
+if (!token) window.location.href = 'login.html';
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function showToast(msg, duration = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+function logout() {
+  localStorage.removeItem('nidly_admin_token');
+  window.location.href = 'login.html';
+}
+
+// ── Status helpers (couleurs reprises de orders.html) ────────────────────────
+const STATUS_META = {
+  pending:   { label: 'En attente', bg: '#FFF3E0', fg: '#BF360C' },
+  confirmed: { label: 'Confirmée',  bg: '#E8F5E9', fg: '#1B5E20' },
+  shipped:   { label: 'Expédiée',   bg: '#E3F2FD', fg: '#0D47A1' },
+  delivered: { label: 'Livrée',     bg: '#D6E0D2', fg: '#33691E' },
+  cancelled: { label: 'Annulée',    bg: '#FAFAFA', fg: '#616161' }
+};
+const STATUS_ORDER = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+
+function fmtDA(n) {
+  return `${Math.round(n || 0).toLocaleString('fr-FR')} DA`;
+}
+function fmtDateShort(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+}
+function fmtDateFull(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+function niceMax(v) {
+  if (v <= 0) return 1;
+  const mag = Math.pow(10, Math.floor(Math.log10(v)));
+  const norm = v / mag;
+  let step;
+  if (norm <= 1) step = 1;
+  else if (norm <= 2) step = 2;
+  else if (norm <= 5) step = 5;
+  else step = 10;
+  return step * mag;
+}
+
+// ── Load ─────────────────────────────────────────────────────────────────────
+async function loadStats() {
+  const el = document.getElementById('statsContent');
+  try {
+    const res = await fetch(`${API_URL}/api/stats`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (res.status === 401) {
+      localStorage.removeItem('nidly_admin_token');
+      window.location.href = 'login.html';
+      return;
+    }
+    if (!res.ok) throw new Error('bad response');
+    const stats = await res.json();
+    renderStats(stats);
+  } catch (err) {
+    el.innerHTML = '<div class="empty-state">Impossible de charger les statistiques. Vérifiez que le backend est démarré.</div>';
+  }
+}
+
+function renderStats(stats) {
+  const el = document.getElementById('statsContent');
+
+  if (!stats || !stats.totalOrders) {
+    el.innerHTML = `
+      <div class="panel">
+        <div class="empty-state">
+          <div class="ico">📊</div>
+          <h3>Pas encore de données</h3>
+          <p>Reviens quand tu auras reçu tes premières commandes.</p>
+        </div>
+      </div>`;
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="panel" id="statusPanel">
+      <div class="panel-title">Répartition par statut</div>
+      <div class="panel-sub">Nombre de commandes par statut</div>
+      <div class="status-bars" id="statusBars"></div>
+    </div>
+    <div class="panel-row">
+      <div class="panel">
+        <div class="panel-title">Commandes / jour</div>
+        <div class="panel-sub">30 derniers jours</div>
+        <div class="chart-wrap" id="ordersChartWrap"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Chiffre d'affaires / jour</div>
+        <div class="panel-sub">30 derniers jours</div>
+        <div class="chart-wrap" id="revenueChartWrap"></div>
+      </div>
+    </div>
+    <div class="panel-row">
+      <div class="panel">
+        <div class="panel-title">Top produits</div>
+        <div class="panel-sub">Par quantité vendue</div>
+        <div class="hbar-list" id="topProductsList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Top wilayas</div>
+        <div class="panel-sub">Par nombre de commandes</div>
+        <div class="hbar-list" id="topWilayasList"></div>
+      </div>
+    </div>
+  `;
+
+  renderTiles(stats);
+  renderStatusBars(stats.ordersByStatus || {});
+  renderOrdersChart(stats.last30Days || []);
+  renderRevenueChart(stats.last30Days || []);
+  renderHBars('topProductsList', (stats.topProducts || []).map(p => ({ name: p.name, value: p.qty, extra: fmtDA(p.revenue) })), 'var(--terracotta)', 'commande(s)');
+  renderHBars('topWilayasList', (stats.topWilayas || []).map(w => ({ name: w.wilaya, value: w.count })), 'var(--bark)', 'commande(s)');
+}
+
+// ── Stat tiles ────────────────────────────────────────────────────────────────
+function renderTiles(stats) {
+  const grid = document.getElementById('statsGrid');
+  grid.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Commandes totales</div>
+      <div class="stat-value">${(stats.totalOrders || 0).toLocaleString('fr-FR')}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Chiffre d'affaires</div>
+      <div class="stat-value terracotta">${fmtDA(stats.totalRevenue)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Panier moyen</div>
+      <div class="stat-value">${fmtDA(stats.avgOrderValue)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Colis expédiés (Yalidine)</div>
+      <div class="stat-value">${(stats.yalidineShippedCount || 0).toLocaleString('fr-FR')}</div>
+    </div>
+  `;
+}
+
+// ── Status bars ───────────────────────────────────────────────────────────────
+function renderStatusBars(byStatus) {
+  const wrap = document.getElementById('statusBars');
+  const max = Math.max(1, ...STATUS_ORDER.map(s => byStatus[s] || 0));
+  wrap.innerHTML = STATUS_ORDER.map(s => {
+    const count = byStatus[s] || 0;
+    const meta = STATUS_META[s];
+    const pct = Math.round((count / max) * 100);
+    return `
+      <div class="status-bar-row">
+        <div class="status-bar-label">${meta.label}</div>
+        <div class="status-bar-track">
+          <div class="status-bar-fill" style="width:${pct}%; background:${meta.fg}; opacity:0.85;"></div>
+        </div>
+        <div class="status-bar-count">${count}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── Horizontal bar lists (top produits / wilayas) ────────────────────────────
+function renderHBars(containerId, items, color, unitLabel) {
+  const container = document.getElementById(containerId);
+  if (!items.length) {
+    container.innerHTML = '<div class="empty-state" style="padding:2rem;">Pas de données pour le moment.</div>';
+    return;
+  }
+  const max = Math.max(...items.map(i => i.value), 1);
+  container.innerHTML = items.map(item => {
+    const pct = Math.max(2, Math.round((item.value / max) * 100));
+    const tooltip = item.extra ? `${item.value} ${unitLabel} · ${item.extra}` : `${item.value} ${unitLabel}`;
+    return `
+      <div class="hbar-row">
+        <div class="hbar-name" title="${item.name}">${item.name}</div>
+        <div class="hbar-track">
+          <div class="hbar-fill" style="width:${pct}%; background:${color};" title="${item.name} — ${tooltip}"></div>
+          <div class="hbar-val" style="left:calc(${pct}% + 8px);">${item.value.toLocaleString('fr-FR')}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Orders/day bar chart (SVG, vanilla) ──────────────────────────────────────
+function renderOrdersChart(days) {
+  const wrap = document.getElementById('ordersChartWrap');
+  const W = 640, H = 220;
+  const padL = 30, padR = 10, padT = 14, padB = 26;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+
+  const values = days.map(d => d.orders || 0);
+  const rawMax = Math.max(...values, 0);
+  const yMax = niceMax(rawMax || 1);
+
+  const n = days.length || 1;
+  const slot = plotW / n;
+  const barW = Math.max(2, Math.min(24, slot * 0.6));
+  const gap = 2;
+
+  function yFor(v) { return padT + plotH - (v / yMax) * plotH; }
+
+  // Gridlines: 0, mid, max
+  const gridVals = [0, yMax / 2, yMax];
+  const gridLines = gridVals.map(v => {
+    const y = yFor(v);
+    return `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(44,36,32,0.09)" stroke-width="1"/>
+      <text class="chart-axis-label" x="${padL - 6}" y="${y + 3}" text-anchor="end">${Math.round(v)}</text>`;
+  }).join('');
+
+  let bars = '';
+  let hoverTargets = '';
+  days.forEach((d, i) => {
+    const cx = padL + i * slot + slot / 2;
+    const x = cx - barW / 2;
+    const val = d.orders || 0;
+    const y = yFor(val);
+    const h = Math.max(0, padT + plotH - y);
+    bars += `<rect class="bar-mark" data-idx="${i}" x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${barW.toFixed(2)}" height="${h.toFixed(2)}" rx="4" ry="4" fill="var(--terracotta)"/>`;
+    // baseline square corner: draw a small rect under to square the bottom (cover rounded bottom corners)
+    if (h > 4) {
+      bars += `<rect x="${x.toFixed(2)}" y="${(padT + plotH - 4).toFixed(2)}" width="${barW.toFixed(2)}" height="4" fill="var(--terracotta)"/>`;
+    }
+    const hoverX = cx - slot / 2 + gap / 2;
+    const hoverW = Math.max(1, slot - gap);
+    hoverTargets += `<rect class="chart-hover-target" data-idx="${i}" x="${hoverX.toFixed(2)}" y="${padT}" width="${hoverW.toFixed(2)}" height="${plotH}"/>`;
+  });
+
+  // x-axis labels: first, middle, last only
+  const labelIdxs = [0, Math.floor(n / 2), n - 1];
+  let xLabels = '';
+  labelIdxs.forEach(i => {
+    if (i < 0 || i >= n) return;
+    const cx = padL + i * slot + slot / 2;
+    xLabels += `<text class="chart-axis-label" x="${cx.toFixed(2)}" y="${H - 6}" text-anchor="middle">${fmtDateShort(days[i].date)}</text>`;
+  });
+
+  const svg = `
+    <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" id="ordersChartSvg">
+      ${gridLines}
+      ${bars}
+      ${hoverTargets}
+      ${xLabels}
+    </svg>
+    <div class="chart-tooltip" id="ordersTooltip"></div>`;
+  wrap.innerHTML = svg;
+
+  const svgEl = document.getElementById('ordersChartSvg');
+  const tooltip = document.getElementById('ordersTooltip');
+  svgEl.querySelectorAll('.chart-hover-target').forEach(target => {
+    target.addEventListener('mouseenter', () => showBarTooltip(target, days, wrap, tooltip, svgEl, 'orders', 'commande(s)'));
+    target.addEventListener('mousemove', () => showBarTooltip(target, days, wrap, tooltip, svgEl, 'orders', 'commande(s)'));
+    target.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+  });
+}
+
+function showBarTooltip(target, days, wrap, tooltip, svgEl, field, unit) {
+  const idx = parseInt(target.getAttribute('data-idx'), 10);
+  const d = days[idx];
+  if (!d) return;
+  const val = field === 'orders' ? (d.orders || 0) : (d.revenue || 0);
+  const valStr = field === 'orders' ? `${val}` : fmtDA(val);
+  tooltip.innerHTML = `<div class="tt-value">${valStr}${field === 'orders' ? ' ' + unit : ''}</div><div class="tt-label">${fmtDateFull(d.date)}</div>`;
+  tooltip.classList.add('show');
+  positionTooltip(target, tooltip, svgEl, wrap);
+}
+
+function positionTooltip(target, tooltip, svgEl, wrap) {
+  const rect = target.getBoundingClientRect();
+  const wrapRect = wrap.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2 - wrapRect.left;
+  const cy = rect.top - wrapRect.top;
+  tooltip.style.left = `${cx}px`;
+  tooltip.style.top = `${Math.max(cy, 30)}px`;
+}
+
+// ── Revenue/day line+area chart (SVG, vanilla) ───────────────────────────────
+function renderRevenueChart(days) {
+  const wrap = document.getElementById('revenueChartWrap');
+  const W = 640, H = 220;
+  const padL = 44, padR = 10, padT = 14, padB = 26;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+
+  const values = days.map(d => d.revenue || 0);
+  const rawMax = Math.max(...values, 0);
+  const yMax = niceMax(rawMax || 1);
+
+  const n = days.length || 1;
+  const slot = n > 1 ? plotW / (n - 1) : plotW;
+
+  function xFor(i) { return padL + i * slot; }
+  function yFor(v) { return padT + plotH - (v / yMax) * plotH; }
+
+  const gridVals = [0, yMax / 2, yMax];
+  const gridLines = gridVals.map(v => {
+    const y = yFor(v);
+    return `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="rgba(44,36,32,0.09)" stroke-width="1"/>
+      <text class="chart-axis-label" x="${padL - 6}" y="${y + 3}" text-anchor="end">${Math.round(v).toLocaleString('fr-FR')}</text>`;
+  }).join('');
+
+  const points = days.map((d, i) => [xFor(i), yFor(d.revenue || 0)]);
+  const linePath = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(2) + ',' + p[1].toFixed(2)).join(' ');
+  const areaPath = linePath +
+    ` L${points[points.length - 1][0].toFixed(2)},${(padT + plotH).toFixed(2)}` +
+    ` L${points[0][0].toFixed(2)},${(padT + plotH).toFixed(2)} Z`;
+
+  const lastPoint = points[points.length - 1];
+
+  let hoverTargets = '';
+  days.forEach((d, i) => {
+    const cx = xFor(i);
+    const hoverX = cx - slot / 2;
+    const hoverW = slot;
+    hoverTargets += `<rect class="chart-hover-target" data-idx="${i}" x="${hoverX.toFixed(2)}" y="${padT}" width="${hoverW.toFixed(2)}" height="${plotH}"/>`;
+  });
+
+  const labelIdxs = [0, Math.floor(n / 2), n - 1];
+  let xLabels = '';
+  labelIdxs.forEach(i => {
+    if (i < 0 || i >= n) return;
+    const cx = xFor(i);
+    xLabels += `<text class="chart-axis-label" x="${cx.toFixed(2)}" y="${H - 6}" text-anchor="middle">${fmtDateShort(days[i].date)}</text>`;
+  });
+
+  const svg = `
+    <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" id="revenueChartSvg">
+      ${gridLines}
+      <path d="${areaPath}" fill="var(--terracotta)" opacity="0.1" stroke="none"/>
+      <path d="${linePath}" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="${lastPoint[0].toFixed(2)}" cy="${lastPoint[1].toFixed(2)}" r="4.5" fill="var(--terracotta)" stroke="var(--white)" stroke-width="2"/>
+      <line class="crosshair-line" id="revCrosshair" x1="0" y1="${padT}" x2="0" y2="${padT + plotH}"/>
+      <circle class="crosshair-dot" id="revCrosshairDot" r="5" fill="var(--terracotta)" stroke="var(--white)" stroke-width="2"/>
+      ${hoverTargets}
+      ${xLabels}
+    </svg>
+    <div class="chart-tooltip" id="revenueTooltip"></div>`;
+  wrap.innerHTML = svg;
+
+  const svgEl = document.getElementById('revenueChartSvg');
+  const tooltip = document.getElementById('revenueTooltip');
+  const crosshair = document.getElementById('revCrosshair');
+  const crosshairDot = document.getElementById('revCrosshairDot');
+
+  svgEl.querySelectorAll('.chart-hover-target').forEach(target => {
+    const idx = parseInt(target.getAttribute('data-idx'), 10);
+    const px = xFor(idx), py = yFor(days[idx].revenue || 0);
+    target.addEventListener('mouseenter', () => showLineTooltip(idx));
+    target.addEventListener('mousemove', () => showLineTooltip(idx));
+    target.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('show');
+      crosshair.style.opacity = '0';
+      crosshairDot.style.opacity = '0';
+    });
+
+    function showLineTooltip(i) {
+      const d = days[i];
+      crosshair.setAttribute('x1', px); crosshair.setAttribute('x2', px);
+      crosshair.style.opacity = '1';
+      crosshairDot.setAttribute('cx', px); crosshairDot.setAttribute('cy', py);
+      crosshairDot.style.opacity = '1';
+      tooltip.innerHTML = `<div class="tt-value">${fmtDA(d.revenue || 0)}</div><div class="tt-label">${fmtDateFull(d.date)}</div>`;
+      tooltip.classList.add('show');
+      const rect = svgEl.getBoundingClientRect();
+      const wrapRect = wrap.getBoundingClientRect();
+      const scaleX = rect.width / W;
+      const scaleY = rect.height / H;
+      const screenX = rect.left - wrapRect.left + px * scaleX;
+      const screenY = rect.top - wrapRect.top + py * scaleY;
+      tooltip.style.left = `${screenX}px`;
+      tooltip.style.top = `${Math.max(screenY, 30)}px`;
+    }
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadStats();
+</script>
+</body>
+</html>

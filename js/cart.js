@@ -23,10 +23,7 @@ function addToCart(productId, name, price, qty, img = '') {
 }
 
 // Gestion des formulaires d'ajout au panier
-document.querySelectorAll
-
-
-('.add-form').forEach(form => {
+document.querySelectorAll('.add-form').forEach(form => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const id = form.dataset.productId;

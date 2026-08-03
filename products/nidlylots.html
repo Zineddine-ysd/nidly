@@ -145,6 +145,28 @@
     .pp-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease; }
     .pp-item:hover img { transform:scale(1.04); }
     .pp-item .pp-label { position:absolute; bottom:.5rem; left:.5rem; background:rgba(44,36,32,.5); backdrop-filter:blur(5px); border-radius:1rem; padding:.22rem .65rem; font-size:.62rem; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.9); }
+    .pp-item { cursor:zoom-in; }
+
+    /* ── PHOTOS LIGHTBOX ── */
+    .pp-lightbox { position:fixed; inset:0; z-index:10000; background:rgba(44,36,32,.82); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s ease; padding:1.2rem; }
+    .pp-lightbox.active { opacity:1; pointer-events:all; }
+    .pp-lb-overlay { position:absolute; inset:0; z-index:0; }
+    .pp-lb-figure { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:.9rem; max-width:min(92vw,900px); max-height:92vh; animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes popIn { from{opacity:0;transform:scale(.94)} to{opacity:1;transform:scale(1)} }
+    .pp-lb-figure img { max-width:100%; max-height:72vh; width:auto; height:auto; object-fit:contain; border-radius:1rem; box-shadow:0 20px 60px rgba(0,0,0,.35); background:var(--blush); }
+    .pp-lb-caption { background:rgba(250,247,242,.92); backdrop-filter:blur(6px); border-radius:2rem; padding:.4rem 1.1rem; font-size:.75rem; letter-spacing:.03em; color:var(--char); text-align:center; }
+    .pp-lb-close { position:absolute; top:-.2rem; right:-.2rem; z-index:2; width:38px; height:38px; border-radius:50%; border:none; background:rgba(250,247,242,.92); color:var(--char); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s,transform .2s; }
+    .pp-lb-close:hover { background:white; transform:scale(1.08); }
+    .pp-lb-nav { position:fixed; top:50%; transform:translateY(-50%); z-index:2; width:46px; height:46px; border-radius:50%; border:none; background:rgba(250,247,242,.85); color:var(--char); font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s,transform .2s; }
+    .pp-lb-nav:hover { background:white; transform:translateY(-50%) scale(1.08); }
+    .pp-lb-prev { left:1rem; }
+    .pp-lb-next { right:1rem; }
+    @media (max-width:640px) {
+      .pp-lb-nav { width:38px; height:38px; font-size:1.1rem; }
+      .pp-lb-prev { left:.4rem; }
+      .pp-lb-next { right:.4rem; }
+    }
+    html[dir="rtl"] .pp-lb-close { right:auto; left:-.2rem; }
 
     /* ── NOTICE ── */
     .notice-wrap { padding:0 1.2rem 2.5rem; max-width:760px; margin:0 auto; }
@@ -252,7 +274,7 @@
     html[dir="rtl"] .gal-dots { right:auto; left:.7rem; }
     html[dir="rtl"] .pop-ribbon { font-family:'Cairo',sans-serif; }
     html[dir="rtl"] .sec-title,html[dir="rtl"] .sec-label,html[dir="rtl"] .lot-name,html[dir="rtl"] .lot-tagline,html[dir="rtl"] .dim-name { font-family:'Cairo',sans-serif; }
-    html[dir="rtl"] .-section thead th:first-child { text-align:right; }
+    html[dir="rtl"] .compare-section thead th:first-child { text-align:right; }
     html[dir="rtl"] .compare-section tbody td:first-child { text-align:right; }
     html[dir="rtl"] .wa-float { right:auto; left:1.2rem; }
     html[dir="rtl"] .wa-float-bubble { border-radius:1rem 1rem 1rem 0; }
@@ -291,7 +313,7 @@
       .details-badges { gap:.7rem; }
       .detail-badge { flex:1 1 calc(50% - .35rem); }
       .product-photos { padding:0 3rem 3.5rem; max-width:1200px; }
-      .product-photos-grid { grid-template-columns:1fr 1fr; gap:.85rem; }
+      .product-photos-grid { grid-template-columns:repeat(4,1fr); gap:.85rem; }
       .pp-item { aspect-ratio:4/3; }
       .notice-wrap { padding:0 3rem 2.5rem; max-width:1200px; }
       .wa-section { padding:0 3rem 4rem; max-width:1200px; margin:0 auto; }
@@ -368,11 +390,11 @@
 <!-- BANNER EXCUSE XL -->
 <div class="excuse-banner">
   <div class="excuse-inner">
-    <div class="excuse-icon">🎉</div>
+    <div class="excuse-icon">🔧</div>
     <div>
-      <div class="excuse-title" data-fr="Nos boîtes XL sont de retour !" data-ar="صناديق XL عادت من جديد!">Nos boîtes XL sont de retour !</div>
-      <div class="excuse-text" data-fr="Bonne nouvelle : nos boîtes <strong>XL 19×14×8 cm</strong> sont de nouveau disponibles ! Merci pour votre patience pendant cette courte interruption." data-ar="خبر سار: صناديق <strong>XL 19×14×8 سم</strong> متوفرة من جديد! شكراً على صبركم خلال هذا الانقطاع القصير.">Bonne nouvelle : nos boîtes <strong>XL 19×14×8 cm</strong> sont de nouveau disponibles ! Merci pour votre patience pendant cette courte interruption.</div>
-      <div class="excuse-new" data-fr="✅ Disponible dès maintenant dans tous nos lots" data-ar="✅ متوفرة الآن في جميع طرودنا">✅ Disponible dès maintenant dans tous nos lots</div>
+      <div class="excuse-title" data-fr="Une petite nouveauté sur nos boîtes XL" data-ar="تحديث بخصوص صناديق XL">Une petite nouveauté sur nos boîtes XL</div>
+      <div class="excuse-text" data-fr="Nous nous excusons pour la gêne occasionnée — nos boîtes <strong>XL 19×14×8 cm</strong> sont temporairement suspendues suite à un problème technique chez notre fabricant. Elles reviennent très bientôt ! En attendant, nous les avons remplacées par un nouveau modèle tout aussi pratique." data-ar="نعتذر عن الإزعاج — صناديق <strong>XL 19×14×8 سم</strong> متوقفة مؤقتاً بسبب مشكلة تقنية لدى المصنّع. ستعود قريباً جداً! في الوقت الحالي، استبدلناها بموديل جديد بنفس الجودة.">Nous nous excusons pour la gêne occasionnée — nos boîtes <strong>XL 19×14×8 cm</strong> sont temporairement suspendues suite à un problème technique chez notre fabricant. Elles reviennent très bientôt ! En attendant, nous les avons remplacées par un nouveau modèle tout aussi pratique.</div>
+      <div class="excuse-new" data-fr="✨ Nouveau modèle XL : 14×14×7.5 cm — format carré, même utilité" data-ar="✨ موديل XL جديد : 14×14×7.5 سم — شكل مربع، نفس الفائدة">✨ Nouveau modèle XL : 14×14×7.5 cm — format carré, même utilité</div>
     </div>
   </div>
 </div>
@@ -399,11 +421,12 @@
     <div class="dim-card">
       <div class="dim-card-left">
         <div class="dim-box xl">XL</div>
-        <div class="dim-pill">19 × 14 × 8 cm</div>
+        <div class="dim-pill new">14 × 14 × 7.5 cm</div>
       </div>
       <div class="dim-info">
-        <div class="dim-name" data-fr="Extra Large" data-ar="إكسترا لارج">Extra Large</div>
-        <div class="dim-details" data-fr="Format <strong>grande capacité</strong> pour les articles volumineux. Idéale pour médicaments, nourriture, épices, sous-vêtements et maquillage. S'empile parfaitement sur les boîtes L." data-ar="مقاس <strong>سعة كبيرة</strong> للأغراض الضخمة. مثالية للأدوية، الطعام، التوابل، الملابس الداخلية والمكياج.">Format <strong>grande capacité</strong> pour les articles volumineux. Idéale pour médicaments, nourriture, épices, sous-vêtements et maquillage. S'empile parfaitement sur les boîtes L.</div>
+        <div class="dim-name" data-fr="Extra Large — nouveau modèle" data-ar="إكسترا لارج — موديل جديد">Extra Large — nouveau modèle</div>
+        <div class="dim-details" data-fr="Format carré <strong>grande capacité</strong> pour les articles volumineux. Idéale pour médicaments, nourriture, épices, sous-vêtements et maquillage. S'empile parfaitement sur les boîtes L." data-ar="مقاس مربع <strong>سعة كبيرة</strong> للأغراض الضخمة. مثالية للأدوية، الطعام، التوابل، الملابس الداخلية والمكياج.">Format carré <strong>grande capacité</strong> pour les articles volumineux. Idéale pour médicaments, nourriture, épices, sous-vêtements et maquillage. S'empile parfaitement sur les boîtes L.</div>
+        <div class="dim-new-tag" data-fr="🔄 Remplace temporairement le modèle 19×14×8" data-ar="🔄 يستبدل مؤقتاً موديل 19×14×8">🔄 Remplace temporairement le modèle 19×14×8</div>
       </div>
     </div>
     <div class="dim-card">
@@ -441,14 +464,31 @@
     </div>
   </div>
 </section>
+
 <!-- PRODUCT PHOTOS -->
 <div class="product-photos" id="photos-reels">
   <span class="sec-label" data-fr="Photos réelles du produit" data-ar="صور حقيقية للمنتج">Photos réelles du produit</span>
-  <div class="product-photos-grid">
-    <div class="pp-item"><img src="../assets/phreel1.jpg" alt="Boîtes Nidly — photo réelle 1" loading="lazy"><span class="pp-label" data-fr="Vue d'ensemble" data-ar="نظرة عامة">Vue d'ensemble</span></div>
-    <div class="pp-item"><img src="../assets/phreel2.jpg" alt="Boîtes Nidly — photo réelle 2" loading="lazy"><span class="pp-label" data-fr="En utilisation" data-ar="في الاستخدام">En utilisation</span></div>
-    <div class="pp-item"><img src="../assets/phreel3.jpg" alt="Boîtes Nidly — photo réelle 3" loading="lazy"><span class="pp-label" data-fr="Détail" data-ar="تفصيل">Détail</span></div>
-    <div class="pp-item"><img src="../assets/phreel4.jpg" alt="Boîtes Nidly — photo réelle 4" loading="lazy"><span class="pp-label" data-fr="Organisé" data-ar="منظّم">Organisé</span></div>
+  <div class="product-photos-grid" id="ppGrid">
+    <div class="pp-item"><img src="../assets/boiteslotllp4.jpg" alt="Boîtes Nidly — photo réelle 1" loading="eager"><span class="pp-label" data-fr="Vue d'ensemble — boîtes vides" data-ar="نظرة عامة — الصناديق فارغة">Vue d'ensemble — boîtes vides</span></div>
+    <div class="pp-item"><img src="../assets/phreel1.jpg" alt="Boîtes Nidly — photo réelle 2" loading="lazy"><span class="pp-label" data-fr="Tiroir maquillage organisé" data-ar="درج مكياج منظم">Tiroir maquillage organisé</span></div>
+    <div class="pp-item"><img src="../assets/phreel2.jpg" alt="Boîtes Nidly — photo réelle 3" loading="lazy"><span class="pp-label" data-fr="Rouges à lèvres & gloss" data-ar="أحمر الشفاه والغلوس">Rouges à lèvres & gloss</span></div>
+    <div class="pp-item"><img src="../assets/phreel3.jpg" alt="Boîtes Nidly — photo réelle 4" loading="lazy"><span class="pp-label" data-fr="Soins & maquillage" data-ar="العناية والمكياج">Soins & maquillage</span></div>
+    <div class="pp-item"><img src="../assets/phreel4.jpg" alt="Boîtes Nidly — photo réelle 5" loading="lazy"><span class="pp-label" data-fr="Tiroir bien rangé" data-ar="درج مرتب جيداً">Tiroir bien rangé</span></div>
+    <div class="pp-item"><img src="../assets/boiteslotllp5.jpg" alt="Boîtes Nidly — photo réelle 6" loading="lazy"><span class="pp-label" data-fr="Soins visage & corps" data-ar="العناية بالوجه والجسم">Soins visage & corps</span></div>
+    <div class="pp-item"><img src="../assets/boiteslotllp6.jpg" alt="Boîtes Nidly — photo réelle 7" loading="lazy"><span class="pp-label" data-fr="Accessoires cheveux" data-ar="إكسسوارات الشعر">Accessoires cheveux</span></div>
+    <div class="pp-item"><img src="../assets/boiteslotllp7.jpg" alt="Boîtes Nidly — photo réelle 8" loading="lazy"><span class="pp-label" data-fr="Détail — pinceaux & poudres" data-ar="تفصيل — الفرش والبودرة">Détail — pinceaux & poudres</span></div>
+  </div>
+</div>
+
+<!-- PHOTOS LIGHTBOX -->
+<div class="pp-lightbox" id="ppLightbox" aria-hidden="true">
+  <div class="pp-lb-overlay" id="ppLbOverlay"></div>
+  <button type="button" class="pp-lb-nav pp-lb-prev" id="ppLbPrev" aria-label="Précédent">‹</button>
+  <button type="button" class="pp-lb-nav pp-lb-next" id="ppLbNext" aria-label="Suivant">›</button>
+  <div class="pp-lb-figure">
+    <button type="button" class="pp-lb-close" id="ppLbClose" aria-label="Fermer">✕</button>
+    <img src="" alt="" id="ppLbImg">
+    <span class="pp-lb-caption" id="ppLbCaption"></span>
   </div>
 </div>
 
@@ -533,21 +573,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>6</td><td class="hl">11</td><td>22</td></tr>
-      <tr><td data-fr="Boîtes XL (19×14×8)" data-ar="صناديق XL (19×14×8)">Boîtes XL <small style="opacity:.5">19×14×8</small></td><td>1</td><td class="hl">2</td><td>4</td></tr>
+      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>7</td><td class="hl">12</td><td>23</td></tr>
+      <tr><td data-fr="Boîtes XL (14×14×7.5)" data-ar="صناديق XL (14×14×7.5)">Boîtes XL <small style="opacity:.5">14×14×7.5</small></td><td>2</td><td class="hl">3</td><td>5</td></tr>
       <tr><td data-fr="Boîtes L (19×8×7)" data-ar="صناديق L (19×8×7)">Boîtes L <small style="opacity:.5">19×8×7</small></td><td>2</td><td class="hl">4</td><td>8</td></tr>
       <tr><td data-fr="Boîtes M (10×10×7)" data-ar="صناديق M (10×10×7)">Boîtes M <small style="opacity:.5">10×10×7</small></td><td>3</td><td class="hl">5</td><td>10</td></tr>
       <tr><td data-fr="Idéal pour" data-ar="مثالي لـ">Idéal pour</td><td data-fr="1 tiroir" data-ar="درج واحد">1 tiroir</td><td class="hl" data-fr="1–2 tiroirs" data-ar="1-2 أدراج">1–2 tiroirs</td><td data-fr="3-4 tiroirs" data-ar="3-4 أدراج">3-4 tiroirs</td></tr>
       <tr>
         <td data-fr="Prix" data-ar="السعر">Prix</td>
-        <td class="price-cell">2 000 DA</td>
-        <td class="price-cell hl" style="color:var(--terra)">3 600 DA</td>
-        <td class="price-cell">5 700 DA</td>
+        <td class="price-cell" id="cmpPriceMini">2 100 DA</td>
+        <td class="price-cell hl" style="color:var(--terra)" id="cmpPriceStandard">3 600 DA</td>
+        <td class="price-cell" id="cmpPriceMega">5 700 DA</td>
       </tr>
     </tbody>
   </table>
 </section>
-
 
 <!-- REVIEWS -->
 <section class="reviews">
@@ -597,6 +636,7 @@ function setLang(lang) {
     if (txt) el.innerHTML = txt;
   });
   updateCartCount();
+  if (typeof refreshLightboxCaption === 'function') refreshLightboxCaption();
 }
 
 function updateCartCount() {
@@ -614,11 +654,11 @@ const META = {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
     tagline_fr:"L'essentiel pour s'organiser.", tagline_ar:'الأساسيات للتنظيم.',
     compo:[
-      {n:'1×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
-      {n:'2×',s:'L', dim:'19×8×7', c:'var(--bark)'},
-      {n:'3×',s:'M', dim:'10×10×7',c:'var(--sage)'}
+      {n:'2×',s:'XL',dim:'14×14×7.5',c:'var(--terra)'},
+      {n:'2×',s:'L', dim:'19×8×7',   c:'var(--bark)'},
+      {n:'3×',s:'M', dim:'10×10×7',  c:'var(--sage)'}
     ],
-    total:6, savings_fr:null, savings_ar:null,
+    total:7, savings_fr:null, savings_ar:null,
     uses_fr:['🏥 Médicaments','💍 Bijoux','📚 Scolaire','💄 Maquillage'],
     uses_ar:['🏥 أدوية','💍 مجوهرات','📚 مدرسي','💄 مكياج'],
     imgs:[B+'bl1.jpg',B+'bl2.jpg']
@@ -628,11 +668,11 @@ const META = {
     pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
     tagline_fr:"L'équilibre parfait entre quantité et prix.", tagline_ar:'التوازن المثالي بين الكمية والسعر.',
     compo:[
-      {n:'2×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
-      {n:'4×',s:'L', dim:'19×8×7', c:'var(--bark)'},
-      {n:'5×',s:'M', dim:'10×10×7',c:'var(--sage)'}
+      {n:'3×',s:'XL',dim:'14×14×7.5',c:'var(--terra)'},
+      {n:'4×',s:'L', dim:'19×8×7',   c:'var(--bark)'},
+      {n:'5×',s:'M', dim:'10×10×7',  c:'var(--sage)'}
     ],
-    total:11, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
+    total:12, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
     uses_fr:['🏥 Médicaments','💄 Maquillage','👙 Sous-vêtements','🍜 Nourriture','💍 Bijoux','📚 Scolaire'],
     uses_ar:['🏥 أدوية','💄 مكياج','👙 ملابس داخلية','🍜 طعام','💍 مجوهرات','📚 مدرسي'],
     imgs:[B+'bl1.jpg',B+'bl2.jpg',B+'bl3.jpg']
@@ -641,11 +681,11 @@ const META = {
     tag_fr:'👑 Organisation totale', tag_ar:'👑 تنظيم شامل', featured:false,
     tagline_fr:'Pour transformer toute la maison.', tagline_ar:'لتحويل المنزل بأكمله.',
     compo:[
-      {n:'4×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
-      {n:'8×',s:'L', dim:'19×8×7', c:'var(--bark)'},
-      {n:'10×',s:'M',dim:'10×10×7',c:'var(--sage)'}
+      {n:'5×',s:'XL',dim:'14×14×7.5',c:'var(--terra)'},
+      {n:'8×',s:'L', dim:'19×8×7',   c:'var(--bark)'},
+      {n:'10×',s:'M',dim:'10×10×7',  c:'var(--sage)'}
     ],
-    total:22, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
+    total:23, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
     uses_fr:['🏠 Maison entière','🏥 Pharmacie maison','🍜 Cuisine & épices','💄 Vanity','👙 Sous-vêtements','📚 Bureau scolaire'],
     uses_ar:['🏠 المنزل كله','🏥 صيدلية المنزل','🍜 مطبخ وتوابل','💄 طاولة المكياج','👙 ملابس داخلية','📚 مكتب مدرسي'],
     imgs:[B+'bl3.jpg',B+'bl1.jpg',B+'bl2.jpg']
@@ -653,7 +693,7 @@ const META = {
 };
 const ORDER = ['lot-mini','lot-standard','lot-mega'];
 const FALLBACK = [
-  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2000},
+  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2100},
   {id:'2',slug:'lot-standard',name:'Lot Standard',price:3600},
   {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5700}
 ];
@@ -735,6 +775,21 @@ async function render() {
   lots.filter(l=>!ORDER.includes(l.slug)).forEach(l=>sorted.push(l));
   c.innerHTML = sorted.map(cardHTML).join('');
   sorted.forEach(l=>initGallery(l.slug));
+  syncComparePrices(lots);
+}
+
+function syncComparePrices(lots) {
+  const map = {
+    'lot-mini': 'cmpPriceMini',
+    'lot-standard': 'cmpPriceStandard',
+    'lot-mega': 'cmpPriceMega'
+  };
+  Object.entries(map).forEach(([slug, cellId]) => {
+    const lot = lots.find(l => l.slug === slug);
+    if (!lot || typeof lot.price !== 'number') return;
+    const cell = document.getElementById(cellId);
+    if (cell) cell.textContent = `${lot.price.toLocaleString('fr-DZ')} DA`;
+  });
 }
 
 function addToCart(id, name, price, img='') {
@@ -753,8 +808,74 @@ function addToCart(id, name, price, img='') {
   setTimeout(() => { window.location.href = '../cart.html'; }, 900);
 }
 
+/* ── PHOTOS LIGHTBOX ── */
+let ppItems = [];
+let ppIndex = 0;
+
+function initPhotoLightbox() {
+  ppItems = [...document.querySelectorAll('#ppGrid .pp-item')];
+  const lb = document.getElementById('ppLightbox');
+  if (!lb || !ppItems.length) return;
+  ppItems.forEach((item, i) => {
+    item.addEventListener('click', () => openLightbox(i));
+  });
+  document.getElementById('ppLbClose').addEventListener('click', closeLightbox);
+  document.getElementById('ppLbOverlay').addEventListener('click', closeLightbox);
+  document.getElementById('ppLbPrev').addEventListener('click', () => showLightbox(ppIndex - 1));
+  document.getElementById('ppLbNext').addEventListener('click', () => showLightbox(ppIndex + 1));
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') showLightbox(ppIndex - 1);
+    else if (e.key === 'ArrowRight') showLightbox(ppIndex + 1);
+  });
+  let tsx = 0;
+  const figure = lb.querySelector('.pp-lb-figure');
+  figure.addEventListener('touchstart', e => { tsx = e.touches[0].clientX; }, { passive: true });
+  figure.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tsx;
+    if (Math.abs(dx) > 40) showLightbox(ppIndex + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+}
+
+function openLightbox(i) {
+  ppIndex = i;
+  const lb = document.getElementById('ppLightbox');
+  lb.classList.add('active');
+  lb.setAttribute('aria-hidden', 'false');
+  renderLightbox();
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('ppLightbox');
+  lb.classList.remove('active');
+  lb.setAttribute('aria-hidden', 'true');
+}
+
+function showLightbox(i) {
+  ppIndex = (i + ppItems.length) % ppItems.length;
+  renderLightbox();
+}
+
+function renderLightbox() {
+  const item = ppItems[ppIndex];
+  if (!item) return;
+  const img = item.querySelector('img');
+  const label = item.querySelector('.pp-label');
+  document.getElementById('ppLbImg').src = img.src;
+  document.getElementById('ppLbImg').alt = img.alt;
+  const cap = label ? (label.getAttribute(`data-${currentLang}`) || label.textContent) : '';
+  document.getElementById('ppLbCaption').textContent = cap;
+}
+
+function refreshLightboxCaption() {
+  const lb = document.getElementById('ppLightbox');
+  if (lb && lb.classList.contains('active')) renderLightbox();
+}
+
 setLang(currentLang);
 render();
+initPhotoLightbox();
 </script>
 </body>
 </html>

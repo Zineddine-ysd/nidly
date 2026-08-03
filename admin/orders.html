@@ -33,13 +33,19 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
   position: sticky; top: 0; z-index: 100;
   box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
-.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; letter-spacing: 0.04em; color: var(--cream); }
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; letter-spacing: 0.04em; color: var(--cream); flex-shrink: 0; }
 .nav-brand span { color: var(--terracotta); }
-.nav-right { display: flex; align-items: center; gap: 1.2rem; }
-.nav-right a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.82rem; transition: color .2s; }
+.admin-nav { flex-wrap: wrap; height: auto; min-height: 56px; gap: 0.6rem 1.2rem; padding: 0.7rem 2rem; }
+.nav-links-admin { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+.nav-link { color: rgba(255,255,255,0.62); text-decoration: none; font-size: 0.82rem; transition: color .2s; padding-bottom: 0.2rem; border-bottom: 2px solid transparent; white-space: nowrap; }
+.nav-link:hover { color: white; }
+.nav-link.active { color: white; font-weight: 600; border-bottom-color: var(--terracotta); }
+.nav-right { display: flex; align-items: center; gap: 1.2rem; margin-left: auto; }
+.nav-right a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.82rem; transition: color .2s; white-space: nowrap; }
 .nav-right a:hover { color: white; }
 .nav-logout { color: #D4A5A0 !important; cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; }
 .nav-logout:hover { color: #EFA5A0 !important; }
+@media (max-width: 760px) { .nav-links-admin { order: 3; width: 100%; justify-content: flex-start; gap: 1rem; } }
 
 /* ── Layout ── */
 .container { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem; }
@@ -348,6 +354,13 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
 <!-- Nav -->
 <nav class="admin-nav">
   <div class="nav-brand">Nidly <span>Admin</span></div>
+  <div class="nav-links-admin">
+    <a href="orders.html" class="nav-link active">Commandes</a>
+    <a href="products.html" class="nav-link">Produits</a>
+    <a href="admins.html" class="nav-link">Admins</a>
+    <a href="stats.html" class="nav-link">Statistiques</a>
+    <a href="deliveries.html" class="nav-link">Livraisons</a>
+  </div>
   <div class="nav-right">
     <a href="../index.html" target="_blank">Voir la boutique ↗</a>
     <button class="nav-logout" onclick="logout()">Déconnexion</button>
@@ -618,7 +631,7 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
 const API_URL = (() => {
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     return 'http://localhost:3000';
-  return 'https://www.everglintdz.store';
+  return 'https://www.everglint.store';
 })();
 
 const token = localStorage.getItem('nidly_admin_token');

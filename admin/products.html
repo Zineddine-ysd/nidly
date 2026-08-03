@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produits — Admin Nidly</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FAF7F2;
+  --cream2: #F3EDE3;
+  --terracotta: #C47B6B;
+  --terracotta2: #A85E50;
+  --bark: #7A5C52;
+  --charcoal: #2C2420;
+  --sage: #A8B5A0;
+  --sage2: #728B68;
+  --white: #FFFFFF;
+  --border: rgba(196,123,107,0.18);
+  --shadow: 0 4px 24px rgba(44,36,32,0.07);
+  --shadow-lg: 0 12px 40px rgba(44,36,32,0.12);
+  --radius: 0.9rem;
+  --radius-sm: 0.5rem;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--charcoal); min-height: 100vh; }
+
+/* ── Nav ── */
+.admin-nav {
+  background: var(--charcoal); color: white;
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+.nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; letter-spacing: 0.04em; color: var(--cream); flex-shrink: 0; }
+.nav-brand span { color: var(--terracotta); }
+.admin-nav { flex-wrap: wrap; height: auto; min-height: 56px; gap: 0.6rem 1.2rem; padding: 0.7rem 2rem; }
+.nav-links-admin { display: flex; align-items: center; gap: 1.3rem; flex-wrap: wrap; }
+.nav-link { color: rgba(255,255,255,0.62); text-decoration: none; font-size: 0.82rem; transition: color .2s; padding-bottom: 0.2rem; border-bottom: 2px solid transparent; white-space: nowrap; }
+.nav-link:hover { color: white; }
+.nav-link.active { color: white; font-weight: 600; border-bottom-color: var(--terracotta); }
+.nav-right { display: flex; align-items: center; gap: 1.2rem; margin-left: auto; }
+.nav-right a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.82rem; transition: color .2s; white-space: nowrap; }
+.nav-right a:hover { color: white; }
+.nav-logout { color: #D4A5A0 !important; cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; }
+.nav-logout:hover { color: #EFA5A0 !important; }
+@media (max-width: 760px) { .nav-links-admin { order: 3; width: 100%; justify-content: flex-start; gap: 1rem; } }
+
+/* ── Layout ── */
+.container { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+/* ── Top bar ── */
+.top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem; }
+.page-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--charcoal); }
+
+.btn-add-order {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  background: var(--terracotta); color: white; border: none;
+  padding: 0.55rem 1.2rem; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-add-order:hover { background: var(--terracotta2); }
+
+/* ── Section separation ── */
+.section-block { margin-bottom: 2.8rem; }
+.section-block + .section-block { padding-top: 2.4rem; border-top: 2px solid var(--border); }
+.section-hint {
+  background: var(--cream2); border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem; margin-bottom: 1.2rem;
+  font-size: 0.83rem; color: var(--bark); line-height: 1.6;
+  border-left: 3px solid var(--terracotta);
+}
+
+/* ── Product / Lot card ── */
+.item-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 1.1rem 1.3rem; margin-bottom: 0.9rem;
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  transition: box-shadow 0.2s;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.item-card:hover { box-shadow: var(--shadow-lg); }
+
+.item-thumb {
+  width: 62px; height: 62px; border-radius: var(--radius-sm);
+  object-fit: cover; flex-shrink: 0; background: var(--cream2);
+  border: 1px solid var(--border);
+}
+.item-thumb-placeholder {
+  width: 62px; height: 62px; border-radius: var(--radius-sm);
+  flex-shrink: 0; background: var(--cream2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; opacity: 0.4;
+}
+
+.item-body { flex: 1; min-width: 180px; }
+.item-name { font-weight: 600; color: var(--charcoal); font-size: 0.98rem; }
+.item-sub { font-size: 0.8rem; color: var(--bark); margin-top: 0.15rem; line-height: 1.5; }
+.item-price { font-weight: 600; color: var(--terracotta); font-size: 0.95rem; white-space: nowrap; }
+
+.badge-tag {
+  display: inline-block; padding: 0.25rem 0.65rem; border-radius: 2rem;
+  font-size: 0.68rem; font-weight: 600; background: #FFF3E0; color: #BF360C;
+  margin-top: 0.3rem;
+}
+.slug-tag {
+  display: inline-block; padding: 0.2rem 0.55rem; border-radius: 0.4rem;
+  font-size: 0.72rem; font-family: monospace; background: var(--cream2); color: var(--bark);
+  margin-top: 0.3rem;
+}
+
+.item-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.btn-action {
+  padding: 0.45rem 1rem; border: none; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-edit { background: var(--cream2); color: var(--bark); }
+.btn-edit:hover { background: #E8DDD8; }
+.btn-delete { background: #FFEBEE; color: #C62828; }
+.btn-delete:hover { background: #FFCDD2; }
+
+/* ── Empty / Loading ── */
+.empty-state { text-align: center; padding: 3rem 2rem; color: var(--bark); background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); }
+.empty-state svg { width: 40px; opacity: 0.2; margin-bottom: 0.8rem; display: block; margin-left: auto; margin-right: auto; }
+.loading { display: flex; align-items: center; justify-content: center; gap: 0.7rem; padding: 3rem; color: var(--bark); }
+.spinner { width: 22px; height: 22px; border: 2px solid var(--border); border-top-color: var(--terracotta); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  background: var(--charcoal); color: white;
+  padding: 0.65rem 1.3rem; border-radius: 2rem;
+  font-size: 0.83rem; opacity: 0; pointer-events: none;
+  transition: opacity .3s; z-index: 9999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+/* ── Dialog ── */
+.overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 9000;
+}
+.overlay.active { opacity: 1; pointer-events: all; }
+.dialog {
+  background: white; padding: 2rem; border-radius: 1.1rem;
+  max-width: 420px; width: 92%; box-shadow: var(--shadow-lg);
+  animation: popIn .22s ease;
+}
+@keyframes popIn { from { transform: scale(.88); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.dialog h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; margin-bottom: 0.5rem; color: var(--charcoal); }
+.dialog p  { font-size: 0.86rem; color: var(--bark); margin-bottom: 1.4rem; line-height: 1.5; }
+.dialog-btns { display: flex; gap: 0.7rem; justify-content: flex-end; }
+.btn-dlg { padding: 0.55rem 1.2rem; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 0.86rem; cursor: pointer; border: none; }
+.btn-dlg-cancel { border: 1.5px solid var(--border); background: none; color: var(--bark); }
+.btn-dlg-cancel:hover { background: var(--cream2); }
+.btn-dlg-danger { border: none; background: #C62828; color: white; }
+.btn-dlg-danger:hover { background: #B71C1C; }
+.btn-dlg-save { background: var(--terracotta); color: white; }
+.btn-dlg-save:hover { background: var(--terracotta2); }
+.btn-dlg-save:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Form modal ── */
+.form-modal { max-width: 520px; width: 95%; max-height: 88vh; overflow-y: auto; }
+.form-group { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.9rem; }
+.form-group label { font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--bark); font-weight: 500; }
+.form-group input, .form-group textarea {
+  padding: 0.5rem 0.75rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--charcoal);
+  background: var(--cream); outline: none; transition: border-color .2s; width: 100%;
+}
+.form-group textarea { resize: vertical; min-height: 70px; }
+.form-group input:focus, .form-group textarea:focus { border-color: var(--terracotta); }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+@media (max-width: 480px) { .form-row-2 { grid-template-columns: 1fr; } }
+
+.img-preview-wrap {
+  display: flex; align-items: center; gap: 0.9rem; margin-top: 0.3rem;
+}
+.img-preview {
+  width: 72px; height: 72px; border-radius: var(--radius-sm);
+  object-fit: cover; border: 1px solid var(--border); background: var(--cream2);
+  display: none;
+}
+.img-preview.show { display: block; }
+.img-preview-placeholder {
+  width: 72px; height: 72px; border-radius: var(--radius-sm);
+  border: 1px dashed var(--border); background: var(--cream2);
+  display: flex; align-items: center; justify-content: center; font-size: 1.3rem; opacity: 0.4;
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="admin-nav">
+  <div class="nav-brand">Nidly <span>Admin</span></div>
+  <div class="nav-links-admin">
+    <a href="orders.html" class="nav-link">Commandes</a>
+    <a href="products.html" class="nav-link active">Produits</a>
+    <a href="admins.html" class="nav-link">Admins</a>
+    <a href="stats.html" class="nav-link">Statistiques</a>
+    <a href="deliveries.html" class="nav-link">Livraisons</a>
+  </div>
+  <div class="nav-right">
+    <a href="../index.html" target="_blank">Voir la boutique ↗</a>
+    <button class="nav-logout" onclick="logout()">Déconnexion</button>
+  </div>
+</nav>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- Delete product confirm -->
+<div id="deleteProductOverlay" class="overlay">
+  <div class="dialog">
+    <h3>Supprimer ce produit ?</h3>
+    <p>Cette action est irréversible. Le produit sera définitivement supprimé du catalogue.</p>
+    <div class="dialog-btns">
+      <button class="btn-dlg btn-dlg-cancel" onclick="closeOverlay('deleteProductOverlay')">Annuler</button>
+      <button class="btn-dlg btn-dlg-danger" id="confirmDeleteProductBtn">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete lot confirm -->
+<div id="deleteLotOverlay" class="overlay">
+  <div class="dialog">
+    <h3>Supprimer ce lot ?</h3>
+    <p>Cette action est irréversible. Le lot sera définitivement supprimé.</p>
+    <div class="dialog-btns">
+      <button class="btn-dlg btn-dlg-cancel" onclick="closeOverlay('deleteLotOverlay')">Annuler</button>
+      <button class="btn-dlg btn-dlg-danger" id="confirmDeleteLotBtn">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Product form modal -->
+<div id="productOverlay" class="overlay">
+  <div class="dialog form-modal">
+    <h3 id="productModalTitle">➕ Nouveau produit</h3>
+    <p style="margin-bottom:1rem;">Renseignez les informations du produit.</p>
+
+    <div class="form-group">
+      <label>Nom *</label>
+      <input type="text" id="pName" placeholder="Panier de rangement en osier">
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Prix (DA) *</label>
+        <input type="number" id="pPrice" min="0" step="1" placeholder="2500">
+      </div>
+      <div class="form-group">
+        <label>Badge (optionnel)</label>
+        <input type="text" id="pBadge" placeholder="Coup de cœur ❤️">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="pDescription" placeholder="Décrivez le produit..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Image</label>
+      <input type="file" id="pImage" accept="image/*" onchange="previewProductImage(event)">
+      <div class="img-preview-wrap">
+        <img id="pImagePreview" class="img-preview" alt="Aperçu">
+        <div id="pImagePlaceholder" class="img-preview-placeholder">🖼</div>
+      </div>
+    </div>
+
+    <div class="dialog-btns">
+      <button class="btn-dlg btn-dlg-cancel" onclick="closeOverlay('productOverlay')">Annuler</button>
+      <button class="btn-dlg btn-dlg-save" id="saveProductBtn" onclick="submitProduct()">✓ Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lot form modal -->
+<div id="lotOverlay" class="overlay">
+  <div class="dialog form-modal" style="max-width:460px;">
+    <h3 id="lotModalTitle">➕ Nouveau lot</h3>
+    <p style="margin-bottom:1rem;">Nom, prix et accroche uniquement — voir la note ci-dessus.</p>
+
+    <div class="form-group">
+      <label>Nom *</label>
+      <input type="text" id="lName" placeholder="Lot Mini">
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Prix (DA) *</label>
+        <input type="number" id="lPrice" min="0" step="1" placeholder="6500">
+      </div>
+      <div class="form-group">
+        <label>Slug (optionnel)</label>
+        <input type="text" id="lSlug" placeholder="lot-mini">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Accroche (tagline)</label>
+      <input type="text" id="lTagline" placeholder="L'essentiel pour bien commencer">
+    </div>
+
+    <div class="dialog-btns">
+      <button class="btn-dlg btn-dlg-cancel" onclick="closeOverlay('lotOverlay')">Annuler</button>
+      <button class="btn-dlg btn-dlg-save" id="saveLotBtn" onclick="submitLot()">✓ Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="container">
+
+  <!-- Produits -->
+  <div class="section-block">
+    <div class="top-bar">
+      <h1 class="page-title">Produits</h1>
+      <button class="btn-add-order" onclick="openAddProduct()">+ Ajouter un produit</button>
+    </div>
+    <div id="productsList">
+      <div class="loading"><div class="spinner"></div> Chargement...</div>
+    </div>
+  </div>
+
+  <!-- Lots -->
+  <div class="section-block">
+    <div class="top-bar">
+      <h1 class="page-title">Lots</h1>
+      <button class="btn-add-order" onclick="openAddLot()">+ Ajouter un lot</button>
+    </div>
+    <div class="section-hint">
+      💡 La composition, les photos et les tags d'usage des lots se modifient directement dans le code du site
+      (<code>products/nidlylots.html</code>) — ce panel permet seulement d'ajuster rapidement le nom, le prix
+      et l'accroche.
+    </div>
+    <div id="lotsList">
+      <div class="loading"><div class="spinner"></div> Chargement...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────────
+const API_URL = (() => {
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    return 'http://localhost:3000';
+  return 'https://www.everglint.store';
+})();
+
+const token = localStorage.getItem('nidly_admin_token');
+if (!token) window.location.href = 'login.html';
+
+let allProducts = [];
+let allLots = [];
+let editingProductId = null;
+let editingLotId = null;
+let pendingDeleteProductId = null;
+let pendingDeleteLotId = null;
+let selectedProductImageFile = null;
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function showToast(msg, duration = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ── Overlays ─────────────────────────────────────────────────────────────────
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove('active');
+}
+document.querySelectorAll('.overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('active'); });
+});
+
+// ── Logout ────────────────────────────────────────────────────────────────────
+function logout() {
+  localStorage.removeItem('nidly_admin_token');
+  window.location.href = 'login.html';
+}
+
+// ── Helper: handle 401 on any admin fetch ────────────────────────────────────
+function handleUnauthorized(res) {
+  if (res.status === 401) {
+    localStorage.removeItem('nidly_admin_token');
+    window.location.href = 'login.html';
+    return true;
+  }
+  return false;
+}
+
+// ── Format helpers ────────────────────────────────────────────────────────────
+function fmtPrice(n) {
+  const num = Number(n) || 0;
+  return num.toLocaleString('fr-FR') + ' DA';
+}
+function escAttr(str) {
+  return String(str == null ? '' : str).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
+}
+function escHtml(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   PRODUITS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+async function loadProducts() {
+  const el = document.getElementById('productsList');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div> Chargement...</div>';
+  try {
+    const res = await fetch(`${API_URL}/api/products`);
+    if (handleUnauthorized(res)) return;
+    if (!res.ok) throw new Error('http');
+    allProducts = await res.json();
+    renderProducts();
+  } catch {
+    el.innerHTML = '<div class="empty-state">Impossible de charger les produits. Vérifiez que le backend est démarré.</div>';
+  }
+}
+
+function renderProducts() {
+  const el = document.getElementById('productsList');
+  if (!allProducts.length) {
+    el.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
+      Aucun produit pour l'instant.
+    </div>`;
+    return;
+  }
+  el.innerHTML = allProducts.map(p => {
+    const thumb = p.image_url
+      ? `<img class="item-thumb" src="${escAttr(p.image_url)}" alt="${escAttr(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">`
+      : '';
+    const placeholder = `<div class="item-thumb-placeholder" style="${p.image_url ? 'display:none;' : ''}">🖼</div>`;
+    return `
+    <div class="item-card">
+      ${thumb}${placeholder}
+      <div class="item-body">
+        <div class="item-name">${escHtml(p.name)}</div>
+        ${p.desc ? `<div class="item-sub">${escHtml(p.desc)}</div>` : ''}
+        ${p.badge ? `<span class="badge-tag">${escHtml(p.badge)}</span>` : ''}
+      </div>
+      <div class="item-price">${fmtPrice(p.price)}</div>
+      <div class="item-actions">
+        <button class="btn-action btn-edit" onclick="openEditProduct('${p.id}')">✎ Modifier</button>
+        <button class="btn-action btn-delete" onclick="promptDeleteProduct('${p.id}')">🗑 Supprimer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function previewProductImage(evt) {
+  const file = evt.target.files && evt.target.files[0];
+  const img = document.getElementById('pImagePreview');
+  const placeholder = document.getElementById('pImagePlaceholder');
+  if (!file) { selectedProductImageFile = null; return; }
+  selectedProductImageFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    img.src = e.target.result;
+    img.classList.add('show');
+    placeholder.style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetProductForm() {
+  document.getElementById('pName').value = '';
+  document.getElementById('pPrice').value = '';
+  document.getElementById('pBadge').value = '';
+  document.getElementById('pDescription').value = '';
+  document.getElementById('pImage').value = '';
+  const img = document.getElementById('pImagePreview');
+  img.src = '';
+  img.classList.remove('show');
+  document.getElementById('pImagePlaceholder').style.display = 'flex';
+  selectedProductImageFile = null;
+}
+
+function openAddProduct() {
+  editingProductId = null;
+  resetProductForm();
+  document.getElementById('productModalTitle').textContent = '➕ Nouveau produit';
+  document.getElementById('productOverlay').classList.add('active');
+}
+
+function openEditProduct(id) {
+  const p = allProducts.find(x => x.id === id);
+  if (!p) return;
+  editingProductId = id;
+  resetProductForm();
+  document.getElementById('productModalTitle').textContent = '✎ Modifier le produit';
+  document.getElementById('pName').value = p.name || '';
+  document.getElementById('pPrice').value = p.price != null ? p.price : '';
+  document.getElementById('pBadge').value = p.badge || '';
+  document.getElementById('pDescription').value = p.desc || '';
+  if (p.image_url) {
+    const img = document.getElementById('pImagePreview');
+    img.src = p.image_url;
+    img.classList.add('show');
+    document.getElementById('pImagePlaceholder').style.display = 'none';
+  }
+  document.getElementById('productOverlay').classList.add('active');
+}
+
+async function submitProduct() {
+  const name = document.getElementById('pName').value.trim();
+  const price = document.getElementById('pPrice').value;
+  const badge = document.getElementById('pBadge').value.trim();
+  const description = document.getElementById('pDescription').value.trim();
+
+  if (!name || price === '') {
+    showToast('⚠️ Nom et prix requis');
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append('name', name);
+  fd.append('price', price);
+  fd.append('description', description);
+  fd.append('badge', badge);
+  if (selectedProductImageFile) fd.append('image', selectedProductImageFile);
+
+  const btn = document.getElementById('saveProductBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enregistrement...';
+
+  try {
+    const url = editingProductId ? `${API_URL}/api/products/${editingProductId}` : `${API_URL}/api/products`;
+    const method = editingProductId ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: fd
+    });
+    if (handleUnauthorized(res)) return;
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      showToast(editingProductId ? '✅ Produit mis à jour' : '✅ Produit ajouté');
+      closeOverlay('productOverlay');
+      loadProducts();
+    } else {
+      showToast(`❌ ${data.message || 'Erreur lors de l\'enregistrement'}`);
+    }
+  } catch {
+    showToast('❌ Erreur réseau');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✓ Enregistrer';
+  }
+}
+
+function promptDeleteProduct(id) {
+  pendingDeleteProductId = id;
+  document.getElementById('deleteProductOverlay').classList.add('active');
+  document.getElementById('confirmDeleteProductBtn').onclick = confirmDeleteProduct;
+}
+
+async function confirmDeleteProduct() {
+  if (!pendingDeleteProductId) return;
+  closeOverlay('deleteProductOverlay');
+  try {
+    const res = await fetch(`${API_URL}/api/products/${pendingDeleteProductId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (handleUnauthorized(res)) return;
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) { showToast('✅ Produit supprimé'); loadProducts(); }
+    else showToast(`❌ ${data.message || 'Erreur lors de la suppression'}`);
+  } catch {
+    showToast('❌ Erreur réseau');
+  } finally {
+    pendingDeleteProductId = null;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LOTS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+async function loadLots() {
+  const el = document.getElementById('lotsList');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div> Chargement...</div>';
+  try {
+    const res = await fetch(`${API_URL}/api/lots`);
+    if (handleUnauthorized(res)) return;
+    if (!res.ok) throw new Error('http');
+    allLots = await res.json();
+    renderLots();
+  } catch {
+    el.innerHTML = '<div class="empty-state">Impossible de charger les lots. Vérifiez que le backend est démarré.</div>';
+  }
+}
+
+function renderLots() {
+  const el = document.getElementById('lotsList');
+  if (!allLots.length) {
+    el.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
+      Aucun lot pour l'instant.
+    </div>`;
+    return;
+  }
+  el.innerHTML = allLots.map(l => `
+    <div class="item-card">
+      <div class="item-body">
+        <div class="item-name">${escHtml(l.name)}</div>
+        ${l.tagline ? `<div class="item-sub">${escHtml(l.tagline)}</div>` : ''}
+        ${l.slug ? `<span class="slug-tag">${escHtml(l.slug)}</span>` : ''}
+      </div>
+      <div class="item-price">${fmtPrice(l.price)}</div>
+      <div class="item-actions">
+        <button class="btn-action btn-edit" onclick="openEditLot('${l.id}')">✎ Modifier</button>
+        <button class="btn-action btn-delete" onclick="promptDeleteLot('${l.id}')">🗑 Supprimer</button>
+      </div>
+    </div>`).join('');
+}
+
+function resetLotForm() {
+  document.getElementById('lName').value = '';
+  document.getElementById('lPrice').value = '';
+  document.getElementById('lSlug').value = '';
+  document.getElementById('lTagline').value = '';
+}
+
+function openAddLot() {
+  editingLotId = null;
+  resetLotForm();
+  document.getElementById('lotModalTitle').textContent = '➕ Nouveau lot';
+  document.getElementById('lotOverlay').classList.add('active');
+}
+
+function openEditLot(id) {
+  const l = allLots.find(x => x.id === id);
+  if (!l) return;
+  editingLotId = id;
+  resetLotForm();
+  document.getElementById('lotModalTitle').textContent = '✎ Modifier le lot';
+  document.getElementById('lName').value = l.name || '';
+  document.getElementById('lPrice').value = l.price != null ? l.price : '';
+  document.getElementById('lSlug').value = l.slug || '';
+  document.getElementById('lTagline').value = l.tagline || '';
+  document.getElementById('lotOverlay').classList.add('active');
+}
+
+async function submitLot() {
+  const name = document.getElementById('lName').value.trim();
+  const price = document.getElementById('lPrice').value;
+  const slug = document.getElementById('lSlug').value.trim();
+  const tagline = document.getElementById('lTagline').value.trim();
+
+  if (!name || price === '') {
+    showToast('⚠️ Nom et prix requis');
+    return;
+  }
+
+  const payload = { name, price: parseFloat(price), tagline, slug };
+
+  const btn = document.getElementById('saveLotBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Enregistrement...';
+
+  try {
+    const url = editingLotId ? `${API_URL}/api/lots/${editingLotId}` : `${API_URL}/api/lots`;
+    const method = editingLotId ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(payload)
+    });
+    if (handleUnauthorized(res)) return;
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      showToast(editingLotId ? '✅ Lot mis à jour' : '✅ Lot ajouté');
+      closeOverlay('lotOverlay');
+      loadLots();
+    } else {
+      showToast(`❌ ${data.message || 'Erreur lors de l\'enregistrement'}`);
+    }
+  } catch {
+    showToast('❌ Erreur réseau');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✓ Enregistrer';
+  }
+}
+
+function promptDeleteLot(id) {
+  pendingDeleteLotId = id;
+  document.getElementById('deleteLotOverlay').classList.add('active');
+  document.getElementById('confirmDeleteLotBtn').onclick = confirmDeleteLot;
+}
+
+async function confirmDeleteLot() {
+  if (!pendingDeleteLotId) return;
+  closeOverlay('deleteLotOverlay');
+  try {
+    const res = await fetch(`${API_URL}/api/lots/${pendingDeleteLotId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (handleUnauthorized(res)) return;
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) { showToast('✅ Lot supprimé'); loadLots(); }
+    else showToast(`❌ ${data.message || 'Erreur lors de la suppression'}`);
+  } catch {
+    showToast('❌ Erreur réseau');
+  } finally {
+    pendingDeleteLotId = null;
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+loadProducts();
+loadLots();
+</script>
+</body>
+</html>
