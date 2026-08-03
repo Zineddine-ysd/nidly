@@ -340,10 +340,11 @@ async function loadProducts() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const products = await res.json();
     grid.innerHTML = products.map((p) => {
-      const meta = CARD_META[p.name] || { href: null, img: null, badge_fr: null, badge_ar: null, badgeClass: 'new' };
-      // La vraie photo/le vrai badge du produit (ajouté depuis le panel admin) passent
-      // toujours avant le mapping figé — celui-ci ne sert plus que de filet de sécurité
-      // pour les 2 fiches historiques tant qu'elles n'ont pas d'image_url en base.
+      // Le nom en base peut différer légèrement du libellé figé (espace, accent, emoji...) —
+      // on ne fait donc JAMAIS dépendre la navigation d'une correspondance exacte de nom.
+      // Par défaut la carte mène vers la fiche boîtes (nidlylots.html), notre produit phare ;
+      // CARD_META sert seulement de filet de sécurité pour l'image/le badge des 2 fiches historiques.
+      const meta = CARD_META[p.name] || { href: 'products/nidlylots.html', img: null, badge_fr: null, badge_ar: null, badgeClass: 'new' };
       const img = p.image_url || meta.img || (A + 'demo.png');
       const badgeTxt = p.badge || (currentLang === 'ar' ? meta.badge_ar : meta.badge_fr);
       const badge = badgeTxt ? `<span class="product-badge ${meta.badgeClass}">${badgeTxt}</span>` : '';
@@ -357,11 +358,7 @@ async function loadProducts() {
             <button class="product-add" type="button">+</button>
           </div>
         </div>`;
-      // Pas de fiche dédiée pour ce produit → carte non cliquable (plus de lien mort vers "#"),
-      // seul le bouton "+" reste actif pour l'ajout direct au panier.
-      return meta.href
-        ? `<a href="${meta.href}" class="product-card" style="text-decoration:none;color:inherit;">${inner}</a>`
-        : `<div class="product-card" style="cursor:default;">${inner}</div>`;
+      return `<a href="${meta.href}" class="product-card" style="text-decoration:none;color:inherit;">${inner}</a>`;
     }).join('');
   } catch (err) {
     console.warn('API indisponible', err.message);
