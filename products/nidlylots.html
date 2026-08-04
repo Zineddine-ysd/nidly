@@ -54,6 +54,7 @@
     .intro p { font-size:.88rem; color:var(--bark); line-height:1.75; margin-bottom:1.4rem; }
     .intro-badges { display:flex; gap:.4rem; justify-content:center; flex-wrap:wrap; margin-bottom:1.2rem; }
     .badge { display:inline-flex; align-items:center; gap:.3rem; background:white; border:1px solid rgba(212,165,160,.3); border-radius:2rem; padding:.3rem .8rem; font-size:.68rem; color:var(--bark); }
+    .badge.badge-lid { background:var(--terra); border-color:var(--terra); color:white; font-weight:600; }
 
     /* ── BTN PERSONNALISER ── */
     .btn-custom-lot { display:inline-flex; align-items:center; gap:.55rem; background:linear-gradient(135deg,var(--char) 0%,#3d2e29 100%); color:white; padding:.82rem 1.6rem; border-radius:3rem; font-size:.82rem; font-weight:500; letter-spacing:.04em; text-decoration:none; transition:all .25s; box-shadow:0 6px 22px rgba(44,36,32,.22); }
@@ -97,6 +98,7 @@
     .lot-body { padding:1.2rem; }
     .lot-name { font-family:'Cormorant Garamond',serif; font-size:1.55rem; font-weight:400; color:var(--char); margin-bottom:.15rem; }
     .lot-tagline { font-size:.78rem; color:var(--bark); opacity:.75; font-style:italic; margin-bottom:.9rem; }
+    .lot-lid-badge { display:inline-flex; align-items:center; gap:.35rem; background:var(--sage-l); border:1px solid rgba(168,181,160,.5); border-radius:2rem; padding:.3rem .75rem; font-size:.7rem; font-weight:600; color:#4a5a44; margin-bottom:.9rem; }
     .lot-compo { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.9rem; }
     .c-chip { display:flex; align-items:center; gap:.28rem; background:var(--cream); border:1px solid rgba(212,165,160,.22); border-radius:.45rem; padding:.28rem .6rem; font-size:.73rem; }
     .c-chip .cn { font-weight:500; }
@@ -369,9 +371,9 @@
   <h1 data-fr="Chaque chose<br><em>à sa place</em>" data-ar="كل شيء<br><em>في مكانه</em>">Chaque chose<br><em>à sa place</em></h1>
   <p data-fr="Boîtes empilables avec couvercle, plastique alimentaire crystal — 3 tailles pour tout organiser." data-ar="صناديق قابلة للتكديس مع غطاء، بلاستيك غذائي كريستال — 3 مقاسات لتنظيم كل شيء.">Boîtes empilables avec couvercle, plastique alimentaire crystal — 3 tailles pour tout organiser.</p>
   <div class="intro-badges">
+    <span class="badge badge-lid">🔒 <span data-fr="Toutes nos boîtes ont un couvercle" data-ar="كل صناديقنا مع غطاء">Toutes nos boîtes ont un couvercle</span></span>
     <span class="badge">💎 <span data-fr="Plastique crystal" data-ar="بلاستيك كريستال">Plastique crystal</span></span>
     <span class="badge">🫧 <span data-fr="Lavables" data-ar="قابلة للغسل">Lavables</span></span>
-    <span class="badge">🔒 <span data-fr="Avec couvercles" data-ar="مع أغطية">Avec couvercles</span></span>
     <span class="badge">🚀 <span data-fr="48h en Algérie" data-ar="48 ساعة في الجزائر">48h en Algérie</span></span>
   </div>
   <a href="personnaliser.html" class="btn-custom-lot">
@@ -385,6 +387,18 @@
     <span data-fr="Voir les photos réelles du produit" data-ar="شاهدي الصور الحقيقية للمنتج">Voir les photos réelles du produit</span>
     <span class="arrow">↓</span>
   </a>
+</div>
+
+<!-- BANNER XL RETOUR -->
+<div class="excuse-banner">
+  <div class="excuse-inner">
+    <div class="excuse-icon">🎉</div>
+    <div>
+      <div class="excuse-title" data-fr="Nos boîtes XL sont de retour !" data-ar="صناديق XL عادت من جديد!">Nos boîtes XL sont de retour !</div>
+      <div class="excuse-text" data-fr="Bonne nouvelle : nos boîtes <strong>XL 19×14×8 cm</strong> sont de nouveau disponibles ! Merci pour votre patience pendant cette courte interruption." data-ar="خبر سار: صناديق <strong>XL 19×14×8 سم</strong> متوفرة من جديد! شكراً على صبركم خلال هذا الانقطاع القصير.">Bonne nouvelle : nos boîtes <strong>XL 19×14×8 cm</strong> sont de nouveau disponibles ! Merci pour votre patience pendant cette courte interruption.</div>
+      <div class="excuse-new" data-fr="✅ Disponible dès maintenant dans tous nos lots" data-ar="✅ متوفرة الآن في جميع طرودنا">✅ Disponible dès maintenant dans tous nos lots</div>
+    </div>
+  </div>
 </div>
 
 <!-- LOTS -->
@@ -560,14 +574,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>7</td><td class="hl">12</td><td>23</td></tr>
-      <tr><td data-fr="Boîtes XL (19×14×8)" data-ar="صناديق XL (19×14×8)">Boîtes XL <small style="opacity:.5">19×14×8</small></td><td>2</td><td class="hl">3</td><td>5</td></tr>
+      <tr><td data-fr="Total boîtes" data-ar="إجمالي الصناديق">Total boîtes</td><td>6</td><td class="hl">11</td><td>22</td></tr>
+      <tr><td data-fr="Boîtes XL (19×14×8)" data-ar="صناديق XL (19×14×8)">Boîtes XL <small style="opacity:.5">19×14×8</small></td><td>1</td><td class="hl">2</td><td>4</td></tr>
       <tr><td data-fr="Boîtes L (19×8×7)" data-ar="صناديق L (19×8×7)">Boîtes L <small style="opacity:.5">19×8×7</small></td><td>2</td><td class="hl">4</td><td>8</td></tr>
       <tr><td data-fr="Boîtes M (10×10×7)" data-ar="صناديق M (10×10×7)">Boîtes M <small style="opacity:.5">10×10×7</small></td><td>3</td><td class="hl">5</td><td>10</td></tr>
       <tr><td data-fr="Idéal pour" data-ar="مثالي لـ">Idéal pour</td><td data-fr="1 tiroir" data-ar="درج واحد">1 tiroir</td><td class="hl" data-fr="1–2 tiroirs" data-ar="1-2 أدراج">1–2 tiroirs</td><td data-fr="3-4 tiroirs" data-ar="3-4 أدراج">3-4 tiroirs</td></tr>
       <tr>
         <td data-fr="Prix" data-ar="السعر">Prix</td>
-        <td class="price-cell" id="cmpPriceMini">2 100 DA</td>
+        <td class="price-cell" id="cmpPriceMini">2 000 DA</td>
         <td class="price-cell hl" style="color:var(--terra)" id="cmpPriceStandard">3 600 DA</td>
         <td class="price-cell" id="cmpPriceMega">5 700 DA</td>
       </tr>
@@ -641,11 +655,11 @@ const META = {
     tag_fr:'🌱 Pour commencer', tag_ar:'🌱 للبداية', featured:false,
     tagline_fr:"L'essentiel pour s'organiser.", tagline_ar:'الأساسيات للتنظيم.',
     compo:[
-      {n:'2×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
+      {n:'1×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
       {n:'2×',s:'L', dim:'19×8×7',   c:'var(--bark)'},
       {n:'3×',s:'M', dim:'10×10×7',  c:'var(--sage)'}
     ],
-    total:7, savings_fr:null, savings_ar:null,
+    total:6, savings_fr:null, savings_ar:null,
     uses_fr:['🏥 Médicaments','💍 Bijoux','📚 Scolaire','💄 Maquillage'],
     uses_ar:['🏥 أدوية','💍 مجوهرات','📚 مدرسي','💄 مكياج'],
     imgs:[B+'bl1.jpg',B+'bl2.jpg']
@@ -655,11 +669,11 @@ const META = {
     pop_fr:'⭐ Recommandé', pop_ar:'⭐ موصى به',
     tagline_fr:"L'équilibre parfait entre quantité et prix.", tagline_ar:'التوازن المثالي بين الكمية والسعر.',
     compo:[
-      {n:'3×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
+      {n:'2×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
       {n:'4×',s:'L', dim:'19×8×7',   c:'var(--bark)'},
       {n:'5×',s:'M', dim:'10×10×7',  c:'var(--sage)'}
     ],
-    total:12, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
+    total:11, savings_fr:'🌿 Meilleur rapport', savings_ar:'🌿 أفضل قيمة',
     uses_fr:['🏥 Médicaments','💄 Maquillage','👙 Sous-vêtements','🍜 Nourriture','💍 Bijoux','📚 Scolaire'],
     uses_ar:['🏥 أدوية','💄 مكياج','👙 ملابس داخلية','🍜 طعام','💍 مجوهرات','📚 مدرسي'],
     imgs:[B+'bl1.jpg',B+'bl2.jpg',B+'bl3.jpg']
@@ -668,11 +682,11 @@ const META = {
     tag_fr:'👑 Organisation totale', tag_ar:'👑 تنظيم شامل', featured:false,
     tagline_fr:'Pour transformer toute la maison.', tagline_ar:'لتحويل المنزل بأكمله.',
     compo:[
-      {n:'5×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
+      {n:'4×',s:'XL',dim:'19×14×8',c:'var(--terra)'},
       {n:'8×',s:'L', dim:'19×8×7',   c:'var(--bark)'},
       {n:'10×',s:'M',dim:'10×10×7',  c:'var(--sage)'}
     ],
-    total:23, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
+    total:22, savings_fr:'✨ Économise le plus', savings_ar:'✨ أكبر توفير',
     uses_fr:['🏠 Maison entière','🏥 Pharmacie maison','🍜 Cuisine & épices','💄 Vanity','👙 Sous-vêtements','📚 Bureau scolaire'],
     uses_ar:['🏠 المنزل كله','🏥 صيدلية المنزل','🍜 مطبخ وتوابل','💄 طاولة المكياج','👙 ملابس داخلية','📚 مكتب مدرسي'],
     imgs:[B+'bl3.jpg',B+'bl1.jpg',B+'bl2.jpg']
@@ -680,7 +694,7 @@ const META = {
 };
 const ORDER = ['lot-mini','lot-standard','lot-mega'];
 const FALLBACK = [
-  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2100},
+  {id:'1',slug:'lot-mini',    name:'Lot Mini',    price:2000},
   {id:'2',slug:'lot-standard',name:'Lot Standard',price:3600},
   {id:'3',slug:'lot-mega',    name:'Lot Méga',    price:5700}
 ];
@@ -715,6 +729,7 @@ function cardHTML(lot) {
     <div class="lot-body">
       <div class="lot-name">${lot.name}</div>
       <div class="lot-tagline">${tagline}</div>
+      <div class="lot-lid-badge">🔒 ${lang==='ar' ? 'كل صندوق مع غطائه' : 'Toutes les boîtes ont leur couvercle'}</div>
       <div class="lot-compo">${compo}</div>
       <div class="uses-row">${uses}</div>
       <div class="lot-foot">
