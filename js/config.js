@@ -5,5 +5,5 @@ const API_URL = (() => {
     return 'http://localhost:3000';
   }
   
-  return 'https://www.everglintdz.store'; 
+  return ''; 
 })();
