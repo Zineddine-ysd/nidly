@@ -6,6 +6,8 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const https = require('https');
 const multer = require('multer');
+const sharp = require('sharp');
+const compression = require('compression');
 const supabase = require('./config/supabase');
 
 const app = express();
@@ -30,9 +32,24 @@ let adminsFallback = [
   { email: 'admin@nidly.dz', password_hash: bcrypt.hashSync('admin123', 10), created_at: new Date().toISOString() }
 ];
 
+app.use(compression());
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+// Cache long pour les fichiers statiques (images/css/js) — gros gain de bande passante
+// sur les visites répétées ; les .html ne sont volontairement pas mis en cache pour que
+// les mises à jour du site (prix, produits...) apparaissent immédiatement.
+app.use(express.static(path.join(__dirname), {
+  setHeaders: (res, filePath) => {
+    const ext = path.extname(filePath).toLowerCase();
+    if (['.jpg', '.jpeg', '.png', '.gif', '.webp', '.avif', '.svg', '.ico'].includes(ext)) {
+      res.setHeader('Cache-Control', 'public, max-age=2592000'); // 30 jours
+    } else if (['.css', '.js'].includes(ext)) {
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 jour
+    } else {
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
 
 // ─── Upload images produits (multer) ────────────────────────────────────────
 const UPLOAD_DIR = path.join(__dirname, 'assets', 'products');
@@ -54,6 +71,37 @@ const upload = multer({
 function deleteUploadedFile(imageUrl) {
   if (!imageUrl || !imageUrl.startsWith('/assets/products/')) return;
   fs.unlink(path.join(__dirname, imageUrl), () => {});
+}
+
+// Redimensionne (max 1600px) et recompresse chaque photo uploadée depuis l'admin —
+// évite que des photos de téléphone non compressées (plusieurs Mo) plombent la
+// bande passante Render à chaque affichage. Garde la transparence en PNG si elle
+// est réellement utilisée, sinon convertit en JPEG (bien plus léger).
+async function optimizeUploadedImage(file) {
+  if (!file) return null;
+  const buf = fs.readFileSync(file.path);
+  const img = sharp(buf, { failOn: 'none' });
+  const meta = await img.metadata();
+  const pipeline = meta.width && meta.width > 1600 ? img.resize({ width: 1600, withoutEnlargement: true }) : img;
+
+  let alphaUsed = false;
+  if (meta.hasAlpha) {
+    const stats = await sharp(buf).stats();
+    alphaUsed = stats.isOpaque === false;
+  }
+
+  const ext = path.extname(file.filename).toLowerCase();
+  let outPath, outBuf;
+  if (alphaUsed) {
+    outPath = file.path.slice(0, -ext.length) + '.png';
+    outBuf = await pipeline.png({ quality: 80, compressionLevel: 9, palette: true }).toBuffer();
+  } else {
+    outPath = file.path.slice(0, -ext.length) + '.jpg';
+    outBuf = await pipeline.flatten({ background: '#ffffff' }).jpeg({ quality: 80, mozjpeg: true }).toBuffer();
+  }
+  fs.writeFileSync(outPath, outBuf);
+  if (outPath !== file.path) fs.unlink(file.path, () => {});
+  return `/assets/products/${path.basename(outPath)}`;
 }
 
 // ─── Helper Yalidine (fetch via https natif) ────────────────────────────────
@@ -398,7 +446,7 @@ app.post('/api/products', authMiddleware, upload.single('image'), async (req, re
   try {
     const { name, price, description, badge } = req.body || {};
     if (!name || price === undefined || price === '') return res.status(400).json({ message: 'Nom et prix requis' });
-    const image_url = req.file ? `/assets/products/${req.file.filename}` : (req.body.image_url || null);
+    const image_url = req.file ? await optimizeUploadedImage(req.file) : (req.body.image_url || null);
     const product = await createProduct({ name, price: parseFloat(price), description, badge, image_url });
     res.status(201).json(product);
   } catch (err) {
@@ -415,7 +463,7 @@ app.put('/api/products/:id', authMiddleware, upload.single('image'), async (req,
     if (body.price !== undefined && body.price !== '') fields.price = parseFloat(body.price);
     if (body.description !== undefined) fields.description = body.description;
     if (body.badge !== undefined) fields.badge = body.badge;
-    if (req.file) fields.image_url = `/assets/products/${req.file.filename}`;
+    if (req.file) fields.image_url = await optimizeUploadedImage(req.file);
     else if (body.image_url !== undefined) fields.image_url = body.image_url;
     const product = await updateProduct(req.params.id, fields);
     if (!product) return res.status(404).json({ message: 'Produit introuvable' });
