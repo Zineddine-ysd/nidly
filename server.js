@@ -327,7 +327,7 @@ async function getOrders() {
       .from('orders')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(80);
+      .limit(60);
 
     if (error) { console.error('Erreur getOrders:', error); return []; }
 
@@ -856,7 +856,10 @@ const price = (order.total_amount || 0) - (order.shipping_price || 0);
     is_stopdesk,
     ...(is_stopdesk && stopdesk_id ? { stopdesk_id } : {}),
     has_exchange,
-    ...(has_exchange ? { product_to_collect } : {})
+    ...(has_exchange ? { product_to_collect } : {}),
+    // Autorisation d'ouverture du colis : toujours "accept" (le client peut ouvrir
+    // le colis avant de payer), quelle que soit la commande.
+    opening_decision:  'accept'
   }];
 
   try {
