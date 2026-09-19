@@ -261,6 +261,38 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
 .btn-bulk-yalidine:hover { background: #4527A0; }
 .btn-bulk:disabled { opacity: .45; cursor: not-allowed; }
 
+/* ── Sélection multiple (checkboxes) ── */
+.order-select-wrap { display: flex; align-items: flex-start; gap: .65rem; }
+.order-select-cb { width: 17px; height: 17px; margin-top: .2rem; accent-color: var(--terracotta); cursor: pointer; flex-shrink: 0; }
+.order-select-cb:disabled { opacity: .3; cursor: not-allowed; }
+
+.selection-bar {
+  background: #2C2420; color: white;
+  border-radius: var(--radius); padding: .85rem 1.2rem;
+  margin-bottom: 1.1rem; display: flex; align-items: center;
+  gap: .8rem; flex-wrap: wrap;
+  box-shadow: 0 4px 20px rgba(44,36,32,.18);
+}
+.select-all-row { display: flex; align-items: center; gap: .5rem; font-size: .8rem; color: rgba(255,255,255,.85); margin: 0; cursor: pointer; white-space: nowrap; }
+.select-all-row input { width: 16px; height: 16px; accent-color: var(--terracotta); cursor: pointer; }
+.selection-bar-label { font-size: .82rem; opacity: .8; flex: 1; min-width: 140px; }
+.btn-selection-action {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .5rem 1.1rem; border: none; border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 500;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+  background: #512DA8; color: white;
+}
+.btn-selection-action:hover { background: #4527A0; }
+.btn-selection-action:disabled { opacity: .45; cursor: not-allowed; }
+.btn-selection-clear {
+  padding: .5rem 1rem; border: 1.5px solid rgba(255,255,255,.25); border-radius: var(--radius-sm);
+  background: none; color: rgba(255,255,255,.8); font-size: .8rem; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all .2s;
+}
+.btn-selection-clear:hover { background: rgba(255,255,255,.1); }
+.btn-selection-clear:disabled { opacity: .35; cursor: not-allowed; }
+
 /* ── Bulk progress modal ── */
 .bulk-modal { max-width: 520px; width: 95%; }
 .bulk-progress-wrap {
@@ -565,6 +597,41 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
   </div>
 </div>
 
+<!-- ── SELECTION MODAL (checkboxes) : confirmer + envoyer vers Yalidine ── -->
+<div id="selectionYalOverlay" class="overlay">
+  <div class="dialog bulk-modal" style="max-width:560px;">
+    <h3>🚀 Confirmer &amp; Envoyer vers Yalidine</h3>
+    <p id="selectionYalDesc" style="margin-bottom:.8rem;font-size:.84rem;color:var(--bark);"></p>
+    <div style="background:var(--cream2);border-radius:var(--radius-sm);padding:.8rem 1rem;font-size:.82rem;color:var(--bark);margin-bottom:1rem;">
+      ⚙️ Les commandes sélectionnées <strong>en attente</strong> seront d'abord confirmées, puis toutes les commandes sélectionnées (hors annulées / déjà envoyées) recevront un bordereau Yalidine avec ces paramètres.
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Poids (kg)</label><input type="number" id="selWeight" value="0.5" min="0" step="0.1"></div>
+      <div class="form-group"><label>Valeur déclarée</label><small style="font-size:.7rem;color:var(--sage2);">auto = total produit</small></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Long. (cm)</label><input type="number" id="selLength" value="20" min="0"></div>
+      <div class="form-group"><label>Larg. (cm)</label><input type="number" id="selWidth"  value="15" min="0"></div>
+      <div class="form-group"><label>Haut. (cm)</label><input type="number" id="selHeight" value="10" min="0"></div>
+    </div>
+    <div class="checkbox-row" style="margin-bottom:.6rem;">
+      <input type="checkbox" id="selFreeshipping">
+      <label for="selFreeshipping" style="font-size:.84rem;">Livraison gratuite (freeshipping)</label>
+    </div>
+    <div class="checkbox-row" style="margin-bottom:.6rem;">
+      <input type="checkbox" id="selAutoDownload" checked>
+      <label for="selAutoDownload" style="font-size:.84rem;">Télécharger automatiquement chaque bordereau créé</label>
+    </div>
+    <div class="bulk-progress-wrap" id="selYalLog" style="display:none;"></div>
+    <div class="bulk-progress-bar-bg" id="selYalBarBg" style="display:none;"><div class="bulk-progress-bar" id="selYalBar" style="width:0%;background:#512DA8;"></div></div>
+    <div class="bulk-status-text" id="selYalStatus"></div>
+    <div class="yal-actions" style="margin-top:1rem;">
+      <button class="btn-dlg btn-dlg-cancel" onclick="closeOverlay('selectionYalOverlay')">Fermer</button>
+      <button class="btn-dlg btn-dlg-yal" id="selYalStartBtn" onclick="runSelectionAction()">🚀 Lancer</button>
+    </div>
+  </div>
+</div>
+
 <!-- Main -->
 <div class="container">
 
@@ -613,6 +680,17 @@ body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(
     <span class="orders-count" id="ordersCount"></span>
   </div>
 
+  <!-- Selection bar (checkboxes) -->
+  <div class="selection-bar" id="selectionBar">
+    <label class="select-all-row">
+      <input type="checkbox" id="selectAllCb" onchange="toggleSelectAll(this.checked)">
+      Tout sélectionner (visible)
+    </label>
+    <span class="selection-bar-label" id="selectionBarLabel">Aucune commande sélectionnée</span>
+    <button class="btn-selection-action" id="btnSelectionAction" onclick="openSelectionYalidine()" disabled>🚀 Confirmer &amp; Envoyer vers Yalidine</button>
+    <button class="btn-selection-clear" id="btnSelectionClear" onclick="clearSelection()" disabled>✕ Désélectionner</button>
+  </div>
+
   <!-- Bulk bar -->
   <div class="bulk-bar" id="bulkBar" style="display:none;">
     <span class="bulk-bar-label" id="bulkBarLabel">Actions groupées</span>
@@ -641,6 +719,7 @@ let allOrders = [];
 let pendingDeleteId = null;
 let pendingYalOrderId = null;
 let yalidineConfigured = false;
+let selectedOrderIds = new Set(); // ids des commandes cochées via checkbox
 
 // ── Toast ────────────────────────────────────────────────────────────────────
 function showToast(msg, duration = 2800) {
@@ -737,7 +816,7 @@ function renderOrder(order, searchTerm = '') {
         <div class="yal-tracking">${order.yalidine_tracking}</div>
         ${order.yalidine_status ? `<div class="yal-status">Statut : ${order.yalidine_status}</div>` : ''}
         <div style="margin-top:.6rem;display:flex;gap:.4rem;flex-wrap:wrap;">
-          ${order.yalidine_label ? `<a class="btn-xs btn-xs-copy" href="${order.yalidine_label}" target="_blank">🖨 Bordereau</a>` : ''}
+          ${order.yalidine_label ? `<button class="btn-xs btn-xs-copy" onclick="downloadYalidineLabel('${order.yalidine_label}','bordereau-${order.yalidine_tracking}.pdf')">🖨 Télécharger bordereau</button>` : ''}
           <button class="btn-xs btn-xs-copy" onclick="copyText('${order.yalidine_tracking}', this)">📋 Copier tracking</button>
           <button class="btn-xs btn-xs-copy" onclick="refreshYalidineStatus('${order.id}', this)">🔄 Rafraîchir statut</button>
         </div>
@@ -764,9 +843,15 @@ function renderOrder(order, searchTerm = '') {
   return `
     <div class="order-card" data-id="${order.id}" data-status="${order.status}">
       <div class="order-header">
-        <div class="order-id-block">
-          <div class="oid">#${order.id.slice(0,8).toUpperCase()}</div>
-          <div class="odate">${new Date(order.createdAt).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+        <div class="order-select-wrap">
+          <input type="checkbox" class="order-select-cb" data-id="${order.id}"
+            onchange="toggleOrderSelect('${order.id}', this.checked)"
+            ${selectedOrderIds.has(order.id) ? 'checked' : ''}
+            ${(order.status === 'cancelled' || order.yalidine_tracking) ? 'disabled title="Rien à faire pour cette commande"' : ''}>
+          <div class="order-id-block">
+            <div class="oid">#${order.id.slice(0,8).toUpperCase()}</div>
+            <div class="odate">${new Date(order.createdAt).toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          </div>
         </div>
         <div class="order-badges">
           <span class="badge ${statusClass(order.status)}">${statusLabel(order.status)}</span>
@@ -971,6 +1056,7 @@ async function sendToYalidine() {
     const data = await res.json();
     if (res.ok && data.success) {
       showToast(`✅ Colis créé ! Tracking : ${data.tracking}`, 4000);
+      if (data.label) downloadYalidineLabel(data.label, `bordereau-${data.tracking}.pdf`);
       closeOverlay('yalOverlay');
       loadOrders();
     } else {
@@ -995,6 +1081,224 @@ async function refreshYalidineStatus(orderId, btn) {
     else showToast(`❌ ${data.message}`);
   } catch { showToast('Erreur réseau'); }
   finally { btn.textContent = orig; }
+}
+
+// ── Téléchargement direct des bordereaux ──────────────────────────────────────
+// Le PDF est hébergé chez Yalidine (cross-origin) : un simple <a download> ne
+// force pas le téléchargement sur ce genre de lien. On passe donc par le proxy
+// backend (/api/yalidine/label-proxy) qui renvoie le fichier avec l'en-tête
+// Content-Disposition: attachment, puis on déclenche un vrai "Enregistrer sous"
+// via une Blob URL (même origine, donc l'attribut download fonctionne).
+async function downloadYalidineLabel(labelUrl, filename) {
+  if (!labelUrl) return;
+  try {
+    const res = await fetch(`${API_URL}/api/yalidine/label-proxy?url=${encodeURIComponent(labelUrl)}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('proxy failed');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename || 'bordereau.pdf';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 8000);
+  } catch {
+    // Repli : si le proxy échoue (Yalidine non configuré, réseau, etc.), on ouvre
+    // au moins le fichier dans un nouvel onglet pour que l'admin puisse le sauvegarder.
+    window.open(labelUrl, '_blank', 'noopener');
+  }
+}
+
+// ── Sélection multiple (checkboxes) ───────────────────────────────────────────
+function toggleOrderSelect(orderId, checked) {
+  if (checked) selectedOrderIds.add(orderId);
+  else selectedOrderIds.delete(orderId);
+  updateSelectionBar();
+}
+
+function toggleSelectAll(checked) {
+  document.querySelectorAll('.order-select-cb:not(:disabled)').forEach(cb => {
+    cb.checked = checked;
+    if (checked) selectedOrderIds.add(cb.dataset.id);
+    else selectedOrderIds.delete(cb.dataset.id);
+  });
+  updateSelectionBar();
+}
+
+function clearSelection() {
+  selectedOrderIds.clear();
+  document.querySelectorAll('.order-select-cb').forEach(cb => cb.checked = false);
+  const selectAllCb = document.getElementById('selectAllCb');
+  if (selectAllCb) { selectAllCb.checked = false; selectAllCb.indeterminate = false; }
+  updateSelectionBar();
+}
+
+function syncSelectAllCheckbox(filteredOrders) {
+  const selectAllCb = document.getElementById('selectAllCb');
+  if (!selectAllCb) return;
+  const selectableIds = filteredOrders
+    .filter(o => !(o.status === 'cancelled' || o.yalidine_tracking))
+    .map(o => o.id);
+  if (!selectableIds.length) { selectAllCb.checked = false; selectAllCb.indeterminate = false; return; }
+  const allSelected  = selectableIds.every(id => selectedOrderIds.has(id));
+  const someSelected = selectableIds.some(id => selectedOrderIds.has(id));
+  selectAllCb.checked = allSelected;
+  selectAllCb.indeterminate = !allSelected && someSelected;
+}
+
+function updateSelectionBar() {
+  // Nettoyer les ids sélectionnés qui n'existent plus (commande supprimée, etc.)
+  const validIds = new Set(allOrders.map(o => o.id));
+  selectedOrderIds.forEach(id => { if (!validIds.has(id)) selectedOrderIds.delete(id); });
+
+  const count = selectedOrderIds.size;
+  const label     = document.getElementById('selectionBarLabel');
+  const btnAction = document.getElementById('btnSelectionAction');
+  const btnClear  = document.getElementById('btnSelectionClear');
+  if (label) label.textContent = count === 0
+    ? 'Aucune commande sélectionnée'
+    : `${count} commande${count>1?'s':''} sélectionnée${count>1?'s':''}`;
+  if (btnAction) btnAction.disabled = count === 0;
+  if (btnClear)  btnClear.disabled  = count === 0;
+}
+
+// ── Action combinée : confirmer (si en attente) + envoyer vers Yalidine ───────
+function openSelectionYalidine() {
+  const orders = allOrders.filter(o => selectedOrderIds.has(o.id));
+  if (!orders.length) { showToast('⚠️ Sélectionnez au moins une commande'); return; }
+
+  const toConfirm  = orders.filter(o => o.status === 'pending');
+  const toSendOnly = orders.filter(o => o.status !== 'pending' && o.status !== 'cancelled' && !o.yalidine_tracking);
+  const ignored    = orders.filter(o => o.status === 'cancelled' || o.yalidine_tracking);
+
+  if (!toConfirm.length && !toSendOnly.length) {
+    showToast('⚠️ Rien à envoyer dans cette sélection (déjà envoyées ou annulées)');
+    return;
+  }
+
+  let desc = '';
+  if (toConfirm.length)  desc += `${toConfirm.length} en attente seront confirmée(s) puis envoyée(s). `;
+  if (toSendOnly.length) desc += `${toSendOnly.length} déjà confirmée(s) seront envoyée(s). `;
+  if (ignored.length)    desc += `${ignored.length} ignorée(s) (annulée(s) ou déjà envoyée(s)).`;
+
+  document.getElementById('selectionYalDesc').textContent = desc;
+  document.getElementById('selYalLog').style.display = 'none';
+  document.getElementById('selYalLog').innerHTML = '';
+  document.getElementById('selYalBarBg').style.display = 'none';
+  document.getElementById('selYalBar').style.width = '0%';
+  document.getElementById('selYalStatus').textContent = '';
+  document.getElementById('selYalStartBtn').disabled = false;
+  document.getElementById('selYalStartBtn').textContent = '🚀 Lancer';
+  document.getElementById('selectionYalOverlay').classList.add('active');
+}
+
+async function runSelectionAction() {
+  const orders = allOrders.filter(o => selectedOrderIds.has(o.id));
+  if (!orders.length) return;
+
+  const btn = document.getElementById('selYalStartBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ En cours...';
+  const log    = document.getElementById('selYalLog');
+  const bar    = document.getElementById('selYalBar');
+  const barBg  = document.getElementById('selYalBarBg');
+  const status = document.getElementById('selYalStatus');
+  log.style.display = 'block'; barBg.style.display = 'block';
+
+  const weight = parseFloat(document.getElementById('selWeight').value) || 0.5;
+  const length = parseFloat(document.getElementById('selLength').value) || 20;
+  const width  = parseFloat(document.getElementById('selWidth').value)  || 15;
+  const height = parseFloat(document.getElementById('selHeight').value) || 10;
+  const free   = document.getElementById('selFreeshipping').checked;
+  const autoDl = document.getElementById('selAutoDownload').checked;
+
+  let ok = 0, fail = 0, skipped = 0;
+  const succeededIds = [];
+
+  for (let i = 0; i < orders.length; i++) {
+    const o = orders[i];
+    const name = o.customer?.name || o.id.slice(0,8).toUpperCase();
+    status.textContent = `${i+1}/${orders.length} — ${name}`;
+    bar.style.width = `${Math.round((i / orders.length) * 100)}%`;
+
+    if (o.status === 'cancelled' || o.yalidine_tracking) {
+      skipped++;
+      log.innerHTML += `<span style="color:var(--bark);">— ${name} (ignorée)</span><br>`;
+      log.scrollTop = log.scrollHeight;
+      continue;
+    }
+
+    let currentOrder = o;
+
+    // Étape 1 : confirmer si la commande est en attente
+    if (currentOrder.status === 'pending') {
+      try {
+        const res = await fetch(`${API_URL}/api/orders/${o.id}/status`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ status: 'confirmed' })
+        });
+        if (!res.ok) {
+          fail++;
+          log.innerHTML += `<span style="color:#C62828;">✗ ${name} — échec confirmation</span><br>`;
+          log.scrollTop = log.scrollHeight;
+          continue;
+        }
+        currentOrder = { ...currentOrder, status: 'confirmed' };
+      } catch {
+        fail++;
+        log.innerHTML += `<span style="color:#C62828;">✗ ${name} — erreur réseau (confirmation)</span><br>`;
+        log.scrollTop = log.scrollHeight;
+        continue;
+      }
+    }
+
+    // Étape 2 : envoyer vers Yalidine
+    const isDesk = currentOrder.shipping_type !== 'maison';
+    const payload = {
+      to_wilaya_name:  currentOrder.wilaya_name  || '',
+      to_commune_name: currentOrder.commune_name || '',
+      is_stopdesk:     isDesk,
+      stopdesk_id:     isDesk ? (currentOrder.stopdesk_id || null) : null,
+      weight, length, width, height,
+      declared_value:  (currentOrder.total_amount || 0) - (currentOrder.shipping_price || 0),
+      freeshipping:    free
+    };
+    try {
+      const res = await fetch(`${API_URL}/api/orders/${o.id}/yalidine`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        ok++;
+        succeededIds.push(o.id);
+        log.innerHTML += `<span style="color:#2E7D32;">✓ ${name} envoyée — <strong>${data.tracking}</strong></span><br>`;
+        if (autoDl && data.label) await downloadYalidineLabel(data.label, `bordereau-${data.tracking}.pdf`);
+      } else {
+        fail++;
+        log.innerHTML += `<span style="color:#C62828;">✗ ${name} — ${data.message || 'erreur Yalidine'}</span><br>`;
+      }
+    } catch {
+      fail++;
+      log.innerHTML += `<span style="color:#C62828;">✗ ${name} (réseau)</span><br>`;
+    }
+    log.scrollTop = log.scrollHeight;
+  }
+
+  bar.style.width = '100%';
+  status.textContent = `Terminé — ✓ ${ok} envoyée${ok>1?'s':''}${skipped ? ` · — ${skipped} ignorée${skipped>1?'s':''}` : ''}${fail ? ` · ✗ ${fail} erreur${fail>1?'s':''}` : ''}`;
+  btn.textContent = 'Fermer';
+  btn.disabled = false;
+  btn.onclick = () => { closeOverlay('selectionYalOverlay'); loadOrders(); };
+  showToast(`✅ ${ok} commande${ok>1?'s':''} envoyée${ok>1?'s':''} vers Yalidine`);
+
+  // On retire de la sélection les commandes traitées avec succès (celles en échec restent cochées pour un nouvel essai)
+  succeededIds.forEach(id => selectedOrderIds.delete(id));
 }
 
 // ── Bulk bar update ───────────────────────────────────────────────────────────
@@ -1118,6 +1422,7 @@ async function runBulkYalidine() {
       if (res.ok && data.success) {
         ok++;
         log.innerHTML += `<span style="color:#2E7D32;">✓ ${name} — <strong>${data.tracking}</strong></span><br>`;
+        if (data.label) await downloadYalidineLabel(data.label, `bordereau-${data.tracking}.pdf`);
       } else {
         fail++;
         log.innerHTML += `<span style="color:#C62828;">✗ ${name} — ${data.message || 'erreur'}</span><br>`;
@@ -1169,6 +1474,8 @@ function applyFilters() {
     el.innerHTML = filtered.map(o => renderOrder(o, search)).join('');
   }
   updateBulkBar();
+  syncSelectAllCheckbox(filtered);
+  updateSelectionBar();
 }
 
 function resetFilters() {
