@@ -951,6 +951,47 @@ app.delete('/api/orders/:id/yalidine', authMiddleware, async (req, res) => {
   }
 });
 
+// GET /api/yalidine/label-proxy — proxy de téléchargement d'un bordereau Yalidine
+// Le PDF du bordereau est hébergé chez Yalidine (pas sur notre domaine). Un lien
+// <a href="..."> classique vers ce fichier s'ouvre donc dans un nouvel onglet au
+// lieu de se télécharger, car le navigateur ne peut pas forcer un "Save As" sur
+// un fichier cross-origin sans l'en-tête Content-Disposition adéquat. Ce proxy
+// récupère le fichier depuis Yalidine et le renvoie avec cet en-tête, afin que
+// le clic déclenche un vrai téléchargement direct sur le PC de l'admin.
+app.get('/api/yalidine/label-proxy', authMiddleware, (req, res) => {
+  const labelUrl = req.query.url;
+  if (!labelUrl) return res.status(400).json({ message: 'Paramètre url manquant' });
+
+  let parsed;
+  try { parsed = new URL(labelUrl); }
+  catch { return res.status(400).json({ message: 'URL invalide' }); }
+
+  // Petite protection anti-SSRF : on n'autorise que du https vers un hôte public
+  // (le lien vient normalement toujours de la réponse de l'API Yalidine elle-même).
+  const host = parsed.hostname;
+  const isPrivateHost =
+    host === 'localhost' || host === '0.0.0.0' ||
+    /^127\./.test(host) || /^10\./.test(host) || /^192\.168\./.test(host) ||
+    /^172\.(1[6-9]|2\d|3[01])\./.test(host) || /^169\.254\./.test(host);
+  if (parsed.protocol !== 'https:' || isPrivateHost) {
+    return res.status(400).json({ message: 'URL non autorisée' });
+  }
+
+  const upstreamReq = https.get(parsed.href, (upstream) => {
+    if (upstream.statusCode && upstream.statusCode >= 400) {
+      res.status(502).json({ message: 'Erreur lors du téléchargement du bordereau chez Yalidine' });
+      upstream.resume();
+      return;
+    }
+    res.setHeader('Content-Type', upstream.headers['content-type'] || 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="bordereau-${Date.now()}.pdf"`);
+    upstream.pipe(res);
+  });
+  upstreamReq.on('error', (err) => {
+    res.status(500).json({ message: 'Erreur connexion au fichier Yalidine', error: err.message });
+  });
+});
+
 // ─── Config endpoint (pour vérifier si Yalidine est configuré) ───────────────
 app.get('/api/config', authMiddleware, (req, res) => {
   res.json({
