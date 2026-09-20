@@ -327,7 +327,7 @@ async function getOrders() {
       .from('orders')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(60);
+      .limit(100);
 
     if (error) { console.error('Erreur getOrders:', error); return []; }
 
